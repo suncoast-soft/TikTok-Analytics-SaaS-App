@@ -1,13 +1,14 @@
 import { Metadata } from 'next';
-import Footer from '@/components/ui/Footer';
-import Navbar from '@/components/ui/Navbar';
-import { Toaster } from '@/components/ui/Toasts/toaster';
+import Footer from '@/components/modules/Footer';
+import Navbar from '@/components/modules/Navbar';
+import { Toaster } from '@/components/ui/toaster';
 import { PropsWithChildren, Suspense } from 'react';
 import { getURL } from '@/utils/helpers';
+import { createClient } from '@/utils/supabase/server';
 import 'styles/main.css';
 
-const title = 'Next.js Subscription Starter';
-const description = 'Brought to you by Vercel, Stripe, and Supabase.';
+const title = 'Flicker | TikTok Shop Analytics Tool';
+const description = 'Join Affiliate Reward Campaigns for TikTok Shop Brands';
 
 export const metadata: Metadata = {
   metadataBase: new URL(getURL()),
@@ -20,17 +21,26 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: PropsWithChildren) {
+  const supabase = createClient();
+
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+
   return (
     <html lang="en">
-      <body className="bg-black">
-        <Navbar />
+      <body>
+        {!user && <Navbar />}
+
         <main
           id="skip"
           className="min-h-[calc(100dvh-4rem)] md:min-h[calc(100dvh-5rem)]"
         >
           {children}
         </main>
-        <Footer />
+
+        {!user && <Footer />}
+
         <Suspense>
           <Toaster />
         </Suspense>
