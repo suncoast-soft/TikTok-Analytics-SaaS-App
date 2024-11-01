@@ -26,7 +26,7 @@ export default function Navbar() {
   ]
 
   return (
-    <nav className="sticky top-0 bg-orange-50 z-40 transition-all duration-150 shadow-sm">
+    <nav className="sticky top-0 bg-white/95 z-40 transition-all duration-150 shadow">
       <a href="#skip" className="sr-only focus:not-sr-only">
         Skip to content
       </a>
