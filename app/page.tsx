@@ -6,24 +6,22 @@ import HowItWorks from '@/components/modules/Landing/HowItWorks'
 import Pricing from '@/components/modules/Landing/Pricing'
 import Testimonials from '@/components/modules/Landing/Testimonials'
 
-export default async function PricingPage() {
+export default async function HomePage() {
   return (
-    <>
-      <div className="container mx-auto p-8">
-        <HomeHero />
+    <div className="container mx-auto p-8">
+      <HomeHero />
 
-        <Features />
+      <Features />
 
-        <HowItWorks />
+      <HowItWorks />
 
-        <Testimonials />
+      <Testimonials />
 
-        <Pricing />
+      <Pricing />
 
-        <FAQs />
+      <FAQs />
 
-        <ContactUs />
-      </div>
-    </>
+      <ContactUs />
+    </div>
   )
 }
