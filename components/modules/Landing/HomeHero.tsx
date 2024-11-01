@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button'
 import { ChartLineIcon, RocketIcon } from 'lucide-react'
 
 export default function HomeHero() {
@@ -22,17 +23,9 @@ export default function HomeHero() {
           </p>
 
           <div className="space-x-4">
-            <button className="px-8 py-3 bg-white text-primary font-semibold rounded-md shadow hover:bg-gray-100 transition transform hover:scale-105 animate-pulse">
-              Log In
-            </button>
+            <Button variant="white">Log In</Button>
 
-            <button className="relative inline-block font-medium group">
-              <span className="absolute inset-0 transition-transform transform translate-x-1 translate-y-1 bg-primary group-hover:-translate-x-0 group-hover:-translate-y-0"></span>
-              <span className="absolute inset-0 border-2 border-black"></span>
-              <span className="relative block text-white bg-opacity-5 backdrop-blur-md bg-black px-8 py-3 transition-colors duration-300 ease group-hover:bg-opacity-30">
-                Glassy Button
-              </span>
-            </button>
+            <Button variant="glassy">Register For Free</Button>
           </div>
         </div>
       </section>
