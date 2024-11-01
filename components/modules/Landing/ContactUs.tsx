@@ -2,7 +2,10 @@ import Image from 'next/image'
 
 export default function ContactUs() {
   return (
-    <section className="bg-secondary text-white py-12 px-8 rounded-lg shadow-lg">
+    <section
+      id="contactus"
+      className="bg-secondary text-white py-12 px-8 rounded-lg shadow-lg"
+    >
       <h2 className="text-3xl font-bold text-center mb-8">Contact Us</h2>
 
       <div className="flex flex-col items-center md:flex-row md:justify-center md:items-center">

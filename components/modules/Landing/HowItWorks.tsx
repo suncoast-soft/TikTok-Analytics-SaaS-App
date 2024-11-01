@@ -2,7 +2,10 @@ import { ChartLineIcon, CogIcon, PlugIcon } from 'lucide-react'
 
 export default function HowItWorks() {
   return (
-    <section className="bg-white py-16 px-8 mb-16 rounded-lg shadow-md">
+    <section
+      id="howitworks"
+      className="bg-white py-16 px-8 mb-16 rounded-lg shadow-md"
+    >
       <h2 className="text-4xl font-extrabold text-center mb-12 text-gray-800">
         How It Works
       </h2>

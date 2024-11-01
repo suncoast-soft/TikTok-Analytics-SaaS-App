@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button'
 import { cn } from '@/utils/cn'
 import Image from 'next/image'
 
@@ -41,9 +42,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
             ))}
           </ul>
           <div className="flex justify-end mt-4">
-            <button className="py-2 px-4 bg-white text-indigo-600 font-semibold rounded-lg shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              Learn More
-            </button>
+            <Button variant="outline">Start Free Trial</Button>
           </div>
         </div>
       </div>
@@ -91,7 +90,7 @@ export default function FeaturesSection() {
   ]
 
   return (
-    <section className="mt-28">
+    <section id="features" className="mt-28">
       <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">
         Our Features
       </h2>
