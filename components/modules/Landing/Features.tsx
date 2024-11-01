@@ -1,5 +1,5 @@
-import LogoBlack from '@/components/icons/LogoBlack';
-import LogoBlue from '@/components/icons/LogoBlue';
+import LogoBlack from '@/components/icons/LogoBlack'
+import LogoBlue from '@/components/icons/LogoBlue'
 
 export default function Features() {
   return (
@@ -33,5 +33,5 @@ export default function Features() {
         </div>
       </div>
     </section>
-  );
+  )
 }

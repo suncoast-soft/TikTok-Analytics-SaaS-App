@@ -5,6 +5,6 @@ const LogoBlue = ({ ...props }) => (
     className="h-8 text-blue-700"
     {...props}
   />
-);
+)
 
-export default LogoBlue;
+export default LogoBlue

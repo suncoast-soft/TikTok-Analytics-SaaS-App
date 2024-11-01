@@ -1,32 +1,32 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import { ReactElement } from 'react';
+import Link from 'next/link'
+import { ReactElement } from 'react'
 import {
   Sheet,
   SheetContent,
   SheetTitle,
   SheetTrigger
-} from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
-import LogoBlue from '@/components/icons/LogoBlue';
-import { cn } from '@/utils/cn';
-import s from './Sidenav.module.css';
-import { PanelLeft } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+} from '@/components/ui/sheet'
+import { Button } from '@/components/ui/button'
+import LogoBlue from '@/components/icons/LogoBlue'
+import { cn } from '@/utils/cn'
+import s from './Sidenav.module.css'
+import { PanelLeft } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 
 type NavItem = {
-  icon: ReactElement;
-  name: string;
-  link: string;
-};
+  icon: ReactElement
+  name: string
+  link: string
+}
 
 interface NavProps {
-  navs: NavItem[];
+  navs: NavItem[]
 }
 
 function DesktopNav({ navs }: NavProps) {
-  const currentPath = usePathname();
+  const currentPath = usePathname()
 
   return (
     <aside className={s.root}>
@@ -68,11 +68,11 @@ function DesktopNav({ navs }: NavProps) {
         ))}
       </nav>
     </aside>
-  );
+  )
 }
 
 function MobileNav({ navs }: NavProps) {
-  const currentPath = usePathname();
+  const currentPath = usePathname()
 
   return (
     <Sheet>
@@ -111,7 +111,7 @@ function MobileNav({ navs }: NavProps) {
         </nav>
       </SheetContent>
     </Sheet>
-  );
+  )
 }
 
-export { DesktopNav, MobileNav };
+export { DesktopNav, MobileNav }

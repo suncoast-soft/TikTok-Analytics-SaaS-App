@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import LogoBlue from '@/components/icons/LogoBlue';
-import { Button } from '@/components/ui/button';
+import Link from 'next/link'
+import LogoBlue from '@/components/icons/LogoBlue'
+import { Button } from '@/components/ui/button'
 
 export default async function Navbar() {
   const navLinks = [
@@ -20,7 +20,7 @@ export default async function Navbar() {
       link: '#',
       name: 'Tools'
     }
-  ];
+  ]
   return (
     <nav className="sticky top-0 bg-orange-50 z-40 transition-all duration-150 shadow-sm">
       <a href="#skip" className="sr-only focus:not-sr-only">
@@ -67,5 +67,5 @@ export default async function Navbar() {
         </div>
       </div>
     </nav>
-  );
+  )
 }

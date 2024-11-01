@@ -1,14 +1,14 @@
-import { Metadata } from 'next';
-import Footer from '@/components/modules/Footer';
-import Navbar from '@/components/modules/Navbar';
-import { Toaster } from '@/components/ui/toaster';
-import { PropsWithChildren, Suspense } from 'react';
-import { getURL } from '@/utils/helpers';
-import { createClient } from '@/utils/supabase/server';
-import 'styles/main.css';
+import { Metadata } from 'next'
+import Footer from '@/components/modules/Footer'
+import Navbar from '@/components/modules/Navbar'
+import { Toaster } from '@/components/ui/toaster'
+import { PropsWithChildren, Suspense } from 'react'
+import { getURL } from '@/utils/helpers'
+import { createClient } from '@/utils/supabase/server'
+import 'styles/main.css'
 
-const title = 'Flicker | TikTok Shop Analytics Tool';
-const description = 'Join Affiliate Reward Campaigns for TikTok Shop Brands';
+const title = 'Flicker | TikTok Shop Analytics Tool'
+const description = 'Join Affiliate Reward Campaigns for TikTok Shop Brands'
 
 export const metadata: Metadata = {
   metadataBase: new URL(getURL()),
@@ -18,14 +18,14 @@ export const metadata: Metadata = {
     title: title,
     description: description
   }
-};
+}
 
 export default async function RootLayout({ children }: PropsWithChildren) {
-  const supabase = createClient();
+  const supabase = createClient()
 
   const {
     data: { user }
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getUser()
 
   return (
     <html lang="en">
@@ -46,5 +46,5 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         </Suspense>
       </body>
     </html>
-  );
+  )
 }

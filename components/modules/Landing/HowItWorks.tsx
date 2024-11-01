@@ -1,4 +1,4 @@
-import { ChartLineIcon, CogIcon, PlugIcon } from 'lucide-react';
+import { ChartLineIcon, CogIcon, PlugIcon } from 'lucide-react'
 
 export default function HowItWorks() {
   return (
@@ -69,5 +69,5 @@ export default function HowItWorks() {
         </div>
       </div>
     </section>
-  );
+  )
 }

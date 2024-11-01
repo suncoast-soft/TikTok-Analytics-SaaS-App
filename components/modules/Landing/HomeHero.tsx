@@ -1,4 +1,4 @@
-import { ChartLineIcon, RocketIcon } from 'lucide-react';
+import { ChartLineIcon, RocketIcon } from 'lucide-react'
 
 export default function HomeHero() {
   return (
@@ -57,5 +57,5 @@ export default function HomeHero() {
         </div>
       </section>
     </>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import { SmileIcon } from 'lucide-react';
+import { SmileIcon } from 'lucide-react'
 
 export default function Testimonials() {
   return (
@@ -25,5 +25,5 @@ export default function Testimonials() {
         </blockquote>
       </div>
     </section>
-  );
+  )
 }

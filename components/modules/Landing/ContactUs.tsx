@@ -24,5 +24,5 @@ export default function ContactUs() {
         </div>
       </div>
     </section>
-  );
+  )
 }

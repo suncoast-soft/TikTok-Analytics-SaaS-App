@@ -25,5 +25,5 @@ export default function Pricing() {
         </p>
       </div>
     </section>
-  );
+  )
 }

@@ -3,7 +3,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger
-} from '@/components/ui/accordion';
+} from '@/components/ui/accordion'
 
 export default function FAQs() {
   const faqs = [
@@ -18,7 +18,7 @@ export default function FAQs() {
       answer:
         'Yes, our platform is designed to handle multiple campaigns efficiently.'
     }
-  ];
+  ]
 
   return (
     <section className="mb-16 max-w-3xl mx-auto">
@@ -37,5 +37,5 @@ export default function FAQs() {
         ))}
       </Accordion>
     </section>
-  );
+  )
 }
