@@ -8,15 +8,15 @@ export default function Footer() {
 
         <div>
           <div className="text-sm text-gray-400 mb-6 text-center sm:text-right">
-            <a href="#" className="hover:text-white mx-2">
+            <a href="/privacy-policy" className="hover:text-white mx-2">
               Privacy Policy
             </a>{' '}
             |
-            <a href="#" className="hover:text-white mx-2">
+            <a href="/terms-of-service" className="hover:text-white mx-2">
               Terms of Service
             </a>{' '}
             |
-            <a href="#" className="hover:text-white mx-2">
+            <a href="/contact-us" className="hover:text-white mx-2">
               Help Center
             </a>
           </div>
