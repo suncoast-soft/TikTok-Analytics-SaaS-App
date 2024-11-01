@@ -1,12 +1,14 @@
-import ContactForm from '@/components/modules/AccountForms/ContactForm';
-import FAQs from '@/components/modules/FAQs';
-import Features from '@/components/modules/Features';
-import Pricing from '@/components/modules/Pricing';
-import Steps from '@/components/modules/Steps';
-import Testimonials from '@/components/modules/Testimonials';
+import LogoBlack from '@/components/icons/LogoBlack';
+import LogoBlue from '@/components/icons/LogoBlue';
+import ContactUs from '@/components/modules/Landing/ContactUs';
+import FAQs from '@/components/modules/Landing/FAQs';
+import Features from '@/components/modules/Landing/Features';
+import HomeHero from '@/components/modules/Landing/HomeHero';
+import HowItWorks from '@/components/modules/Landing/HowItWorks';
+import Pricing from '@/components/modules/Landing/Pricing';
+import Testimonials from '@/components/modules/Landing/Testimonials';
 import { Button } from '@/components/ui/button';
 import { createClient } from '@/utils/supabase/server';
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 export default async function PricingPage() {
@@ -22,73 +24,21 @@ export default async function PricingPage() {
 
   return (
     <>
-      <section className="bg-primary/5 py-20">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="text-5xl font-bold">
-            Effortlessly Protect Your Privacy
-          </h1>
-          <p className="mt-4 text-xl">
-            Quick, easy, and affordable service to remove your personal
-            information from the internet.
-          </p>
-          <div className="mt-8 flex space-x-8 justify-center">
-            <Button variant="default" color="primary" asChild>
-              <Link href="/signin/signup" className="no-underline">
-                Get Started for FREE
-              </Link>
-            </Button>
-            <Button variant="outline" color="white" asChild>
-              <Link href="#how-it-works" className="no-underline">
-                Learn More
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <div className="container mx-auto p-8">
+        <HomeHero />
 
-      <section id="features" className="bg-white py-20">
-        <div className="container mx-auto px-6">
-          <Features />
-        </div>
-      </section>
+        <Features />
 
-      <section id="pricing-plans" className="bg-primary/5 py-20">
-        <div className="container mx-auto px-6">
-          <Pricing />
-        </div>
-      </section>
+        <HowItWorks />
 
-      <section id="testimonials" className="bg-white py-20">
-        <div className="container mx-auto px-6">
-          <Testimonials />
-        </div>
-      </section>
+        <Testimonials />
 
-      <section id="how-it-works" className="bg-primary/5 py-20">
-        <div className="container mx-auto px-6">
-          <Steps />
-        </div>
-      </section>
+        <Pricing />
 
-      <section id="faq" className="bg-white py-20">
-        <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold text-center mb-10">
-            Frequently Asked Questions
-          </h2>
+        <FAQs />
 
-          <div className="max-w-3xl mx-auto">
-            <FAQs />
-          </div>
-        </div>
-      </section>
-
-      <section id="contact" className="bg-primary/5 py-20">
-        <div className="container mx-auto max-w-lg px-6">
-          <h2 className="text-3xl font-bold text-center mb-8">Contact Us</h2>
-
-          <ContactForm />
-        </div>
-      </section>
+        <ContactUs />
+      </div>
     </>
   );
 }

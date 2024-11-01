@@ -8,10 +8,8 @@ import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -38,28 +36,40 @@ export default function SubscriptionForm() {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  type="email"
-                  placeholder="Your email address"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" className="w-full">
-          Submit
-        </Button>
-      </form>
-    </Form>
+    <div className="flex flex-col sm:flex-row justify-between items-center mb-8 px-4">
+      <h4 className="text-xl sm:text-2xl text-center sm:text-left font-bold mb-4 md:mb-0">
+        Subscribe to Our Newsletter
+      </h4>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col md:flex-row items-center gap-4"
+        >
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="Enter your email"
+                    {...field}
+                    className="w-64"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-full transition duration-300"
+          >
+            Submit
+          </Button>
+        </form>
+      </Form>
+    </div>
   )
 }
