@@ -1,3 +1,5 @@
+import StripePricingTable from '@/components/stripe/StripeTable'
+
 export default function Pricing() {
   return (
     <section className="bg-primary text-white py-12 px-8 mb-16 rounded-lg shadow-lg relative">
@@ -23,6 +25,10 @@ export default function Pricing() {
           Transparent & Competitive. Stay tuned for our upcoming pricing models
           that promise value and transparency.
         </p>
+
+        <div className="pt-8 my-8 rounded bg-white">
+          <StripePricingTable />
+        </div>
       </div>
     </section>
   )

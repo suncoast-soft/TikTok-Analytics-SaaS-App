@@ -6,7 +6,7 @@ export default function ContactUs() {
       <h2 className="text-3xl font-bold text-center mb-8">Contact Us</h2>
 
       <div className="flex flex-col items-center md:flex-row md:justify-center md:items-center">
-        <div className="w-48 h-48 md:mr-16 relative">
+        <div className="w-48 h-48 mb-8 md:mb-0 md:mr-16 relative">
           <Image
             src="/images/customer-service.jpg"
             alt="Contact Us"

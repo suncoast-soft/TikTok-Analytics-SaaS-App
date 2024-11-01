@@ -25,7 +25,7 @@ export default function HomeHero() {
           <div className="space-x-4">
             <Button variant="white">Log In</Button>
 
-            <Button variant="glassy">Register For Free</Button>
+            <Button variant="glassy">Start Free Trial</Button>
           </div>
         </div>
       </section>

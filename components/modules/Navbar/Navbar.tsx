@@ -1,8 +1,11 @@
+import React from 'react'
 import Link from 'next/link'
 import LogoBlue from '@/components/icons/LogoBlue'
 import { Button } from '@/components/ui/button'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { MenuIcon } from 'lucide-react'
 
-export default async function Navbar() {
+export default function Navbar() {
   const navLinks = [
     {
       link: '#',
@@ -21,6 +24,7 @@ export default async function Navbar() {
       name: 'Tools'
     }
   ]
+
   return (
     <nav className="sticky top-0 bg-orange-50 z-40 transition-all duration-150 shadow-sm">
       <a href="#skip" className="sr-only focus:not-sr-only">
@@ -38,7 +42,8 @@ export default async function Navbar() {
               <LogoBlue />
             </Link>
 
-            <nav className="ml-8 space-x-4 lg:block">
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex ml-8 space-x-4">
               {navLinks.map((nav, index) => (
                 <Link
                   key={index}
@@ -49,20 +54,58 @@ export default async function Navbar() {
                 </Link>
               ))}
             </nav>
+
+            <div className="hidden lg:flex justify-end items-center space-x-4 ml-auto">
+              <Button variant="link" asChild>
+                <Link href="/login" className="no-underline">
+                  Log In
+                </Link>
+              </Button>
+              <Button variant="default" asChild>
+                <Link href="/register" className="no-underline">
+                  Register For Free
+                </Link>
+              </Button>
+            </div>
           </div>
 
-          <div className="flex justify-end items-center space-x-4">
-            <Button variant="link" asChild>
-              <Link href="/login" className="no-underline">
-                Log In
-              </Link>
-            </Button>
+          <div className="flex items-center space-x-4">
+            {/* Sheet Trigger for Mobile Menu */}
+            <Sheet>
+              <SheetTrigger asChild>
+                <button className="lg:hidden p-2" aria-label="Toggle Menu">
+                  <MenuIcon />
+                </button>
+              </SheetTrigger>
 
-            <Button variant="default" asChild>
-              <Link href="/register" className="no-underline">
-                Register For Free
-              </Link>
-            </Button>
+              <SheetContent side="top" className="p-4 bg-white shadow-lg">
+                <nav className="space-y-2">
+                  {navLinks.map((nav, index) => (
+                    <Link
+                      key={index}
+                      href={nav.link}
+                      className="block px-4 py-2 text-sm font-medium text-slate-700 rounded-md hover:bg-orange-100"
+                    >
+                      {nav.name}
+                    </Link>
+                  ))}
+
+                  <div className="mt-4 flex justify-end">
+                    <Button variant="link" asChild>
+                      <Link href="/login" className="no-underline">
+                        Log In
+                      </Link>
+                    </Button>
+
+                    <Button variant="default" asChild>
+                      <Link href="/register" className="no-underline">
+                        Register For Free
+                      </Link>
+                    </Button>
+                  </div>
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>
