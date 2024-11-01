@@ -8,19 +8,19 @@ import { MenuIcon } from 'lucide-react'
 export default function Navbar() {
   const navLinks = [
     {
-      link: '#features',
+      link: '/#features',
       name: 'Features'
     },
     {
-      link: '#howitworks',
+      link: '/#howitworks',
       name: 'How It Works'
     },
     {
-      link: '#pricing',
+      link: '/#pricing',
       name: 'Pricing'
     },
     {
-      link: '#contactus',
+      link: '/#contactus',
       name: 'Contact Us'
     }
   ]
