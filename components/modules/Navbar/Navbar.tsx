@@ -4,8 +4,18 @@ import LogoBlue from '@/components/icons/LogoBlue'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { MenuIcon } from 'lucide-react'
+import { createClient } from '@/utils/supabase/server'
+import User from '../User/User'
 
-export default function Navbar() {
+export default async function Navbar() {
+  const supabase = createClient()
+
+  const {
+    data: { user }
+  } = await supabase.auth.getUser()
+
+  console.log(user)
+
   const navLinks = [
     {
       link: '/#features',
@@ -42,7 +52,6 @@ export default function Navbar() {
               <LogoBlue />
             </Link>
 
-            {/* Desktop Navigation */}
             <nav className="hidden lg:flex ml-8 space-x-4">
               {navLinks.map((nav, index) => (
                 <Link
@@ -55,22 +64,27 @@ export default function Navbar() {
               ))}
             </nav>
 
-            <div className="hidden lg:flex justify-end items-center space-x-4 ml-auto">
-              <Button variant="link" asChild>
-                <Link href="/login" className="no-underline">
-                  Log In
-                </Link>
-              </Button>
-              <Button variant="default" asChild>
-                <Link href="/register" className="no-underline">
-                  Register For Free
-                </Link>
-              </Button>
-            </div>
+            {user ? (
+              <div className="ml-auto">
+                <User user={user} />
+              </div>
+            ) : (
+              <div className="hidden lg:flex justify-end items-center space-x-4 ml-auto">
+                <Button variant="link" asChild>
+                  <Link href="/signin" className="no-underline">
+                    Log In
+                  </Link>
+                </Button>
+                <Button variant="default" asChild>
+                  <Link href="/signin/signup" className="no-underline">
+                    Register For Free
+                  </Link>
+                </Button>
+              </div>
+            )}
           </div>
 
           <div className="flex items-center space-x-4">
-            {/* Sheet Trigger for Mobile Menu */}
             <Sheet>
               <SheetTrigger asChild>
                 <button className="lg:hidden p-2" aria-label="Toggle Menu">
@@ -90,19 +104,25 @@ export default function Navbar() {
                     </Link>
                   ))}
 
-                  <div className="mt-4 flex justify-end">
-                    <Button variant="link" asChild>
-                      <Link href="/login" className="no-underline">
-                        Log In
-                      </Link>
-                    </Button>
+                  {user ? (
+                    <div className="ml-auto">
+                      <User user={user} />
+                    </div>
+                  ) : (
+                    <div className="mt-4 flex justify-end">
+                      <Button variant="link" asChild>
+                        <Link href="/login" className="no-underline">
+                          Log In
+                        </Link>
+                      </Button>
 
-                    <Button variant="default" asChild>
-                      <Link href="/register" className="no-underline">
-                        Register For Free
-                      </Link>
-                    </Button>
-                  </div>
+                      <Button variant="default" asChild>
+                        <Link href="/register" className="no-underline">
+                          Register For Free
+                        </Link>
+                      </Button>
+                    </div>
+                  )}
                 </nav>
               </SheetContent>
             </Sheet>

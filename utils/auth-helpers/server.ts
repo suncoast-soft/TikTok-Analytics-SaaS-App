@@ -15,8 +15,8 @@ export async function redirectToPath(path: string) {
   return redirect(path)
 }
 
-export async function SignOut(formData: FormData) {
-  const pathName = String(formData.get('pathName')).trim()
+export async function SignOut(formData: { [key: string]: string | number }) {
+  const pathName = String(formData['pathName']).trim()
 
   const supabase = createClient()
   const { error } = await supabase.auth.signOut()
@@ -32,11 +32,13 @@ export async function SignOut(formData: FormData) {
   return '/signin'
 }
 
-export async function signInWithEmail(formData: FormData) {
+export async function signInWithEmail(formData: {
+  [key: string]: string | number
+}) {
   const cookieStore = cookies()
   const callbackURL = getURL('/auth/callback')
 
-  const email = String(formData.get('email')).trim()
+  const email = String(formData['email']).trim()
   let redirectPath: string
 
   if (!isValidEmail(email)) {
@@ -86,11 +88,13 @@ export async function signInWithEmail(formData: FormData) {
   return redirectPath
 }
 
-export async function requestPasswordUpdate(formData: FormData) {
+export async function requestPasswordUpdate(formData: {
+  [key: string]: string | number
+}) {
   const callbackURL = getURL('/auth/reset_password')
 
   // Get form data
-  const email = String(formData.get('email')).trim()
+  const email = String(formData['email']).trim()
   let redirectPath: string
 
   if (!isValidEmail(email)) {
@@ -131,10 +135,12 @@ export async function requestPasswordUpdate(formData: FormData) {
   return redirectPath
 }
 
-export async function signInWithPassword(formData: FormData) {
+export async function signInWithPassword(formData: {
+  [key: string]: string | number
+}) {
   const cookieStore = cookies()
-  const email = String(formData.get('email')).trim()
-  const password = String(formData.get('password')).trim()
+  const email = String(formData['email']).trim()
+  const password = String(formData['password']).trim()
   let redirectPath: string
 
   const supabase = createClient()
@@ -151,7 +157,11 @@ export async function signInWithPassword(formData: FormData) {
     )
   } else if (data.user) {
     cookieStore.set('preferredSignInView', 'password_signin', { path: '/' })
-    redirectPath = getStatusRedirect('/', 'Success!', 'You are now signed in.')
+    redirectPath = getStatusRedirect(
+      '/dashboard',
+      'Success!',
+      'You are now signed in.'
+    )
   } else {
     redirectPath = getErrorRedirect(
       '/signin/password_signin',
@@ -163,11 +173,12 @@ export async function signInWithPassword(formData: FormData) {
   return redirectPath
 }
 
-export async function signUp(formData: FormData) {
+export async function signUp(formData: { [key: string]: string | number }) {
+  const email = String(formData['email']).trim()
+  const password = String(formData['password']).trim()
+
   const callbackURL = getURL('/auth/callback')
 
-  const email = String(formData.get('email')).trim()
-  const password = String(formData.get('password')).trim()
   let redirectPath: string
 
   if (!isValidEmail(email)) {
@@ -194,7 +205,11 @@ export async function signUp(formData: FormData) {
       error.message
     )
   } else if (data.session) {
-    redirectPath = getStatusRedirect('/', 'Success!', 'You are now signed in.')
+    redirectPath = getStatusRedirect(
+      '/dashboard',
+      'Success!',
+      'You are now signed in.'
+    )
   } else if (
     data.user &&
     data.user.identities &&
@@ -207,7 +222,7 @@ export async function signUp(formData: FormData) {
     )
   } else if (data.user) {
     redirectPath = getStatusRedirect(
-      '/',
+      '/dashboard',
       'Success!',
       'Please check your email for a confirmation link. You may now close this tab.'
     )
@@ -222,9 +237,11 @@ export async function signUp(formData: FormData) {
   return redirectPath
 }
 
-export async function updatePassword(formData: FormData) {
-  const password = String(formData.get('password')).trim()
-  const passwordConfirm = String(formData.get('passwordConfirm')).trim()
+export async function updatePassword(formData: {
+  [key: string]: string | number
+}) {
+  const password = String(formData['password']).trim()
+  const passwordConfirm = String(formData['passwordConfirm']).trim()
   let redirectPath: string
 
   // Check that the password and confirmation match
@@ -249,7 +266,7 @@ export async function updatePassword(formData: FormData) {
     )
   } else if (data.user) {
     redirectPath = getStatusRedirect(
-      '/',
+      '/dashboard/account',
       'Success!',
       'Your password has been updated.'
     )
@@ -264,14 +281,16 @@ export async function updatePassword(formData: FormData) {
   return redirectPath
 }
 
-export async function updateEmail(formData: FormData) {
+export async function updateEmail(formData: {
+  [key: string]: string | number
+}) {
   // Get form data
-  const newEmail = String(formData.get('newEmail')).trim()
+  const newEmail = String(formData['email']).trim()
 
   // Check that the email is valid
   if (!isValidEmail(newEmail)) {
     return getErrorRedirect(
-      '/account',
+      '/dashboard/settings/account',
       'Your email could not be updated.',
       'Invalid email address.'
     )
@@ -280,7 +299,11 @@ export async function updateEmail(formData: FormData) {
   const supabase = createClient()
 
   const callbackUrl = getURL(
-    getStatusRedirect('/account', 'Success!', `Your email has been updated.`)
+    getStatusRedirect(
+      '/dashboard/account',
+      'Success!',
+      `Your email has been updated.`
+    )
   )
 
   const { error } = await supabase.auth.updateUser(
@@ -292,22 +315,22 @@ export async function updateEmail(formData: FormData) {
 
   if (error) {
     return getErrorRedirect(
-      '/account',
+      '/dashboard/settings/account',
       'Your email could not be updated.',
       error.message
     )
   } else {
     return getStatusRedirect(
-      '/account',
+      '/dashboard/settings/account',
       'Confirmation emails sent.',
       `You will need to confirm the update by clicking the links sent to both the old and new email addresses.`
     )
   }
 }
 
-export async function updateName(formData: FormData) {
+export async function updateName(formData: { [key: string]: string | number }) {
   // Get form data
-  const fullName = String(formData.get('fullName')).trim()
+  const fullName = String(formData['fullName']).trim()
 
   const supabase = createClient()
   const { error, data } = await supabase.auth.updateUser({
@@ -316,21 +339,69 @@ export async function updateName(formData: FormData) {
 
   if (error) {
     return getErrorRedirect(
-      '/account',
+      '/dashboard/settings/account',
       'Your name could not be updated.',
       error.message
     )
   } else if (data.user) {
     return getStatusRedirect(
-      '/account',
+      '/dashboard/account',
       'Success!',
       'Your name has been updated.'
     )
   } else {
     return getErrorRedirect(
-      '/account',
+      '/dashboard/settings/account',
       'Hmm... Something went wrong.',
       'Your name could not be updated.'
     )
   }
 }
+
+// export async function updateUser(formData: { [key: string]: string | number }) {
+//   // Get form data
+//   const firstName = String(formData['firstName']).trim()
+//   const lastName = String(formData['lastName']).trim()
+//   const gender = String(formData['gender'])
+//   const birthDate = String(formData['birthDate']).trim()
+//   const city = String(formData['city']).trim()
+//   const state = String(formData['state']).trim()
+
+//   const supabase = createClient()
+//   const {
+//     error: userError,
+//     data: { user }
+//   } = await supabase.auth.getUser()
+
+//   if (userError || !user) {
+//     return getErrorRedirect(
+//       '/dashboard/settings/profiles',
+//       'Your profile could not be submitted. Please try again.',
+//       userError?.message || 'Could not get user session.'
+//     )
+//   }
+
+//   const { error: insertError } = await supabase.from('profiles').insert({
+//     user_id: user?.id,
+//     first_name: firstName ?? undefined,
+//     last_name: lastName ?? undefined,
+//     gender: gender ?? undefined,
+//     birth_date: birthDate ?? undefined,
+//     city: city ?? undefined,
+//     state: state ?? undefined
+//   })
+
+//   if (insertError) {
+//     return getErrorRedirect(
+//       '/dashboard/settings/profiles',
+//       'Your profile could not be submitted. Please try again.',
+//       insertError.message
+//     )
+//   }
+
+//   return getStatusRedirect(
+//     '/dashboard/settings/profiles',
+//     'Success!',
+//     'Your profile has been submitted.'
+//   )
+// }
