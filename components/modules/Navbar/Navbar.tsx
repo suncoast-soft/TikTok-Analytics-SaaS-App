@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { MenuIcon } from 'lucide-react'
 import { createClient } from '@/utils/supabase/server'
-import User from '../User/User'
+import User from '../User'
 
 export default async function Navbar() {
   const supabase = createClient()

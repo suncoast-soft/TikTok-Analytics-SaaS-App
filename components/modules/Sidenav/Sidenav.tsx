@@ -31,7 +31,11 @@ function DesktopNav({ navs }: NavProps) {
   return (
     <aside className={s.root}>
       <nav className="flex flex-col items-start gap-2 px-2 sm:py-5">
-        <Link href="/" className={cn(s.logo, 'no-underline')} aria-label="Logo">
+        <Link
+          href="/"
+          className={cn(s.logo, 'px-4 no-underline')}
+          aria-label="Logo"
+        >
           <LogoBlue />
         </Link>
 

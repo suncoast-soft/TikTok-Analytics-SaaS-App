@@ -1,10 +1,7 @@
 import { Metadata } from 'next'
-import Footer from '@/components/modules/Footer'
-import Navbar from '@/components/modules/Navbar'
 import { Toaster } from '@/components/ui/toaster'
 import { PropsWithChildren, Suspense } from 'react'
 import { getURL } from '@/utils/helpers'
-import { createClient } from '@/utils/supabase/server'
 import 'styles/main.css'
 
 const title = 'Flicker | TikTok Shop Analytics Tool'
@@ -21,12 +18,6 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: PropsWithChildren) {
-  const supabase = createClient()
-
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
-
   return (
     <html lang="en">
       <body>

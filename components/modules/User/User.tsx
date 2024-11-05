@@ -47,13 +47,8 @@ export default function User({ user }: NavlinksProps) {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <Button
-          size="icon"
-          variant="default"
-          color="primary"
-          className="overflow-hidden rounded-full"
-        >
-          <CircleUserIcon />
+        <Button variant="white" className="overflow-hidden rounded-full">
+          <CircleUserIcon className="text-black" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

@@ -131,3 +131,10 @@ export const getErrorRedirect = (
     disableButton,
     arbitraryParams
   )
+
+export const slugToTitle = (slug: string): string => {
+  return slug
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
