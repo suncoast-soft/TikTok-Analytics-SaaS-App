@@ -20,18 +20,6 @@ if (!supabaseServiceRoleKey) {
   throw new Error('MISSING SUPABASE_SERVICE_ROLE_KEY!')
 }
 
-const yearlyPriceId = process.env.STRIPE_PRICE_ID_YEARLY as string
-const oneyearPriceId = process.env.STRIPE_PRICE_ID_ONE_YEAR as string
-const twoyearPriceId = process.env.STRIPE_PRICE_ID_TWO_YEAR as string
-
-const typeFromPriceId: {
-  [key: string]: 'one_year' | 'two_year' | 'annual_recurring'
-} = {
-  [yearlyPriceId]: 'annual_recurring',
-  [oneyearPriceId]: 'one_year',
-  [twoyearPriceId]: 'two_year'
-}
-
 export async function POST(request: Request) {
   console.log('Request from: ', request.url)
   console.log('Request: ', request)
