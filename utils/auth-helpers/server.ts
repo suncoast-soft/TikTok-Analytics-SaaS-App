@@ -158,7 +158,7 @@ export async function signInWithPassword(formData: {
   } else if (data.user) {
     cookieStore.set('preferredSignInView', 'password_signin', { path: '/' })
     redirectPath = getStatusRedirect(
-      '/dashboard',
+      '/account',
       'Success!',
       'You are now signed in.'
     )
@@ -206,7 +206,7 @@ export async function signUp(formData: { [key: string]: string | number }) {
     )
   } else if (data.session) {
     redirectPath = getStatusRedirect(
-      '/dashboard',
+      '/account',
       'Success!',
       'You are now signed in.'
     )
@@ -222,7 +222,7 @@ export async function signUp(formData: { [key: string]: string | number }) {
     )
   } else if (data.user) {
     redirectPath = getStatusRedirect(
-      '/dashboard',
+      '/account',
       'Success!',
       'Please check your email for a confirmation link. You may now close this tab.'
     )
@@ -266,7 +266,7 @@ export async function updatePassword(formData: {
     )
   } else if (data.user) {
     redirectPath = getStatusRedirect(
-      '/dashboard/account',
+      '/account',
       'Success!',
       'Your password has been updated.'
     )
@@ -290,7 +290,7 @@ export async function updateEmail(formData: {
   // Check that the email is valid
   if (!isValidEmail(newEmail)) {
     return getErrorRedirect(
-      '/dashboard/settings/account',
+      '/account/settings',
       'Your email could not be updated.',
       'Invalid email address.'
     )
@@ -299,11 +299,7 @@ export async function updateEmail(formData: {
   const supabase = createClient()
 
   const callbackUrl = getURL(
-    getStatusRedirect(
-      '/dashboard/account',
-      'Success!',
-      `Your email has been updated.`
-    )
+    getStatusRedirect('/account', 'Success!', `Your email has been updated.`)
   )
 
   const { error } = await supabase.auth.updateUser(
@@ -315,13 +311,13 @@ export async function updateEmail(formData: {
 
   if (error) {
     return getErrorRedirect(
-      '/dashboard/settings/account',
+      '/account/settings',
       'Your email could not be updated.',
       error.message
     )
   } else {
     return getStatusRedirect(
-      '/dashboard/settings/account',
+      '/account/settings',
       'Confirmation emails sent.',
       `You will need to confirm the update by clicking the links sent to both the old and new email addresses.`
     )
@@ -339,69 +335,78 @@ export async function updateName(formData: { [key: string]: string | number }) {
 
   if (error) {
     return getErrorRedirect(
-      '/dashboard/settings/account',
+      '/account/settings',
       'Your name could not be updated.',
       error.message
     )
   } else if (data.user) {
     return getStatusRedirect(
-      '/dashboard/account',
+      '/account',
       'Success!',
       'Your name has been updated.'
     )
   } else {
     return getErrorRedirect(
-      '/dashboard/settings/account',
+      '/account/settings',
       'Hmm... Something went wrong.',
       'Your name could not be updated.'
     )
   }
 }
 
-// export async function updateUser(formData: { [key: string]: string | number }) {
-//   // Get form data
-//   const firstName = String(formData['firstName']).trim()
-//   const lastName = String(formData['lastName']).trim()
-//   const gender = String(formData['gender'])
-//   const birthDate = String(formData['birthDate']).trim()
-//   const city = String(formData['city']).trim()
-//   const state = String(formData['state']).trim()
+export async function updateUser(formData: { [key: string]: string | number }) {
+  // Get form data
+  const first_name = String(formData['first_name']).trim()
+  const last_name = String(formData['last_name']).trim()
+  const street1 = String(formData['street1']).trim()
+  const street2 = String(formData['street2']).trim()
+  const city = String(formData['city']).trim()
+  const state = String(formData['state']).trim()
+  const zip = String(formData['zip']).trim()
+  const phone = String(formData['phone']).trim()
 
-//   const supabase = createClient()
-//   const {
-//     error: userError,
-//     data: { user }
-//   } = await supabase.auth.getUser()
+  const supabase = createClient()
+  const {
+    error: userError,
+    data: { user }
+  } = await supabase.auth.getUser()
 
-//   if (userError || !user) {
-//     return getErrorRedirect(
-//       '/dashboard/settings/profiles',
-//       'Your profile could not be submitted. Please try again.',
-//       userError?.message || 'Could not get user session.'
-//     )
-//   }
+  if (userError || !user) {
+    return getErrorRedirect(
+      '/account/onboarding',
+      'Your profile could not be submitted. Please try again.',
+      userError?.message || 'Could not get user session.'
+    )
+  }
 
-//   const { error: insertError } = await supabase.from('profiles').insert({
-//     user_id: user?.id,
-//     first_name: firstName ?? undefined,
-//     last_name: lastName ?? undefined,
-//     gender: gender ?? undefined,
-//     birth_date: birthDate ?? undefined,
-//     city: city ?? undefined,
-//     state: state ?? undefined
-//   })
+  const { error: updateError } = await supabase
+    .from('users')
+    .update({
+      user_id: user?.id,
+      first_name,
+      last_name,
+      street1,
+      street2,
+      city,
+      state,
+      zip,
+      phone
+    })
+    .eq('id', user.id)
+    .select('*')
+    .single()
 
-//   if (insertError) {
-//     return getErrorRedirect(
-//       '/dashboard/settings/profiles',
-//       'Your profile could not be submitted. Please try again.',
-//       insertError.message
-//     )
-//   }
+  if (updateError) {
+    return getErrorRedirect(
+      '/dashboard/settings/profiles',
+      'Your profile could not be submitted. Please try again.',
+      updateError.message
+    )
+  }
 
-//   return getStatusRedirect(
-//     '/dashboard/settings/profiles',
-//     'Success!',
-//     'Your profile has been submitted.'
-//   )
-// }
+  return getStatusRedirect(
+    '/dashboard/settings/profiles',
+    'Success!',
+    'Your profile has been submitted.'
+  )
+}

@@ -8,32 +8,35 @@ export const getUser = cache(async (supabase: SupabaseClient) => {
   return user
 })
 
-export const getSubscription = cache(async (supabase: SupabaseClient) => {
-  const { data: subscription, error } = await supabase
-    .from('subscriptions')
-    .select('*, prices(*, products(*))')
-    .in('status', ['trialing', 'active'])
-    .maybeSingle()
+export const getUserData = cache(async (supabase: SupabaseClient) => {
+  const user = await getUser(supabase)
 
-  return subscription
-})
+  if (!user) {
+    return null
+  }
 
-export const getProducts = cache(async (supabase: SupabaseClient) => {
-  const { data: products, error } = await supabase
-    .from('products')
-    .select('*, prices(*)')
-    .eq('active', true)
-    .eq('prices.active', true)
-    .order('metadata->index')
-    .order('unit_amount', { referencedTable: 'prices' })
-
-  return products
-})
-
-export const getUserDetails = cache(async (supabase: SupabaseClient) => {
-  const { data: userDetails } = await supabase
+  const { data: userData } = await supabase
     .from('users')
     .select('*')
+    .eq('id', user.id)
     .single()
-  return userDetails
+
+  return userData
+})
+
+export const getSubscription = cache(async (supabase: SupabaseClient) => {
+  const user = await getUser(supabase)
+
+  if (!user) {
+    return null
+  }
+
+  const { data: subscription } = await supabase
+    .from('subscriptions')
+    .select('*, users(*)')
+    .in('status', ['trialing', 'active'])
+    .eq('user_id', user.id)
+    .single()
+
+  return subscription
 })
