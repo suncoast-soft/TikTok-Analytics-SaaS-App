@@ -29,7 +29,7 @@ export async function SignOut(formData: { [key: string]: string | number }) {
     )
   }
 
-  return '/signin'
+  return '/'
 }
 
 export async function signInWithEmail(formData: {

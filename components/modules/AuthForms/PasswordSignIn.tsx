@@ -22,6 +22,7 @@ import { Input } from '@/components/ui/input'
 interface PasswordSignInProps {
   allowEmail: boolean
   redirectMethod: string
+  type: string
 }
 
 const FormSchema = z.object({
@@ -31,7 +32,8 @@ const FormSchema = z.object({
 
 export default function PasswordSignIn({
   allowEmail,
-  redirectMethod
+  redirectMethod,
+  type
 }: PasswordSignInProps) {
   const router = redirectMethod === 'client' ? useRouter() : null
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -48,6 +50,16 @@ export default function PasswordSignIn({
 
   return (
     <>
+      <p className="mb-4 text-sm text-right">
+        Don't have an account?
+        <Link
+          href={`/${type}/signup`}
+          className="ml-1.5 font-medium text-primary"
+        >
+          Sign up
+        </Link>
+      </p>
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -95,7 +107,7 @@ export default function PasswordSignIn({
       <div className="mt-4">
         <p>
           <Link
-            href="/signin/forgot_password"
+            href={`/${type}/forgot_password`}
             className="font-medium text-sm text-primary"
           >
             Forgot your password?
@@ -104,21 +116,13 @@ export default function PasswordSignIn({
         {allowEmail && (
           <p>
             <Link
-              href="/signin/email_signin"
+              href={`/${type}/email_signin`}
               className="font-medium text-sm text-primary"
             >
               Sign in via magic link
             </Link>
           </p>
         )}
-        <p>
-          <Link
-            href="/signin/signup"
-            className="font-medium text-sm text-primary"
-          >
-            Don't have an account? Sign up
-          </Link>
-        </p>
       </div>
     </>
   )

@@ -22,6 +22,7 @@ import { Input } from '@/components/ui/input'
 interface ForgotPasswordProps {
   allowEmail: boolean
   redirectMethod: string
+  type: string
 }
 
 const FormSchema = z.object({
@@ -30,7 +31,8 @@ const FormSchema = z.object({
 
 export default function ForgotPassword({
   allowEmail,
-  redirectMethod
+  redirectMethod,
+  type
 }: ForgotPasswordProps) {
   const router = redirectMethod === 'client' ? useRouter() : null
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -47,6 +49,16 @@ export default function ForgotPassword({
 
   return (
     <>
+      <p className="mb-4 text-sm text-right">
+        Don't have an account?
+        <Link
+          href={`/${type}/signup`}
+          className="ml-1.5 font-medium text-primary"
+        >
+          Sign up
+        </Link>
+      </p>
+
       <Form {...form}>
         <form
           noValidate={true}
@@ -82,7 +94,7 @@ export default function ForgotPassword({
       <div className="mt-4">
         <p>
           <Link
-            href="/signin/password_signin"
+            href={`/${type}/password_signin`}
             className="font-medium text-sm text-primary"
           >
             Sign in with email and password
@@ -91,21 +103,13 @@ export default function ForgotPassword({
         {allowEmail && (
           <p>
             <Link
-              href="/signin/email_signin"
+              href={`/${type}/email_signin`}
               className="font-medium text-sm text-primary"
             >
               Sign in via magic link
             </Link>
           </p>
         )}
-        <p>
-          <Link
-            href="/signin/signup"
-            className="font-medium text-sm text-primary"
-          >
-            Don't have an account? Sign up
-          </Link>
-        </p>
       </div>
     </>
   )

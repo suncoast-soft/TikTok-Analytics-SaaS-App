@@ -23,7 +23,13 @@ import UpdatePassword from '@/components/modules/AuthForms/UpdatePassword'
 import SignUp from '@/components/modules/AuthForms/Signup'
 import LogoBlack from '@/components/icons/LogoBlack'
 
-export default async function SignIn({ params }: { params: { id: string } }) {
+export default async function AuthForms({
+  params,
+  type
+}: {
+  params: { id: string }
+  type: string
+}) {
   const { allowOauth, allowEmail, allowPassword } = getAuthTypes()
   const viewTypes = getViewTypes()
   const redirectMethod = getRedirectMethod()
@@ -38,7 +44,7 @@ export default async function SignIn({ params }: { params: { id: string } }) {
     const preferredSignInView =
       cookies().get('preferredSignInView')?.value || null
     viewProp = getDefaultSignInView(preferredSignInView)
-    return redirect(`/signin/${viewProp}`)
+    return redirect(`/${type}/${viewProp}`)
   }
 
   // Check if the user is already logged in and redirect to the account page if so
@@ -51,53 +57,44 @@ export default async function SignIn({ params }: { params: { id: string } }) {
   if (user && viewProp !== 'update_password') {
     return redirect('/')
   } else if (!user && viewProp === 'update_password') {
-    return redirect('/signin')
+    return redirect(`/${type}`)
   }
 
   return (
-    <div className="flex justify-center height-screen-helper">
+    <div className="flex justify-center">
       <div className="flex flex-col justify-between max-w-lg p-3 m-auto w-96">
-        <div className="flex justify-center my-6">
-          <LogoBlack />
-        </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>
-              {viewProp === 'forgot_password'
-                ? 'Reset Password'
-                : viewProp === 'update_password'
-                  ? 'Update Password'
-                  : viewProp === 'signup'
-                    ? 'Sign Up'
-                    : 'Sign In'}
-            </CardTitle>
-          </CardHeader>
-
-          <CardContent>
+        <Card className="z-10 text-left">
+          <CardContent className="pt-4">
             {viewProp === 'password_signin' && (
               <PasswordSignIn
                 allowEmail={allowEmail}
                 redirectMethod={redirectMethod}
+                type={type}
               />
             )}
             {viewProp === 'email_signin' && (
               <EmailSignIn
                 allowPassword={allowPassword}
                 redirectMethod={redirectMethod}
+                type={type}
               />
             )}
             {viewProp === 'forgot_password' && (
               <ForgotPassword
                 allowEmail={allowEmail}
                 redirectMethod={redirectMethod}
+                type={type}
               />
             )}
             {viewProp === 'update_password' && (
               <UpdatePassword redirectMethod={redirectMethod} />
             )}
             {viewProp === 'signup' && (
-              <SignUp allowEmail={allowEmail} redirectMethod={redirectMethod} />
+              <SignUp
+                allowEmail={allowEmail}
+                redirectMethod={redirectMethod}
+                type={type}
+              />
             )}
           </CardContent>
 
@@ -106,7 +103,7 @@ export default async function SignIn({ params }: { params: { id: string } }) {
             allowOauth && (
               <CardFooter>
                 <div className="w-full">
-                  <Separator text="Third-party sign-in" />
+                  <Separator text="or Sign in with" />
                   <OauthSignIn />
                 </div>
               </CardFooter>

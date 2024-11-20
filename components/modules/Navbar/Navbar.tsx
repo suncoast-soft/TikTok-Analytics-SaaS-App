@@ -71,13 +71,13 @@ export default async function Navbar() {
             ) : (
               <div className="hidden lg:flex justify-end items-center space-x-4 ml-auto">
                 <Button variant="link" asChild>
-                  <Link href="/signin" className="no-underline">
-                    Log In
+                  <Link href="/seller" className="no-underline">
+                    For Sellers
                   </Link>
                 </Button>
                 <Button variant="default" asChild>
-                  <Link href="/signin/signup" className="no-underline">
-                    Register For Free
+                  <Link href="/creator" className="no-underline">
+                    For Creators
                   </Link>
                 </Button>
               </div>

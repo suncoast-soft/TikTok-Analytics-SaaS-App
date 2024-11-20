@@ -23,6 +23,7 @@ import { Input } from '@/components/ui/input'
 interface SignUpProps {
   allowEmail: boolean
   redirectMethod: string
+  type: string
 }
 
 const FormSchema = z.object({
@@ -32,7 +33,11 @@ const FormSchema = z.object({
   })
 })
 
-export default function SignUp({ allowEmail, redirectMethod }: SignUpProps) {
+export default function SignUp({
+  allowEmail,
+  redirectMethod,
+  type
+}: SignUpProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema)
   })
@@ -95,14 +100,14 @@ export default function SignUp({ allowEmail, redirectMethod }: SignUpProps) {
       <div className="mt-4">
         <h5 className="text-md">Already have an account?</h5>
         <Link
-          href="/signin/password_signin"
+          href={`/${type}/password_signin`}
           className="font-medium text-sm text-primary"
         >
           Sign in with email and password
         </Link>
         {allowEmail && (
           <Link
-            href="/signin/email_signin"
+            href={`/${type}/email_signin`}
             className="font-medium text-sm text-primary"
           >
             Sign in via magic link

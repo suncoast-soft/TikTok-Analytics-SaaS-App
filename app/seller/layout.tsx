@@ -18,7 +18,7 @@ export default async function DashboardLayout({
   } = await supabase.auth.getUser()
 
   if (!user) {
-    return redirect('/signin/signin')
+    return redirect('/seller')
   }
 
   const [userData, subscription] = await Promise.all([
@@ -28,7 +28,7 @@ export default async function DashboardLayout({
 
   if (!userData) {
     return getErrorRedirect(
-      '/signin/signin',
+      '/seller',
       'Hmm... Something went wrong.',
       'Your account information appears to be incorrect. Please try again or contact customer support.'
     )
