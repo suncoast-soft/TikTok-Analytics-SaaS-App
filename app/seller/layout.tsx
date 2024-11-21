@@ -25,7 +25,7 @@ export default async function SellerLayout({
     {
       icon: <PackageSearch />,
       name: 'Dashboard',
-      link: '/seller'
+      link: '/seller/dashboard'
     },
     {
       icon: <ListChecks />,

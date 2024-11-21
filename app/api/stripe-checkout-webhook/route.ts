@@ -21,8 +21,6 @@ if (!supabaseServiceRoleKey) {
 }
 
 export async function POST(request: Request) {
-  console.log('Request from: ', request.url)
-  console.log('Request: ', request)
   const headersObj = headers()
   const sig = headersObj.get('stripe-signature')
 
@@ -92,33 +90,38 @@ export async function POST(request: Request) {
     case 'checkout.session.completed':
       const checkoutSessionCompleted = event.data
         .object as Stripe.Checkout.Session
-      const userId = checkoutSessionCompleted.client_reference_id
+      const userId = checkoutSessionCompleted.client_reference_id?.toString()
+      const subscriptionId = checkoutSessionCompleted.subscription?.toString()
+      const customerId = checkoutSessionCompleted.customer?.toString()
 
-      if (!userId) {
+      if (!userId || !subscriptionId || !customerId) {
         return NextResponse.json(
           {
-            message: `Missing client_reference_id`
+            message: `Missing client_reference_id or subscriptionId or customerId`
           },
           { status: 400 }
         )
       }
 
-      const lineItems = await stripe.checkout.sessions.listLineItems(
-        checkoutSessionCompleted.id
-      )
-      const priceId = lineItems.data[0].price!.id
+      // Insert into Subscription
+      const { error: subscriptionError } = await supabase
+        .from('subscriptions')
+        .upsert({
+          user_id: userId,
+          subscription_id: subscriptionId
+        })
 
-      // Insert into Pricing
-      const { data, error } = await supabase.from('subscriptions').insert({
-        user_id: userId,
-        price_id: priceId
-      })
+      const { error: userError } = await supabase
+        .from('users')
+        .update({
+          stripe_customer_id: customerId
+        })
+        .eq('id', userId)
 
-      if (error) {
-        console.log(error)
+      if (subscriptionError || userError) {
         return NextResponse.json(
           {
-            message: `Error creating credits: ${error}\n ${data}`
+            message: `Error creating subscriptions: ${subscriptionError} or Error updating user: ${userError}`
           },
           {
             status: 400

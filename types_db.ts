@@ -53,27 +53,24 @@ export type Database = {
       subscriptions: {
         Row: {
           created_at: string
-          id: number
-          price_id: string | null
-          user_id: string | null
+          subscription_id: string | null
+          user_id: string
         }
         Insert: {
           created_at?: string
-          id?: number
-          price_id?: string | null
-          user_id?: string | null
+          subscription_id?: string | null
+          user_id: string
         }
         Update: {
           created_at?: string
-          id?: number
-          price_id?: string | null
-          user_id?: string | null
+          subscription_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
             foreignKeyName: "subscriptions_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
           },

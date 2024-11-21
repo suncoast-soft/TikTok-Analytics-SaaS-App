@@ -29,7 +29,6 @@ export const getSubscription = cache(async (supabase: SupabaseClient) => {
   const { data: subscription } = await supabase
     .from('subscriptions')
     .select('*, users(*)')
-    .in('status', ['trialing', 'active'])
     .eq('user_id', user.id)
     .single()
 
