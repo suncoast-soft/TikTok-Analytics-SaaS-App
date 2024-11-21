@@ -47,12 +47,15 @@ export default function User({ user }: NavlinksProps) {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <Button variant="white" className="overflow-hidden rounded-full">
-          <CircleUserIcon className="text-black" />
+        <Button
+          variant="outline"
+          className="overflow-hidden rounded-full p-0.5 w-7 h-7"
+        >
+          <CircleUserIcon className="text-slate-700" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
+        <DropdownMenuLabel>{user.auth.email}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <Link href="/dashboard/settings" className={'no-underline'}>

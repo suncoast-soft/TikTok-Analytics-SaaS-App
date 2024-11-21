@@ -17,7 +17,7 @@ export default async function HomePage() {
 
       <Testimonials />
 
-      <Pricing />
+      {/* <Pricing /> */}
 
       <FAQs />
 

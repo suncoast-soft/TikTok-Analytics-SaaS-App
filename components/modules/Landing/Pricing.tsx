@@ -30,7 +30,7 @@ export default function Pricing() {
         </p>
 
         <div className="pt-8 my-8 rounded bg-white">
-          <StripePricingTable />
+          {/* <StripePricingTable /> */}
         </div>
       </div>
     </section>

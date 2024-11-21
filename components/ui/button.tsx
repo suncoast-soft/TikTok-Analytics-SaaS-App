@@ -18,7 +18,11 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline dark:text-slate-50',
         white:
           'px-8 py-3 bg-white text-primary font-semibold rounded-md shadow hover:bg-gray-100 transition transform hover:scale-105',
-        glassy: 'relative inline-block font-medium group'
+        glassy: 'relative inline-block font-medium group',
+        secondary:
+          'bg-zinc-100 text-zinc-900 hover:bg-zinc-100/80 dark:bg-zinc-800 dark:text-zinc-50 dark:hover:bg-zinc-800/80',
+        ghost:
+          'hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-50'
       },
       size: {
         default: 'h-10 px-4 py-2',

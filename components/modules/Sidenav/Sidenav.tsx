@@ -2,18 +2,9 @@
 
 import Link from 'next/link'
 import { ReactElement } from 'react'
-import {
-  Sheet,
-  SheetContent,
-  SheetTitle,
-  SheetTrigger
-} from '@/components/ui/sheet'
-import { Button } from '@/components/ui/button'
-import LogoBlue from '@/components/icons/LogoBlue'
 import { cn } from '@/utils/cn'
-import s from './Sidenav.module.css'
-import { PanelLeft } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar'
 
 type NavItem = {
   icon: ReactElement
@@ -25,97 +16,27 @@ interface NavProps {
   navs: NavItem[]
 }
 
-function DesktopNav({ navs }: NavProps) {
+export default function Sidenav({ navs }: NavProps) {
   const currentPath = usePathname()
 
   return (
-    <aside className={s.root}>
-      <nav className="flex flex-col items-start gap-2 px-2 sm:py-5">
-        <Link
-          href="/"
-          className={cn(s.logo, 'px-4 no-underline')}
-          aria-label="Logo"
-        >
-          <LogoBlue />
-        </Link>
-
-        {navs.slice(0, -1).map((nav, index) => (
-          <Link
-            key={index}
-            href={nav.link}
-            className={cn(
-              s.link,
-              'no-underline',
-              currentPath === nav.link && s.active
-            )}
-          >
-            <span className="w-5 h-5">{nav.icon}</span>
-            <span>{nav.name}</span>
-          </Link>
-        ))}
-      </nav>
-
-      <nav className="mt-auto flex flex-col items-start gap-4 px-2 sm:py-5">
-        {navs.slice(-1).map((nav, index) => (
-          <Link
-            key={index}
-            href={nav.link}
-            className={cn(
-              s.link,
-              'no-underline',
-              currentPath === nav.link && s.active
-            )}
-          >
-            <span className="w-5 h-5">{nav.icon}</span>
-            <span>{nav.name}</span>
-          </Link>
-        ))}
-      </nav>
-    </aside>
-  )
-}
-
-function MobileNav({ navs }: NavProps) {
-  const currentPath = usePathname()
-
-  return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button size="icon" className="sm:hidden">
-          <PanelLeft className="h-5 w-5" />
-          <span className="sr-only">Toggle Menu</span>
-        </Button>
-      </SheetTrigger>
-      <SheetContent side="left" className="sm:max-w-xs">
-        <nav className="grid gap-6 text-lg font-medium">
-          <SheetTitle className="sr-only">Menu</SheetTitle>
-
-          <Link
-            href="/"
-            className={cn(s.logo, 'no-underline')}
-            aria-label="Logo"
-          >
-            <LogoBlue />
-          </Link>
-
-          {navs.map((nav, index) => (
+    <>
+      {navs.map((nav) => (
+        <SidebarMenuItem key={nav.name}>
+          <SidebarMenuButton size="lg" asChild>
             <Link
-              key={index}
               href={nav.link}
               className={cn(
-                s.link,
-                'no-underline',
-                currentPath === nav.link && s.active
+                'flex items-start gap-4 px-2.5 py-2 w-full bg-transparent no-underline hover:bg-orange-100 sm:text-base',
+                currentPath === nav.link && 'bg-orange-100 font-medium'
               )}
             >
               <span className="w-5 h-5">{nav.icon}</span>
               <span>{nav.name}</span>
             </Link>
-          ))}
-        </nav>
-      </SheetContent>
-    </Sheet>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      ))}
+    </>
   )
 }
-
-export { DesktopNav, MobileNav }
