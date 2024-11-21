@@ -1,6 +1,7 @@
 import { saveSeller } from '../supabase/mutations'
 import { createClient } from '../supabase/server'
 import { getSeller } from '../supabase/queries'
+import { requestTikTokShopAPI } from './utils'
 
 const {
   TIKTOK_AUTH_BASE,
@@ -21,7 +22,6 @@ export const generateAccessToken = async (auth_code: string) => {
     auth_code,
     grant_type: 'authorized_code'
   }
-  console.log(params)
 
   const urlSearchParams = new URLSearchParams(params)
 
@@ -35,7 +35,10 @@ export const generateAccessToken = async (auth_code: string) => {
   )
 
   const data = await response.json()
-  console.log(data)
+  if (!data.data) {
+    return null
+  }
+
   const {
     access_token,
     access_token_expire_in,
@@ -55,7 +58,24 @@ export const generateAccessToken = async (auth_code: string) => {
     refresh_token_expire_at,
     seller_name
   })
-  return sellerAuth
+
+  if (!sellerAuth) {
+    return null
+  }
+
+  const shopCipherData = await requestTikTokShopAPI(
+    '/authorization/202309/shops'
+  )
+  const shop = shopCipherData.data.shops.find(
+    (s: any) => s.name === seller_name
+  )
+  const shop_cipher = shop ? shop.cipher : null
+
+  const updatedSellerAuth = await saveSeller(supabase, {
+    shop_cipher
+  })
+
+  return updatedSellerAuth
 }
 
 export const refreshAccessToken = async (refresh_token: string) => {

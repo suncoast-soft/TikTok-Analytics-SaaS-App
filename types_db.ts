@@ -14,40 +14,37 @@ export type Database = {
           access_token: string | null
           access_token_expire_at: number | null
           created_at: string
-          id: number
           refresh_token: string | null
           refresh_token_expire_at: number | null
           seller_name: string | null
           shop_cipher: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           access_token?: string | null
           access_token_expire_at?: number | null
           created_at?: string
-          id?: number
           refresh_token?: string | null
           refresh_token_expire_at?: number | null
           seller_name?: string | null
           shop_cipher?: string | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           access_token?: string | null
           access_token_expire_at?: number | null
           created_at?: string
-          id?: number
           refresh_token?: string | null
           refresh_token_expire_at?: number | null
           seller_name?: string | null
           shop_cipher?: string | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
             foreignKeyName: "sellers_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
