@@ -5,23 +5,18 @@ export const getUser = cache(async (supabase: SupabaseClient) => {
   const {
     data: { user }
   } = await supabase.auth.getUser()
-  return user
-})
-
-export const getUserData = cache(async (supabase: SupabaseClient) => {
-  const user = await getUser(supabase)
 
   if (!user) {
     return null
   }
 
-  const { data: userData } = await supabase
+  const { data } = await supabase
     .from('users')
     .select('*')
     .eq('id', user.id)
     .single()
 
-  return userData
+  return { ...data, auth: user }
 })
 
 export const getSubscription = cache(async (supabase: SupabaseClient) => {
@@ -39,4 +34,25 @@ export const getSubscription = cache(async (supabase: SupabaseClient) => {
     .single()
 
   return subscription
+})
+
+export const getSeller = cache(async (supabase: SupabaseClient) => {
+  const user = await getUser(supabase)
+
+  if (!user) {
+    return null
+  }
+
+  const { data: seller, error } = await supabase
+    .from('sellers')
+    .select('*')
+    .eq('user_id', user.id)
+    .single()
+
+  if (error) {
+    console.error('Failed to fetch seller auth:', error)
+    return null
+  }
+
+  return seller
 })

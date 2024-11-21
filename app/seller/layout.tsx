@@ -4,38 +4,18 @@ import DashboardBreadcrumb from '@/components/modules/DashboardBreadcrumb'
 import { DesktopNav, MobileNav } from '@/components/modules/Sidenav'
 import { ListChecks, PackageSearch } from 'lucide-react'
 import User from '@/components/modules/User'
-import { getSubscription, getUserData } from '@/utils/supabase/queries'
-import { getErrorRedirect } from '@/utils/helpers'
+import { getUser } from '@/utils/supabase/queries'
 
-export default async function DashboardLayout({
+export default async function SellerLayout({
   children
 }: {
   children: React.ReactNode
 }) {
   const supabase = createClient()
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
+  const user = await getUser(supabase)
 
-  if (!user) {
-    return redirect('/seller')
-  }
-
-  const [userData, subscription] = await Promise.all([
-    getUserData(supabase),
-    getSubscription(supabase)
-  ])
-
-  if (!userData) {
-    return getErrorRedirect(
-      '/seller',
-      'Hmm... Something went wrong.',
-      'Your account information appears to be incorrect. Please try again or contact customer support.'
-    )
-  }
-
-  if (!userData.type || !subscription) {
-    return redirect('/account')
+  if (!user || user.type !== 'seller') {
+    return redirect('/')
   }
 
   /**
@@ -45,12 +25,12 @@ export default async function DashboardLayout({
     {
       icon: <PackageSearch />,
       name: 'Dashboard',
-      link: userData.type === 'seller' ? '/seller' : '/creator'
+      link: '/seller'
     },
     {
       icon: <ListChecks />,
       name: 'search',
-      link: userData.type === 'seller' ? '/seller' : '/creator'
+      link: '/seller'
     }
   ]
 

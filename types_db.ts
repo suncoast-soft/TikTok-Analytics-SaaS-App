@@ -84,43 +84,19 @@ export type Database = {
       }
       users: {
         Row: {
-          city: string | null
-          first_name: string | null
           id: string
-          last_name: string | null
-          phone: string | null
-          state: string | null
-          street1: string | null
-          street2: string | null
           stripe_customer_id: string | null
-          type: Database["public"]["Enums"]["user_type"] | null
-          zip: string | null
+          type: string | null
         }
         Insert: {
-          city?: string | null
-          first_name?: string | null
           id: string
-          last_name?: string | null
-          phone?: string | null
-          state?: string | null
-          street1?: string | null
-          street2?: string | null
           stripe_customer_id?: string | null
-          type?: Database["public"]["Enums"]["user_type"] | null
-          zip?: string | null
+          type?: string | null
         }
         Update: {
-          city?: string | null
-          first_name?: string | null
           id?: string
-          last_name?: string | null
-          phone?: string | null
-          state?: string | null
-          street1?: string | null
-          street2?: string | null
           stripe_customer_id?: string | null
-          type?: Database["public"]["Enums"]["user_type"] | null
-          zip?: string | null
+          type?: string | null
         }
         Relationships: [
           {

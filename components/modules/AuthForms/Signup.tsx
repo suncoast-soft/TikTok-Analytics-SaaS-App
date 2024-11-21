@@ -47,7 +47,7 @@ export default function SignUp({
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsSubmitting(true)
-    await handleRequest(data, signUp, router)
+    await handleRequest({ ...data, type }, signUp, router)
     setIsSubmitting(false)
   }
 

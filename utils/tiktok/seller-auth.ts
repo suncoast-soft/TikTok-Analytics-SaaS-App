@@ -1,6 +1,6 @@
-import { Tables } from '@/types_db'
-import { getSellerAuth, saveSellerAuth } from '../supabase/mutations'
+import { saveSeller } from '../supabase/mutations'
 import { createClient } from '../supabase/server'
+import { getSeller } from '../supabase/queries'
 
 const {
   TIKTOK_AUTH_BASE,
@@ -19,8 +19,10 @@ export const generateAccessToken = async (auth_code: string) => {
     app_key: TIKTOK_APP_KEY!,
     app_secret: TIKTOK_APP_SECRET!,
     auth_code,
-    grant_type: 'authorized_code'!
+    grant_type: 'authorized_code'
   }
+  console.log(params)
+
   const urlSearchParams = new URLSearchParams(params)
 
   const response = await fetch(
@@ -33,6 +35,7 @@ export const generateAccessToken = async (auth_code: string) => {
   )
 
   const data = await response.json()
+  console.log(data)
   const {
     access_token,
     access_token_expire_in,
@@ -45,7 +48,7 @@ export const generateAccessToken = async (auth_code: string) => {
   const access_token_expire_at = currentTime + access_token_expire_in - 1000
   const refresh_token_expire_at = currentTime + refresh_token_expire_in - 1000
 
-  const sellerAuth = await saveSellerAuth(supabase, {
+  const sellerAuth = await saveSeller(supabase, {
     access_token,
     access_token_expire_at,
     refresh_token,
@@ -91,7 +94,7 @@ export const refreshAccessToken = async (refresh_token: string) => {
   const access_token_expire_at = currentTime + access_token_expire_in - 1000
   const refresh_token_expire_at = currentTime + refresh_token_expire_in - 1000
 
-  const sellerAuth = await saveSellerAuth(supabase, {
+  const sellerAuth = await saveSeller(supabase, {
     access_token,
     access_token_expire_at,
     refresh_token: new_refresh_token,
@@ -104,7 +107,7 @@ export const refreshAccessToken = async (refresh_token: string) => {
 export const getAccessToken = async () => {
   const supabase = createClient()
 
-  const authData = await getSellerAuth(supabase)
+  const authData = await getSeller(supabase)
 
   if (!authData) {
     throw new Error('No token data found.')

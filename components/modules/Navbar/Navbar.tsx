@@ -14,8 +14,6 @@ export default async function Navbar() {
     data: { user }
   } = await supabase.auth.getUser()
 
-  console.log(user)
-
   const navLinks = [
     {
       link: '/#features',

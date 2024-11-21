@@ -176,6 +176,7 @@ export async function signInWithPassword(formData: {
 export async function signUp(formData: { [key: string]: string | number }) {
   const email = String(formData['email']).trim()
   const password = String(formData['password']).trim()
+  const type = String(formData['type']).trim()
 
   const callbackURL = getURL('/auth/callback')
 
@@ -183,7 +184,7 @@ export async function signUp(formData: { [key: string]: string | number }) {
 
   if (!isValidEmail(email)) {
     redirectPath = getErrorRedirect(
-      '/signin/signup',
+      `/${type}/signup`,
       'Invalid email address.',
       'Please try again.'
     )
@@ -194,19 +195,20 @@ export async function signUp(formData: { [key: string]: string | number }) {
     email,
     password,
     options: {
-      emailRedirectTo: callbackURL
+      emailRedirectTo: callbackURL,
+      data: { type: type }
     }
   })
 
   if (error) {
     redirectPath = getErrorRedirect(
-      '/signin/signup',
+      `/${type}/signup`,
       'Sign up failed.',
       error.message
     )
   } else if (data.session) {
     redirectPath = getStatusRedirect(
-      '/account',
+      `/${type}/dashboard`,
       'Success!',
       'You are now signed in.'
     )
@@ -216,19 +218,19 @@ export async function signUp(formData: { [key: string]: string | number }) {
     data.user.identities.length == 0
   ) {
     redirectPath = getErrorRedirect(
-      '/signin/signup',
+      `/${type}/signup`,
       'Sign up failed.',
       'There is already an account associated with this email address. Try resetting your password.'
     )
   } else if (data.user) {
     redirectPath = getStatusRedirect(
-      '/account',
+      `/${type}/dashboard`,
       'Success!',
       'Please check your email for a confirmation link. You may now close this tab.'
     )
   } else {
     redirectPath = getErrorRedirect(
-      '/signin/signup',
+      `/${type}/signup`,
       'Hmm... Something went wrong.',
       'You could not be signed up.'
     )
@@ -382,7 +384,7 @@ export async function updateUser(formData: { [key: string]: string | number }) {
   const { error: updateError } = await supabase
     .from('users')
     .update({
-      user_id: user?.id,
+      id: user?.id,
       first_name,
       last_name,
       street1,
