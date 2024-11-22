@@ -70,7 +70,8 @@ export const generateSign = (
  */
 export async function requestTikTokShopAPI(
   api_path: string,
-  params: APIParams = {}
+  params: APIParams = {},
+  method: string = 'GET'
 ) {
   const supabase = createClient()
   const authData = await getSeller(supabase)
@@ -81,7 +82,7 @@ export async function requestTikTokShopAPI(
 
   // Setup request headers with access token for authentication
   const requestOptions: RequestOptions = {
-    method: 'GET',
+    method: method,
     headers: {
       'content-type': 'application/json',
       'x-tts-access-token': authData.access_token
