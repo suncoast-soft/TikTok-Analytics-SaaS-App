@@ -6,7 +6,10 @@ import { createOrRetrieveCustomer } from '@/utils/supabase/admin'
 import { getURL, getErrorRedirect } from '@/utils/helpers'
 import { getUser } from '../supabase/queries'
 
-export async function createStripePortal(currentPath: string) {
+export async function createStripePortal(
+  currentPath: string,
+  return_url: string
+) {
   try {
     const supabase = createClient()
     const user = await getUser(supabase)
@@ -19,7 +22,7 @@ export async function createStripePortal(currentPath: string) {
     try {
       customer = await createOrRetrieveCustomer({
         uuid: user.id || '',
-        email: user.email || ''
+        email: user.auth?.email || ''
       })
     } catch (err) {
       console.error(err)
@@ -33,7 +36,7 @@ export async function createStripePortal(currentPath: string) {
     try {
       const { url } = await stripe.billingPortal.sessions.create({
         customer,
-        return_url: getURL('/account/billing')
+        return_url: getURL(return_url)
       })
       if (!url) {
         throw new Error('Could not create billing portal')

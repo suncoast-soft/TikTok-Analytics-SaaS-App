@@ -1,10 +1,12 @@
+import CustomerPortalForm from '@/components/modules/AccountForms/CustomerPortalForm'
 import StripePricingTable from '@/components/stripe/StripeTable'
-import { getUser } from '@/utils/supabase/queries'
+import { getSubscription, getUser } from '@/utils/supabase/queries'
 import { createClient } from '@/utils/supabase/server'
 
 export default async function AuthTiktok() {
   const supabase = createClient()
   const user = await getUser(supabase)
+  const subscription = await getSubscription(supabase)
 
   return (
     <div className="container mx-auto p-8">
@@ -14,7 +16,11 @@ export default async function AuthTiktok() {
         that promise value and transparency.
       </p>
 
-      <StripePricingTable user={user} />
+      {subscription ? (
+        <CustomerPortalForm return_url="/seller/subscription" />
+      ) : (
+        <StripePricingTable user={user} />
+      )}
     </div>
   )
 }

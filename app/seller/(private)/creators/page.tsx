@@ -109,7 +109,7 @@ export default async function Creators() {
                 </TableCell>
                 <TableCell>
                   <p>
-                    {creator.top_follower_demographics.age_ranges
+                    {creator.top_follower_demographics?.age_ranges
                       .map((range) =>
                         range.replace('AGE_RANGE_', '').replace(/_/g, '-')
                       )
@@ -117,12 +117,14 @@ export default async function Creators() {
                   </p>
                 </TableCell>
                 <TableCell>
-                  <p>{creator.top_follower_demographics.major_gender.gender}</p>
+                  <p>
+                    {creator.top_follower_demographics?.major_gender.gender}
+                  </p>
                 </TableCell>
                 <TableCell>
                   <p>
                     {(
-                      creator.top_follower_demographics.major_gender
+                      creator.top_follower_demographics?.major_gender
                         .percentage / 100
                     ).toFixed(2)}
                     %

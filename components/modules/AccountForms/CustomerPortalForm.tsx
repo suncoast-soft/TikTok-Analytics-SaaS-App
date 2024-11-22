@@ -12,17 +12,21 @@ import {
 } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
-export default function CustomerPortalForm() {
+export default function CustomerPortalForm({
+  return_url
+}: {
+  return_url: string
+}) {
   const router = useRouter()
   const currentPath = usePathname()
 
   const handleStripePortalRequest = async () => {
-    const redirectUrl = await createStripePortal(currentPath)
+    const redirectUrl = await createStripePortal(currentPath, return_url)
     return router.push(redirectUrl)
   }
 
   return (
-    <Card className="mb-8 bg-primary/10">
+    <Card className="max-w-md mx-auto mb-8">
       <CardHeader>
         <CardTitle>Manage Billing</CardTitle>
         <CardDescription>
@@ -31,9 +35,11 @@ export default function CustomerPortalForm() {
       </CardHeader>
 
       <CardContent>
-        <Button variant="default" onClick={handleStripePortalRequest}>
-          Open Billing Manager Portal
-        </Button>
+        <div className="grid">
+          <Button variant="default" onClick={handleStripePortalRequest}>
+            Open Billing Manager Portal
+          </Button>
+        </div>
       </CardContent>
 
       <CardFooter>
