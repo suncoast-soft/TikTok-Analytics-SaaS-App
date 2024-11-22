@@ -4,19 +4,14 @@ import { stripe } from '@/utils/stripe/config'
 import { createClient } from '@/utils/supabase/server'
 import { createOrRetrieveCustomer } from '@/utils/supabase/admin'
 import { getURL, getErrorRedirect } from '@/utils/helpers'
+import { getUser } from '../supabase/queries'
 
 export async function createStripePortal(currentPath: string) {
   try {
     const supabase = createClient()
-    const {
-      error,
-      data: { user }
-    } = await supabase.auth.getUser()
+    const user = await getUser(supabase)
 
     if (!user) {
-      if (error) {
-        console.error(error)
-      }
       throw new Error('Could not get user session.')
     }
 

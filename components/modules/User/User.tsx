@@ -55,61 +55,50 @@ export default function User({ user }: NavlinksProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>{user.auth.email}</DropdownMenuLabel>
+        <DropdownMenuLabel>{user.auth?.email}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <Link href="/dashboard/settings" className={'no-underline'}>
+          <Link href={`/${user.type}/dashboard`} className={'no-underline'}>
+            Dashboard
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link href={`/${user.type}/account`} className={'no-underline'}>
             Settings
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link href="/dashboard/support" className={'no-underline'}>
-            Support
-          </Link>
-        </DropdownMenuItem>
         <DropdownMenuSeparator />
-        {user ? (
-          <DropdownMenuItem>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
-                <FormField
-                  control={form.control}
-                  name="pathName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          type="hidden"
-                          {...field}
-                          defaultValue={usePathname()}
-                          {...form.register('pathName')}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+        <DropdownMenuItem>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                control={form.control}
+                name="pathName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type="hidden"
+                        {...field}
+                        defaultValue={usePathname()}
+                        {...form.register('pathName')}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full flex justify-center items-center"
-                >
-                  <LogOut size={16} />
-                  <span className="ml-1">Sign out</span>
-                </button>
-              </form>
-            </Form>
-          </DropdownMenuItem>
-        ) : (
-          <DropdownMenuItem>
-            <Link
-              href="/signin"
-              className="inline-flex items-center leading-6 font-medium transition ease-in-out duration-75 cursor-pointer text-slate-200 rounded-md p-1"
-            >
-              Sign In
-            </Link>
-          </DropdownMenuItem>
-        )}
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full flex justify-center items-center"
+              >
+                <LogOut size={16} />
+                <span className="ml-1">Sign out</span>
+              </button>
+            </form>
+          </Form>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

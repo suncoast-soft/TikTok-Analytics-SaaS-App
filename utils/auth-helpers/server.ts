@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getURL, getErrorRedirect, getStatusRedirect } from 'utils/helpers'
 import { getAuthTypes } from 'utils/auth-helpers/settings'
+import { getUser } from '../supabase/queries'
 
 function isValidEmail(email: string) {
   var regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
@@ -368,16 +369,12 @@ export async function updateUser(formData: { [key: string]: string | number }) {
   const phone = String(formData['phone']).trim()
 
   const supabase = createClient()
-  const {
-    error: userError,
-    data: { user }
-  } = await supabase.auth.getUser()
-
-  if (userError || !user) {
+  const user = await getUser(supabase)
+  if (!user) {
     return getErrorRedirect(
       '/account/onboarding',
       'Your profile could not be submitted. Please try again.',
-      userError?.message || 'Could not get user session.'
+      'Could not get user session.'
     )
   }
 

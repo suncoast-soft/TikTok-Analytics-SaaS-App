@@ -6,13 +6,11 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { MenuIcon } from 'lucide-react'
 import { createClient } from '@/utils/supabase/server'
 import User from '../User'
+import { getUser } from '@/utils/supabase/queries'
 
 export default async function Navbar() {
   const supabase = createClient()
-
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
+  const user = await getUser(supabase)
 
   const navLinks = [
     {

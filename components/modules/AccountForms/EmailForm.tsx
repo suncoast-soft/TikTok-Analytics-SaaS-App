@@ -48,44 +48,39 @@ export default function EmailForm({
   }
 
   return (
-    <Card className="mb-8 bg-primary/10">
-      <CardHeader>
-        <CardTitle>Account Settings</CardTitle>
-        <CardDescription>
-          Please enter the email address you want to use to login.
-        </CardDescription>
-      </CardHeader>
-
-      <CardContent>
+    <Card className="mb-8">
+      <CardContent className="pt-8">
         <Form {...form}>
           <form
             id="emailForm"
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-6"
           >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className="w-full md:w-1/2">
-                  <FormLabel>Email Address</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      {...field}
-                      placeholder="Email Address"
-                      defaultValue={userEmail ?? ''}
-                      {...form.register('email')}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid gap-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email Address</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        {...field}
+                        placeholder="Email Address"
+                        defaultValue={userEmail ?? ''}
+                        {...form.register('email')}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <Button variant="default" type="submit" form="emailForm">
-              Update Email
-            </Button>
+              <Button variant="default" type="submit" form="emailForm">
+                Update Email
+              </Button>
+            </div>
           </form>
         </Form>
       </CardContent>

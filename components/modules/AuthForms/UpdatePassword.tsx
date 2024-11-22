@@ -17,6 +17,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/components/ui/input'
+import { Card, CardContent } from '@/components/ui/card'
 
 interface UpdatePasswordProps {
   redirectMethod: string
@@ -48,54 +49,58 @@ export default function UpdatePassword({
   }
 
   return (
-    <Form {...form}>
-      <form
-        noValidate={true}
-        className="mb-4"
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
-        <div className="grid gap-3">
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>New Password</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Your Password"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+    <Card className="mb-8">
+      <CardContent className="pt-8">
+        <Form {...form}>
+          <form
+            noValidate={true}
+            className="mb-4"
+            onSubmit={form.handleSubmit(onSubmit)}
+          >
+            <div className="grid gap-4">
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>New Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Your Password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="passwordConfirm"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Confirm New Password</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Your Password"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              <FormField
+                control={form.control}
+                name="passwordConfirm"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm New Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Your Password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <Button type="submit" disabled={isSubmitting}>
-            Update Password
-          </Button>
-        </div>
-      </form>
-    </Form>
+              <Button type="submit" disabled={isSubmitting}>
+                Update Password
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   )
 }

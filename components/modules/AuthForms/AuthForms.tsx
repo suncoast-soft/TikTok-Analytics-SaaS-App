@@ -21,7 +21,7 @@ import OauthSignIn from '@/components/modules/AuthForms/OauthSignIn'
 import ForgotPassword from '@/components/modules/AuthForms/ForgotPassword'
 import UpdatePassword from '@/components/modules/AuthForms/UpdatePassword'
 import SignUp from '@/components/modules/AuthForms/Signup'
-import LogoBlack from '@/components/icons/LogoBlack'
+import { getUser } from '@/utils/supabase/queries'
 
 export default async function AuthForms({
   params,
@@ -50,14 +50,12 @@ export default async function AuthForms({
   // Check if the user is already logged in and redirect to the account page if so
   const supabase = createClient()
 
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
+  const user = await getUser(supabase)
 
   if (user && viewProp !== 'update_password') {
-    return redirect('/')
+    return redirect(`/${type}/account`)
   } else if (!user && viewProp === 'update_password') {
-    return redirect(`/${type}`)
+    return redirect(`/${type}/update_password`)
   }
 
   return (
