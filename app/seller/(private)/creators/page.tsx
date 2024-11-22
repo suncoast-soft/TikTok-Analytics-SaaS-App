@@ -1,11 +1,4 @@
 import Creators from '@/components/modules/Seller/Creators'
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
 
 export default async function CreatorsPage() {
   return (
@@ -15,31 +8,7 @@ export default async function CreatorsPage() {
       </h1>
 
       <div className="bg-white shadow-sm rounded-md border overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Avatar</TableHead>
-              <TableHead>Nickname</TableHead>
-              <TableHead>Username</TableHead>
-              <TableHead>Followers</TableHead>
-              <TableHead>GMV</TableHead>
-              <TableHead>Video GMV</TableHead>
-              <TableHead>Live UV</TableHead>
-              <TableHead>Video Views</TableHead>
-              <TableHead>Region</TableHead>
-              <TableHead>Age Ranges</TableHead>
-              <TableHead>Major Gender</TableHead>
-              <TableHead>Gender Percentage</TableHead>
-              <TableHead>Categories</TableHead>
-              <TableHead>Units Sold Min</TableHead>
-              <TableHead>GMV Range Min</TableHead>
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            <Creators />
-          </TableBody>
-        </Table>
+        <Creators />
       </div>
     </>
   )

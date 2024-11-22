@@ -1,21 +1,21 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { requestTikTokShopAPIClient } from '@/app/actions'
-import useSWR from 'swr'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
-import { TableCell, TableRow } from '@/components/ui/table'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table'
+import Loading from '../../Loading'
+import { Button } from '@/components/ui/button'
 
 interface APIParams {
   [key: string]: string | number
-}
-const fetcher = async (
-  func: any,
-  api_path: string,
-  params: APIParams = {},
-  method: string = 'GET',
-  body: string = ''
-) => {
-  return func(api_path, params, method, body)
 }
 
 interface Creator {
@@ -37,91 +37,166 @@ interface Creator {
   video_gmv: { amount: string; currency: string }
 }
 
-export default function Creators() {
-  const { data, error, isLoading } = useSWR(
-    [
-      requestTikTokShopAPIClient,
-      '/affiliate_seller/202406/marketplace_creators/search',
-      { page_size: 20 },
-      'POST',
-      ''
-    ],
-    ([func, api_path, params, method, body]) =>
-      fetcher(func, api_path, params, method, body)
+const fetchCreators = async (params: APIParams) => {
+  const data = await requestTikTokShopAPIClient(
+    '/affiliate_seller/202406/marketplace_creators/search',
+    params,
+    'POST',
+    ''
   )
+  return data.data
+}
 
-  const { creators } = data?.data ?? { creators: [] }
+export default function Creators() {
+  const [creators, setCreators] = useState<Creator[]>([])
+  const [nextPageToken, setNextPageToken] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
-  return creators.map((creator: Creator, index: number) => (
-    <TableRow key={index}>
-      <TableCell>
-        <Avatar>
-          <AvatarImage
-            src={creator.avatar.url}
-            alt={`${creator.nickname}'s avatar`}
-          />
-        </Avatar>
-      </TableCell>
-      <TableCell>
-        <p>{creator.nickname}</p>
-      </TableCell>
-      <TableCell>
-        <p>@{creator.username}</p>
-      </TableCell>
-      <TableCell>
-        <p>{creator.follower_count.toLocaleString()}</p>
-      </TableCell>
-      <TableCell>
-        <p>
-          {creator.gmv?.currency}{' '}
-          {parseFloat(creator.gmv?.amount).toLocaleString()}
-        </p>
-      </TableCell>
-      <TableCell>
-        <p>
-          {creator.video_gmv?.currency}{' '}
-          {parseFloat(creator.video_gmv?.amount).toLocaleString()}
-        </p>
-      </TableCell>
-      <TableCell>
-        <p>{creator.avg_ec_live_uv}</p>
-      </TableCell>
-      <TableCell>
-        <p>{creator.avg_ec_video_view_count.toLocaleString()}</p>
-      </TableCell>
-      <TableCell>
-        <p>{creator.selection_region}</p>
-      </TableCell>
-      <TableCell>
-        <p>
-          {creator.top_follower_demographics?.age_ranges
-            .map((range) => range.replace('AGE_RANGE_', '').replace(/_/g, '-'))
-            .join(', ')}
-        </p>
-      </TableCell>
-      <TableCell>
-        <p>{creator.top_follower_demographics?.major_gender.gender}</p>
-      </TableCell>
-      <TableCell>
-        <p>
-          {(
-            creator.top_follower_demographics?.major_gender.percentage / 100
-          ).toFixed(2)}
-          %
-        </p>
-      </TableCell>
-      <TableCell>
-        <p>{creator.category_ids.join(', ')}</p>
-      </TableCell>
-      <TableCell>
-        <p>{creator.units_sold_range?.minimum_amount.toLocaleString()}</p>
-      </TableCell>
-      <TableCell>
-        <p>
-          {creator.gmv_range?.currency}{' '}
-          {parseFloat(creator.gmv_range?.minimum_amount).toLocaleString()}
-        </p>
-      </TableCell>
-    </TableRow>
-  ))
+  const loadInitialData = async () => {
+    setIsLoading(true)
+    const data = await fetchCreators({ page_size: 20 })
+    setCreators(data.creators || [])
+    setNextPageToken(data.next_page_token || null)
+    setIsLoading(false)
+  }
+
+  const loadMoreCreators = async () => {
+    if (!nextPageToken) return
+
+    setIsLoading(true)
+    const data = await fetchCreators({
+      page_size: 20,
+      page_token: nextPageToken
+    })
+
+    setCreators((prev) => [...prev, ...(data.creators || [])])
+    setNextPageToken(data.next_page_token || null)
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    loadInitialData()
+  }, [])
+
+  return (
+    <>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Avatar</TableHead>
+            <TableHead>Nickname</TableHead>
+            <TableHead>Username</TableHead>
+            <TableHead>Followers</TableHead>
+            <TableHead>GMV</TableHead>
+            <TableHead>Video GMV</TableHead>
+            <TableHead>Live UV</TableHead>
+            <TableHead>Video Views</TableHead>
+            <TableHead>Region</TableHead>
+            <TableHead>Age Ranges</TableHead>
+            <TableHead>Major Gender</TableHead>
+            <TableHead>Gender Percentage</TableHead>
+            <TableHead>Categories</TableHead>
+            <TableHead>Units Sold Min</TableHead>
+            <TableHead>GMV Range Min</TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {creators.map((creator, index) => (
+            <TableRow key={index}>
+              <TableCell>
+                <Avatar>
+                  <AvatarImage
+                    src={creator.avatar.url}
+                    alt={`${creator.nickname}'s avatar`}
+                  />
+                </Avatar>
+              </TableCell>
+              <TableCell>
+                <p>{creator.nickname}</p>
+              </TableCell>
+              <TableCell>
+                <p>@{creator.username}</p>
+              </TableCell>
+              <TableCell>
+                <p>{creator.follower_count.toLocaleString()}</p>
+              </TableCell>
+              <TableCell>
+                <p>
+                  {creator.gmv?.currency}{' '}
+                  {parseFloat(creator.gmv?.amount).toLocaleString()}
+                </p>
+              </TableCell>
+              <TableCell>
+                <p>
+                  {creator.video_gmv?.currency}{' '}
+                  {parseFloat(creator.video_gmv?.amount).toLocaleString()}
+                </p>
+              </TableCell>
+              <TableCell>
+                <p>{creator.avg_ec_live_uv}</p>
+              </TableCell>
+              <TableCell>
+                <p>{creator.avg_ec_video_view_count.toLocaleString()}</p>
+              </TableCell>
+              <TableCell>
+                <p>{creator.selection_region}</p>
+              </TableCell>
+              <TableCell>
+                <p>
+                  {creator.top_follower_demographics?.age_ranges
+                    .map((range) =>
+                      range.replace('AGE_RANGE_', '').replace(/_/g, '-')
+                    )
+                    .join(', ')}
+                </p>
+              </TableCell>
+              <TableCell>
+                <p>{creator.top_follower_demographics?.major_gender.gender}</p>
+              </TableCell>
+              <TableCell>
+                <p>
+                  {(
+                    creator.top_follower_demographics?.major_gender.percentage /
+                    100
+                  ).toFixed(2)}
+                  %
+                </p>
+              </TableCell>
+              <TableCell>
+                <p>{creator.category_ids.join(', ')}</p>
+              </TableCell>
+              <TableCell>
+                <p>
+                  {creator.units_sold_range?.minimum_amount.toLocaleString()}
+                </p>
+              </TableCell>
+              <TableCell>
+                <p>
+                  {creator.gmv_range?.currency}{' '}
+                  {parseFloat(
+                    creator.gmv_range?.minimum_amount
+                  ).toLocaleString()}
+                </p>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+
+      {isLoading && (
+        <div className="p-4">
+          <Loading />
+        </div>
+      )}
+
+      {!isLoading && nextPageToken && (
+        <div className="text-center p-12">
+          <Button onClick={loadMoreCreators} variant="default">
+            Load More
+          </Button>
+        </div>
+      )}
+    </>
+  )
 }
