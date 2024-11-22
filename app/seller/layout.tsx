@@ -64,23 +64,23 @@ export default async function SellerLayout({
   ]
 
   return (
-    <main className="flex min-h-screen w-full flex-row bg-muted/40">
+    <main className="flex min-h-screen w-full flex-row bg-orange-50/40">
       <SidebarProvider>
         <Sidenav navs={navs} settings={settings} />
 
-        <main className="w-full">
+        <main className="w-full overflow-auto">
           <div className="flex md:hidden w-full justify-between p-4 bg-orange-50 shadow">
             <LogoBlue />
             <SidebarTrigger />
           </div>
 
           <div className="p-2.5">
-            <div className="bg-orange-50 shadow px-4 py-3 flex justify-between items-center rounded-md border">
+            <div className="bg-white shadow-sm px-4 py-3 flex justify-between items-center rounded-md border">
               <DashboardBreadcrumb />
               <User user={user} />
             </div>
 
-            <div className="container py-12">{children}</div>
+            <div className="py-8">{children}</div>
           </div>
         </main>
       </SidebarProvider>

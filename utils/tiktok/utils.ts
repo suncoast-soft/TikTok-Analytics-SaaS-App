@@ -71,7 +71,8 @@ export const generateSign = (
 export async function requestTikTokShopAPI(
   api_path: string,
   params: APIParams = {},
-  method: string = 'GET'
+  method: string = 'GET',
+  body: string = ''
 ) {
   const supabase = createClient()
   const authData = await getSeller(supabase)
@@ -87,6 +88,9 @@ export async function requestTikTokShopAPI(
       'content-type': 'application/json',
       'x-tts-access-token': authData.access_token
     }
+  }
+  if (method === 'POST') {
+    requestOptions.body = body
   }
 
   // Initialize default parameters with necessary keys

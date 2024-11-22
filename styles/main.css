@@ -66,7 +66,7 @@ a:not(.no-underline):hover::after {
 
 @layer base {
   :root {
-    --sidebar-background: 33.33deg 100% 96.87%;
+    --sidebar-background: 0deg 0% 100%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;

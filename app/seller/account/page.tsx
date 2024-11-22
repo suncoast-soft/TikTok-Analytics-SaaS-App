@@ -12,9 +12,9 @@ export default async function AuthTiktok() {
 
   return (
     <div className="container mx-auto p-8">
-      <h2 className="text-3xl font-bold text-center mb-8">
+      <h1 className="text-3xl font-bold text-center mb-8">
         Manage Account Settings
-      </h2>
+      </h1>
 
       <div className="max-w-md mx-auto">
         <EmailForm userEmail={user.auth.email} />
