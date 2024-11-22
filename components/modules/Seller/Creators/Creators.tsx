@@ -51,6 +51,8 @@ export default function Creators() {
   const [creators, setCreators] = useState<Creator[]>([])
   const [nextPageToken, setNextPageToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [sortField, setSortField] = useState<string | null>(null)
+  const [sortDirection, setSortDirection] = useState<boolean>(true) // true for ascending
 
   const loadInitialData = async () => {
     setIsLoading(true)
@@ -74,6 +76,46 @@ export default function Creators() {
     setIsLoading(false)
   }
 
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      setSortDirection(!sortDirection)
+    } else {
+      setSortField(field)
+      setSortDirection(true)
+    }
+    sortCreators(field, sortDirection)
+  }
+
+  const sortCreators = (field: string, ascending: boolean) => {
+    const sortedCreators = [...creators].sort((a, b) => {
+      let valueA: any
+      let valueB: any
+
+      switch (field) {
+        case 'nickname':
+          valueA = a.nickname
+          valueB = b.nickname
+          break
+        case 'follower_count':
+          valueA = a.follower_count
+          valueB = b.follower_count
+          break
+        case 'gmv':
+          valueA = parseFloat(a.gmv.amount)
+          valueB = parseFloat(b.gmv.amount)
+          break
+        default:
+          return 0
+      }
+
+      if (valueA < valueB) return ascending ? -1 : 1
+      if (valueA > valueB) return ascending ? 1 : -1
+      return 0
+    })
+
+    setCreators(sortedCreators)
+  }
+
   useEffect(() => {
     loadInitialData()
   }, [])
@@ -84,10 +126,14 @@ export default function Creators() {
         <TableHeader>
           <TableRow>
             <TableHead>Avatar</TableHead>
-            <TableHead>Nickname</TableHead>
+            <TableHead onClick={() => handleSort('nickname')}>
+              Nickname
+            </TableHead>
             <TableHead>Username</TableHead>
-            <TableHead>Followers</TableHead>
-            <TableHead>GMV</TableHead>
+            <TableHead onClick={() => handleSort('follower_count')}>
+              Followers
+            </TableHead>
+            <TableHead onClick={() => handleSort('gmv')}>GMV</TableHead>
             <TableHead>Video GMV</TableHead>
             <TableHead>Live UV</TableHead>
             <TableHead>Video Views</TableHead>
