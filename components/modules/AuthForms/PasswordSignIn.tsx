@@ -44,7 +44,7 @@ export default function PasswordSignIn({
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setIsSubmitting(true)
-    await handleRequest(data, signInWithPassword, router)
+    await handleRequest({ ...data, type }, signInWithPassword, router)
     setIsSubmitting(false)
   }
 

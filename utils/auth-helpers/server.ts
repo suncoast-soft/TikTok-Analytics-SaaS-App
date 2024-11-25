@@ -142,6 +142,7 @@ export async function signInWithPassword(formData: {
   const cookieStore = cookies()
   const email = String(formData['email']).trim()
   const password = String(formData['password']).trim()
+  const type = String(formData['type']).trim()
   let redirectPath: string
 
   const supabase = createClient()
@@ -152,7 +153,7 @@ export async function signInWithPassword(formData: {
 
   if (error) {
     redirectPath = getErrorRedirect(
-      '/signin/password_signin',
+      `/${type}/password_signin`,
       'Sign in failed.',
       error.message
     )
@@ -165,7 +166,7 @@ export async function signInWithPassword(formData: {
     )
   } else {
     redirectPath = getErrorRedirect(
-      '/signin/password_signin',
+      `/${type}/password_signin`,
       'Hmm... Something went wrong.',
       'You could not be signed in.'
     )

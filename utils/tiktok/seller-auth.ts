@@ -33,6 +33,8 @@ export const generateAccessToken = async (auth_code: string) => {
 
   const urlSearchParams = new URLSearchParams(params)
 
+  console.log(urlSearchParams)
+
   // Fetch access token from TikTok API
   const response = await fetch(
     `${TIKTOK_AUTH_BASE}/${TIKTOK_AUTH_PATH}?${urlSearchParams}`,
@@ -43,8 +45,12 @@ export const generateAccessToken = async (auth_code: string) => {
     }
   )
 
+  console.log(response)
+
   const data = await response.json()
   if (!data.data) return null
+
+  console.log(data)
 
   const {
     access_token,
