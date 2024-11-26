@@ -160,7 +160,7 @@ export async function signInWithPassword(formData: {
   } else if (data.user) {
     cookieStore.set('preferredSignInView', 'password_signin', { path: '/' })
     redirectPath = getStatusRedirect(
-      '/account',
+      `/${type}/account`,
       'Success!',
       'You are now signed in.'
     )

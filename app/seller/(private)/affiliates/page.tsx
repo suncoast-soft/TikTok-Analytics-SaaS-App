@@ -1,3 +1,5 @@
-export default async function Affiliates() {
-  return <div>Seller Dashboard</div>
+import SellerAffiliates from '@/components/modules/Seller/Affiliates'
+
+export default function AffiliatesPage() {
+  return <SellerAffiliates />
 }
