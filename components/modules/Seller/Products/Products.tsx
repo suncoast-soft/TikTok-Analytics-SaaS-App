@@ -44,7 +44,11 @@ interface Product {
   update_time: number
 }
 
-const fetchProducts = async (params: any) => {
+interface APIParams {
+  [key: string]: string | number
+}
+
+const fetchProducts = async (params: APIParams) => {
   const data = await requestTikTokShopAPIClient(
     '/product/202309/products/search',
     params,

@@ -2,51 +2,19 @@
 
 import { useEffect, useState } from 'react'
 import { requestTikTokShopAPIClient } from '@/app/actions'
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
+import { Table, TableBody, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import Loading from '@/components/modules/Loading'
 import { SearchIcon } from 'lucide-react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
+import CreatorRow from './CreatorRow'
+import CreatorFilter from './CreatorFilter'
+import CreatorHead from './CreatorHead'
+import formatData from './formatData'
 
 interface APIParams {
   [key: string]: string | number
-}
-
-interface Creator {
-  avatar: { url: string }
-  avg_ec_live_uv: number
-  avg_ec_video_view_count: number
-  category_ids: string[]
-  follower_count: number
-  gmv: { amount: string; currency: string }
-  gmv_range: { currency: string; minimum_amount: string }
-  nickname: string
-  selection_region: string
-  top_follower_demographics: {
-    age_ranges: string[]
-    major_gender: { gender: string; percentage: number }
-  }
-  units_sold_range: { minimum_amount: number }
-  username: string
-  video_gmv: { amount: string; currency: string }
 }
 
 const fetchCreators = async (params: APIParams) => {
@@ -56,17 +24,26 @@ const fetchCreators = async (params: APIParams) => {
     'POST',
     ''
   )
-  return data.data
+
+  if (data.data && Array.isArray(data.data.creators)) {
+    return {
+      creators: data.data.creators.map((creator: any) => formatData(creator)),
+      next_page_token: data.data.next_page_token
+    }
+  } else {
+    return {
+      creators: []
+    }
+  }
 }
 
 export default function SellerCreators() {
-  const [creators, setCreators] = useState<Creator[]>([])
+  const [creators, setCreators] = useState<any[]>([])
   const [nextPageToken, setNextPageToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [sortField, setSortField] = useState<string | null>(null)
+  const [sortField, setSortField] = useState<string | null>('nickname')
   const [sortDirection, setSortDirection] = useState<boolean>(true)
 
-  // State for search and filters
   const [keyword, setKeyword] = useState<string>('')
   const [ageRanges, setAgeRanges] = useState<string[]>([])
   const [genderFilter, setGenderFilter] = useState<string>('')
@@ -117,7 +94,6 @@ export default function SellerCreators() {
     setIsLoading(false)
   }
 
-  // Update filtering parameters on any filter change
   const handleFilterChange = async () => {
     setIsLoading(true)
     const data = await fetchCreators({
@@ -153,33 +129,14 @@ export default function SellerCreators() {
       setSortField(field)
       setSortDirection(true)
     }
+
     sortCreators(field, sortDirection)
   }
 
   const sortCreators = (field: string, ascending: boolean) => {
     const sortedCreators = [...creators].sort((a, b) => {
-      let valueA: any
-      let valueB: any
-
-      switch (field) {
-        case 'nickname':
-          valueA = a.nickname
-          valueB = b.nickname
-          break
-        case 'follower_count':
-          valueA = a.follower_count
-          valueB = b.follower_count
-          break
-        case 'gmv':
-          valueA = parseFloat(a.gmv.amount)
-          valueB = parseFloat(b.gmv.amount)
-          break
-        default:
-          return 0
-      }
-
-      if (valueA < valueB) return ascending ? -1 : 1
-      if (valueA > valueB) return ascending ? 1 : -1
+      if (a[field] < b[field]) return ascending ? -1 : 1
+      if (a[field] > b[field]) return ascending ? 1 : -1
       return 0
     })
 
@@ -213,51 +170,33 @@ export default function SellerCreators() {
         <div className="flex items-center gap-4">
           <Label>Follower Demographics:</Label>
 
-          <Select onValueChange={(value) => setAgeRanges(Array.from(value))}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select Age:" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Age range</SelectLabel>
-                <SelectItem value="18-24">18-24</SelectItem>
-                <SelectItem value="25-34">25-34</SelectItem>
-                <SelectItem value="35-44">35-44</SelectItem>
-                <SelectItem value="45-54">45-54</SelectItem>
-                <SelectItem value="55+">55+</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <CreatorFilter
+            label="Select Gender"
+            options={['MALE', 'FEMALE']}
+            setValue={setGenderFilter}
+            className="w-[200px]"
+          />
 
-          <Select onValueChange={(value) => setGenderFilter(value)}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select Gender:" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Gender</SelectLabel>
-                <SelectItem value="MALE">Male</SelectItem>
-                <SelectItem value="FEMALE">Female</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <CreatorFilter
+            label="Select Age Range:"
+            options={['18-24', '25-34', '35-44', '45-54', '55+']}
+            setValue={setAgeRanges}
+            className="w-[200px]"
+          />
 
-          <Select onValueChange={(value) => changeFollowersMinMaxRange(value)}>
-            <SelectTrigger className="w-[220px]">
-              <SelectValue placeholder="Select Followers Range:" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Range</SelectLabel>
-                <SelectItem value="1-100k">1-100k</SelectItem>
-                <SelectItem value="100k-500k">100k-500k</SelectItem>
-                <SelectItem value="500k-1m">500k-1m</SelectItem>
-                <SelectItem value="1m-5m">1m-5m</SelectItem>
-                <SelectItem value="5m-10m">5m-10m</SelectItem>
-                <SelectItem value=">10m">&gt;10m</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <CreatorFilter
+            label="Select Followers Range"
+            options={[
+              '1-100k',
+              '100k-500k',
+              '500k-1m',
+              '1m-5m',
+              '5m-10m',
+              '>10m'
+            ]}
+            setValue={changeFollowersMinMaxRange}
+            className="w-[240px]"
+          />
         </div>
       </div>
 
@@ -265,109 +204,45 @@ export default function SellerCreators() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Avatar</TableHead>
-              <TableHead onClick={() => handleSort('nickname')}>
-                Nickname
-              </TableHead>
-              <TableHead>Username</TableHead>
-              <TableHead onClick={() => handleSort('follower_count')}>
-                Followers
-              </TableHead>
-              <TableHead onClick={() => handleSort('gmv')}>GMV</TableHead>
-              <TableHead>Video GMV</TableHead>
-              <TableHead>Live UV</TableHead>
-              <TableHead>Video Views</TableHead>
-              <TableHead>Region</TableHead>
-              <TableHead>Age Ranges</TableHead>
-              <TableHead>Major Gender</TableHead>
-              <TableHead>Gender Percentage</TableHead>
-              <TableHead>Categories</TableHead>
-              <TableHead>Units Sold Min</TableHead>
-              <TableHead>GMV Range Min</TableHead>
+              <CreatorHead label="Avatar" />
+              <CreatorHead
+                label="Nickname"
+                sort="nickname"
+                setSort={handleSort}
+                activeSort={sortField}
+                sortDirection={sortDirection}
+              />
+              <CreatorHead label="Username" />
+              <CreatorHead
+                label="Followers"
+                sort="follower_count"
+                setSort={handleSort}
+                activeSort={sortField}
+                sortDirection={sortDirection}
+              />
+              <CreatorHead
+                label="GMV"
+                sort="gmv"
+                setSort={handleSort}
+                activeSort={sortField}
+                sortDirection={sortDirection}
+              />
+              <CreatorHead label="Video GMV" />
+              <CreatorHead label="Live UV" />
+              <CreatorHead label="Video Views" />
+              <CreatorHead label="Region" />
+              <CreatorHead label="Age Ranges" />
+              <CreatorHead label="Major Gender" />
+              <CreatorHead label="Gender Percentage" />
+              <CreatorHead label="Categories" />
+              <CreatorHead label="Units Sold Min" />
+              <CreatorHead label="GMV Range Min" />
             </TableRow>
           </TableHeader>
 
           <TableBody>
             {creators.map((creator, index) => (
-              <TableRow key={index}>
-                <TableCell>
-                  <Avatar>
-                    <AvatarImage
-                      src={creator.avatar.url}
-                      alt={`${creator.nickname}'s avatar`}
-                    />
-                  </Avatar>
-                </TableCell>
-                <TableCell>
-                  <p>{creator.nickname}</p>
-                </TableCell>
-                <TableCell>
-                  <p>@{creator.username}</p>
-                </TableCell>
-                <TableCell>
-                  <p>{creator.follower_count.toLocaleString()}</p>
-                </TableCell>
-                <TableCell>
-                  <p>
-                    {creator.gmv?.currency}{' '}
-                    {parseFloat(creator.gmv?.amount).toLocaleString()}
-                  </p>
-                </TableCell>
-                <TableCell>
-                  <p>
-                    {creator.video_gmv?.currency}{' '}
-                    {parseFloat(creator.video_gmv?.amount).toLocaleString()}
-                  </p>
-                </TableCell>
-                <TableCell>
-                  <p>{creator.avg_ec_live_uv}</p>
-                </TableCell>
-                <TableCell>
-                  <p>{creator.avg_ec_video_view_count.toLocaleString()}</p>
-                </TableCell>
-                <TableCell>
-                  <p>{creator.selection_region}</p>
-                </TableCell>
-                <TableCell>
-                  <p>
-                    {creator.top_follower_demographics?.age_ranges
-                      .map((range) =>
-                        range.replace('AGE_RANGE_', '').replace(/_/g, '-')
-                      )
-                      .join(', ')}
-                  </p>
-                </TableCell>
-                <TableCell>
-                  <p>
-                    {creator.top_follower_demographics?.major_gender.gender}
-                  </p>
-                </TableCell>
-                <TableCell>
-                  <p>
-                    {(
-                      creator.top_follower_demographics?.major_gender
-                        .percentage / 100
-                    ).toFixed(2)}
-                    %
-                  </p>
-                </TableCell>
-                <TableCell>
-                  <p>{creator.category_ids.join(', ')}</p>
-                </TableCell>
-                <TableCell>
-                  <p>
-                    {creator.units_sold_range?.minimum_amount.toLocaleString()}
-                  </p>
-                </TableCell>
-                <TableCell>
-                  <p>
-                    {creator.gmv_range?.currency}{' '}
-                    {parseFloat(
-                      creator.gmv_range?.minimum_amount
-                    ).toLocaleString()}
-                  </p>
-                </TableCell>
-              </TableRow>
+              <CreatorRow key={index} creator={creator} />
             ))}
           </TableBody>
         </Table>
