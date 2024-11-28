@@ -97,7 +97,7 @@ export default function ProductRow({ product }: { product: any }) {
 
       <TableCell>
         <Link href={`/seller/products/${product.id}`} className="no-underline">
-          <span className="underline">{product.title}</span>
+          <span className="text-blue-800 font-medium">{product.title}</span>
         </Link>
       </TableCell>
       <TableCell>{detail.brand.name}</TableCell>
