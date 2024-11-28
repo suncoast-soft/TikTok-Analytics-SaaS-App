@@ -4,28 +4,17 @@ import { useEffect, useState } from 'react'
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import Loading from '@/components/modules/Loading'
 import { SearchIcon } from 'lucide-react'
-import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { requestTikTokShopAPIClient } from '@/app/actions'
+import ProductRow from './ProductRow'
 
-// Types for Product and Detail responses
 interface Inventory {
   quantity: number
   warehouse_id: string
@@ -55,13 +44,6 @@ interface Product {
   update_time: number
 }
 
-interface ProductDetail {
-  brand: { id: string; name: string }
-  description: string
-  main_images: { urls: string[] }[]
-  category_chains: { local_name: string }[]
-}
-
 const fetchProducts = async (params: any) => {
   const data = await requestTikTokShopAPIClient(
     '/product/202309/products/search',
@@ -72,49 +54,24 @@ const fetchProducts = async (params: any) => {
   return data.data
 }
 
-const fetchProductDetail = async (productId: string, params: any) => {
-  const data = await requestTikTokShopAPIClient(
-    `/product/202309/products/${productId}`,
-    params,
-    'GET',
-    ''
-  )
-  return data.data
-}
-
 export default function ProductList() {
   const [products, setProducts] = useState<Product[]>([])
-  const [productDetails, setProductDetails] = useState<{
-    [key: string]: ProductDetail
-  }>({})
   const [nextPageToken, setNextPageToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [keyword, setKeyword] = useState<string>('')
 
-  // Load initial product data
   const loadInitialData = async () => {
     setIsLoading(true)
-    const data = await fetchProducts({ page_size: 10 })
+    const data = await fetchProducts({ status: 'ACTIVATE', page_size: 10 })
     setProducts(data.products || [])
     setNextPageToken(data.next_page_token || null)
     setIsLoading(false)
   }
 
-  // Fetch details for a specific product
-  const loadProductDetail = async (productId: string) => {
-    if (!productDetails[productId]) {
-      const detailData = await fetchProductDetail(productId, {})
-      setProductDetails((prevDetails) => ({
-        ...prevDetails,
-        [productId]: detailData.data
-      }))
-    }
-  }
-
-  // Handle search functionality
   const handleSearch = async () => {
     setIsLoading(true)
     const data = await fetchProducts({
+      status: 'ACTIVATE',
       page_size: 10,
       keyword
     })
@@ -122,12 +79,12 @@ export default function ProductList() {
     setIsLoading(false)
   }
 
-  // Load more products for pagination
   const loadMoreProducts = async () => {
     if (!nextPageToken) return
 
     setIsLoading(true)
     const data = await fetchProducts({
+      status: 'ACTIVATE',
       page_size: 10,
       page_token: nextPageToken
     })
@@ -148,7 +105,7 @@ export default function ProductList() {
       </h1>
 
       <div className="bg-white shadow-sm rounded-md border p-4 mb-8">
-        <div className="flex items-center gap-1 border-b pb-4 mb-4">
+        <div className="flex items-center gap-1">
           <Input
             type="text"
             placeholder="Search products"
@@ -168,54 +125,16 @@ export default function ProductList() {
             <TableRow>
               <TableHead>Image</TableHead>
               <TableHead>Title</TableHead>
-              <TableHead>Brand</TableHead>
+              <TableHead>Seller</TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>SKUs & Colors</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
-            {products.map((product) => {
-              const detail = productDetails[product.id]
 
-              return (
-                <TableRow key={product.id}>
-                  <TableCell>
-                    {detail && detail.main_images[0] && (
-                      <img
-                        src={detail.main_images[0].urls[0]}
-                        alt={product.title}
-                        width="50"
-                      />
-                    )}
-                  </TableCell>
-                  <TableCell>{product.title}</TableCell>
-                  <TableCell>
-                    {detail ? detail.brand.name : 'Loading...'}
-                  </TableCell>
-                  <TableCell>
-                    {detail
-                      ? detail.category_chains
-                          .map((chain) => chain.local_name)
-                          .join(' > ')
-                      : 'Loading...'}
-                  </TableCell>
-                  <TableCell>{product.status}</TableCell>
-                  <TableCell>
-                    {detail ? detail.description : 'Loading...'}
-                  </TableCell>
-                  <TableCell>
-                    {product.skus.map((sku, index) => (
-                      <div key={index}>
-                        <p>SKU: {sku.seller_sku}</p>
-                        <p>Color: {sku.sales_attributes[0].value_name}</p>
-                      </div>
-                    ))}
-                  </TableCell>
-                </TableRow>
-              )
-            })}
+          <TableBody>
+            {products.map((product, index) => (
+              <ProductRow key={index} product={product} />
+            ))}
           </TableBody>
         </Table>
       </div>
