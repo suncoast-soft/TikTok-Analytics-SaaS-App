@@ -42,7 +42,7 @@ export default async function AuthForms({
     viewProp = params.id
   } else {
     const preferredSignInView =
-      cookies().get('preferredSignInView')?.value || null
+      (await cookies()).get('preferredSignInView')?.value || null
     viewProp = getDefaultSignInView(preferredSignInView)
     return redirect(`/${type}/${viewProp}`)
   }

@@ -21,7 +21,7 @@ if (!supabaseServiceRoleKey) {
 }
 
 export async function POST(request: Request) {
-  const headersObj = headers()
+  const headersObj = await headers()
   const sig = headersObj.get('stripe-signature')
 
   if (!stripeSecretKey) {

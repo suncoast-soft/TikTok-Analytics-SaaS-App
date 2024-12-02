@@ -36,7 +36,7 @@ export async function SignOut(formData: { [key: string]: string | number }) {
 export async function signInWithEmail(formData: {
   [key: string]: string | number
 }) {
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const callbackURL = getURL('/auth/callback')
 
   const email = String(formData['email']).trim()
@@ -139,7 +139,7 @@ export async function requestPasswordUpdate(formData: {
 export async function signInWithPassword(formData: {
   [key: string]: string | number
 }) {
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const email = String(formData['email']).trim()
   const password = String(formData['password']).trim()
   const type = String(formData['type']).trim()

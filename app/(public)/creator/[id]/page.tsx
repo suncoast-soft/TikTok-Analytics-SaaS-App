@@ -6,7 +6,8 @@ import FormHero from '@/components/modules/Landing/FormHero'
 import HowItWorks from '@/components/modules/Landing/HowItWorks'
 import Testimonials from '@/components/modules/Landing/Testimonials'
 
-export default async function Seller({ params }: { params: { id: string } }) {
+export default async function Seller(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   return (
     <div className="container mx-auto p-8">
       <FormHero
