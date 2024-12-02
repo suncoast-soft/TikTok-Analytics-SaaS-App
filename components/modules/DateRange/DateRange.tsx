@@ -51,12 +51,13 @@ export default function DatePickerWithRange({
           <Button
             id="date"
             variant={'outline'}
+            size="sm"
             className={cn(
-              'w-[300px] justify-start text-left font-normal',
+              'w-[260px] justify-start text-left font-normal mb-4 ml-auto',
               !date && 'text-muted-foreground'
             )}
           >
-            <CalendarIcon />
+            <CalendarIcon className="mr-2" />
             {date?.from ? (
               date.to ? (
                 <>
@@ -71,10 +72,11 @@ export default function DatePickerWithRange({
             )}
           </Button>
         </PopoverTrigger>
+
         <PopoverContent className="w-auto p-0" align="start">
           <Select onValueChange={handleSelectChange}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select" />
+            <SelectTrigger className="bg-orange-100/40">
+              <SelectValue placeholder="Select Date Range" />
             </SelectTrigger>
             <SelectContent position="popper">
               <SelectItem value="7">Last 7 days</SelectItem>
@@ -82,6 +84,7 @@ export default function DatePickerWithRange({
               <SelectItem value="90">Last 3 months</SelectItem>
             </SelectContent>
           </Select>
+
           <Calendar
             initialFocus
             mode="range"

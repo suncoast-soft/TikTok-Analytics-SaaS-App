@@ -25,7 +25,6 @@ const fetchShopPerformance = async (params: APIParams) => {
 
 export default function SellerDashboard() {
   const [intervals, setIntervals] = useState([])
-  const [comparisonIntervals, setComparisonIntervals] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 8),
@@ -36,37 +35,31 @@ export default function SellerDashboard() {
     setIsLoading(true)
 
     const data = await fetchShopPerformance({
-      start_date_ge: formatDate(date?.from!, 'yyyy-mm-dd'),
-      end_date_lt: formatDate(date?.to!, 'yyyy-mm-dd'),
-      granularity: '1D',
-      with_comparison: 'true'
+      start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
+      end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd'),
+      granularity: '1D'
     })
 
-    console.log(data)
-
     setIntervals(data.performance.intervals || [])
-    setComparisonIntervals(data.performance.comparison_intervals || [])
     setIsLoading(false)
   }
 
   useEffect(() => {
     loadInitialData()
-  }, [])
+  }, [date])
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Performance Dashboard</h1>
-
-      <div className="mt-12">
+      <div className="flex justify-between px-4">
+        <h1 className="text-3xl font-bold mb-4">Analytics</h1>
         <DatePickerWithRange date={date} setDate={setDate} />
+      </div>
 
+      <div className="mt-4">
         {isLoading ? (
           <Loading />
         ) : (
-          <PerformanceChart
-            intervals={intervals}
-            comparisonIntervals={comparisonIntervals}
-          />
+          <PerformanceChart date={date} intervals={intervals} />
         )}
       </div>
     </div>
