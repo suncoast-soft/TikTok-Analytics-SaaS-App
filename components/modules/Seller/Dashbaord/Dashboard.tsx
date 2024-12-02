@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { DateRange } from 'react-day-picker'
 import Loading from '../../Loading'
 import DatePickerWithRange from '../../DateRange'
+import { MetricsChart } from './MetricsChart'
 
 interface APIParams {
   [key: string]: string | number
@@ -25,6 +26,7 @@ const fetchShopPerformance = async (params: APIParams) => {
 
 export default function SellerDashboard() {
   const [intervals, setIntervals] = useState([])
+  const [overview, setOverview] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 8),
@@ -34,13 +36,21 @@ export default function SellerDashboard() {
   const loadInitialData = async () => {
     setIsLoading(true)
 
-    const data = await fetchShopPerformance({
+    const dailyData = await fetchShopPerformance({
       start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
       end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd'),
       granularity: '1D'
     })
+    const overviewData = await fetchShopPerformance({
+      start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
+      end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd')
+    })
 
-    setIntervals(data.performance.intervals || [])
+    console.log(dailyData)
+    console.log(overviewData)
+
+    setIntervals(dailyData.performance.intervals || [])
+    setOverview(overviewData.performance.intervals[0] || {})
     setIsLoading(false)
   }
 
@@ -59,7 +69,10 @@ export default function SellerDashboard() {
         {isLoading ? (
           <Loading />
         ) : (
-          <PerformanceChart date={date} intervals={intervals} />
+          <>
+            <MetricsChart date={date} intervals={intervals} />
+            <PerformanceChart date={date} overview={overview} />
+          </>
         )}
       </div>
     </div>

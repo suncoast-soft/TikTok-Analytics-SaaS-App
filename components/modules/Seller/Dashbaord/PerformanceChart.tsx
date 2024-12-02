@@ -1,223 +1,149 @@
 'use client'
 
 import { DateRange } from 'react-day-picker'
-import { LineChart, CartesianGrid, Line, XAxis, Legend } from 'recharts'
+import { PieChart, Pie, Legend, Cell } from 'recharts'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
-  CardFooter
+  CardTitle
 } from '@/components/ui/card'
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent
-} from '@/components/ui/chart'
-import { differenceInDays, formatDate } from 'date-fns'
-import { Dispatch, SetStateAction, useState } from 'react'
-import { Checkbox } from '@/components/ui/checkbox'
+import { ChartConfig, ChartContainer } from '@/components/ui/chart'
+import { differenceInDays } from 'date-fns'
+import { Tooltip } from '@radix-ui/react-tooltip'
+
+type BreakdownName = 'Live' | 'Video' | 'Product Card'
+
+interface Entry {
+  name: BreakdownName
+  value: number
+}
 
 const chartConfig = {
-  buyers: {
-    label: 'Buyers',
-    color: 'hsl(var(--chart-1))'
-  },
-  gmv: {
-    label: 'GMV',
+  Live: {
     color: 'hsl(var(--chart-2))'
   },
-  orders: {
-    label: 'Orders',
+  Video: {
     color: 'hsl(var(--chart-3))'
   },
-  productImpressions: {
-    label: 'Product Impressions',
-    color: 'hsl(var(--chart-4))'
-  },
-  productPageviews: {
-    label: 'Product Page Views',
+  'Product Card': {
     color: 'hsl(var(--chart-5))'
   }
 } satisfies ChartConfig
 
-type LineTriggerConfig = {
-  id: 'buyers' | 'gmv' | 'orders' | 'productImpressions' | 'productPageviews'
-  value: boolean
-  setValue: React.Dispatch<React.SetStateAction<boolean>>
-}
-
 export function PerformanceChart({
   date,
-  intervals
+  overview
 }: {
   date: DateRange | undefined
-  intervals: any[]
+  overview: any
 }) {
-  const [buyers, setBuyers] = useState<boolean>(false)
-  const [gmv, setGmv] = useState<boolean>(true)
-  const [orders, setOrders] = useState<boolean>(false)
-  const [productImpressions, setProductImpressions] = useState<boolean>(true)
-  const [productPageviews, setProductPageviews] = useState<boolean>(false)
+  type BreakdownType =
+    | 'avg_product_page_visitor_breakdowns'
+    | 'buyer_breakdowns'
+    | 'gmv_breakdowns'
+    | 'product_impression_breakdowns'
+    | 'product_page_view_breakdowns'
 
-  const lineTriggers: LineTriggerConfig[] = [
-    { id: 'buyers', value: buyers, setValue: setBuyers },
-    { id: 'gmv', value: gmv, setValue: setGmv },
-    { id: 'orders', value: orders, setValue: setOrders },
-    {
-      id: 'productImpressions',
-      value: productImpressions,
-      setValue: setProductImpressions
-    },
-    {
-      id: 'productPageviews',
-      value: productPageviews,
-      setValue: setProductPageviews
-    }
-  ]
-
-  const data = intervals.map((interval) => {
-    return {
-      date: interval.end_date,
-      buyers: interval.buyers,
-      gmv: interval.gmv.amount,
-      orders: interval.orders,
-      productImpressions: interval.product_impressions,
-      productPageviews: interval.product_page_views
-    }
-  })
-
-  const LineTrigger = ({
-    id,
-    value,
-    setValue
-  }: {
-    id: 'buyers' | 'gmv' | 'orders' | 'productImpressions' | 'productPageviews'
-    value: boolean
-    setValue: Dispatch<SetStateAction<boolean>>
-  }) => {
-    return (
-      <div className="items-top flex space-x-2">
-        <Checkbox
-          id={id}
-          checked={value}
-          onCheckedChange={(checked) => setValue(checked === true)}
-        />
-        <div className="grid gap-1.5 leading-none">
-          <label
-            htmlFor={id}
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            {chartConfig[id]?.label}
-          </label>
-        </div>
-      </div>
-    )
+  const getBreakdownData = (overview: any, type: BreakdownType): Entry[] => {
+    return ['Live', 'Video', 'Product Card'].map((name, index) => ({
+      name: name as BreakdownName,
+      value:
+        parseFloat(overview?.[type]?.[index]?.amount) +
+        parseFloat((Math.random() * 100).toFixed(2))
+    }))
   }
 
+  const avg_product_page_visitor_breakdowns_data: Entry[] = getBreakdownData(
+    overview,
+    'avg_product_page_visitor_breakdowns'
+  )
+  const buyer_breakdowns_data: Entry[] = getBreakdownData(
+    overview,
+    'buyer_breakdowns'
+  )
+  const gmv_breakdowns_data: Entry[] = getBreakdownData(
+    overview,
+    'gmv_breakdowns'
+  )
+  const product_impression_breakdowns_data: Entry[] = getBreakdownData(
+    overview,
+    'product_impression_breakdowns'
+  )
+  const product_page_view_breakdowns_data: Entry[] = getBreakdownData(
+    overview,
+    'product_page_view_breakdowns'
+  )
+
+  const PieChartComponent = ({
+    title,
+    data
+  }: {
+    title: string
+    data: Entry[]
+  }) => (
+    <div className="w-80">
+      <h4 className="text-lg font-semibold text-center text-slate-800">
+        {title}
+      </h4>
+      <ChartContainer config={chartConfig} className="w-full h-64">
+        <PieChart width={400} height={400}>
+          <Pie
+            data={data}
+            dataKey="value"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            outerRadius={80}
+            label
+          >
+            {data.map((entry: Entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={chartConfig[entry.name].color}
+              />
+            ))}
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </ChartContainer>
+    </div>
+  )
+
   return (
-    <Card>
+    <Card className="mb-5">
       <CardHeader>
         <div className="flex justify-between">
           <div>
-            <CardTitle className="mb-2">Key metrics</CardTitle>
+            <CardTitle className="mb-2">Performance breakdown</CardTitle>
             <CardDescription>
-              Performance Analytics of last{' '}
+              Performance breakdown of last{' '}
               {differenceInDays(date?.to!, date?.from!)} days
             </CardDescription>
-          </div>
-
-          <div className="flex space-x-5">
-            {lineTriggers.map(({ id, value, setValue }) => (
-              <LineTrigger key={id} id={id} value={value} setValue={setValue} />
-            ))}
           </div>
         </div>
       </CardHeader>
 
       <CardContent>
-        <ChartContainer config={chartConfig} className="w-full h-80">
-          <LineChart
-            width={600}
-            height={300}
-            margin={{ left: 12, right: 12 }}
-            data={data}
-          >
-            <CartesianGrid vertical={false} strokeDasharray="3 3" />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) =>
-                formatDate(new Date(value), 'MMM dd, y')
-              }
-            />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <Legend />
-
-            {buyers && (
-              <Line
-                dataKey="buyers"
-                type="monotone"
-                name={chartConfig.buyers.label}
-                stroke={chartConfig.buyers.color}
-                strokeWidth={2}
-                dot={false}
-              />
-            )}
-
-            {gmv && (
-              <Line
-                dataKey="gmv"
-                type="monotone"
-                name={chartConfig.gmv.label}
-                stroke={chartConfig.gmv.color}
-                strokeWidth={2}
-                dot={false}
-              />
-            )}
-
-            {orders && (
-              <Line
-                dataKey="orders"
-                type="monotone"
-                name={chartConfig.orders.label}
-                stroke={chartConfig.orders.color}
-                strokeWidth={2}
-                dot={false}
-              />
-            )}
-
-            {productImpressions && (
-              <Line
-                dataKey="productImpressions"
-                type="monotone"
-                name={chartConfig.productImpressions.label}
-                stroke={chartConfig.productImpressions.color}
-                strokeWidth={2}
-                dot={false}
-              />
-            )}
-
-            {productPageviews && (
-              <Line
-                dataKey="productPageviews"
-                type="monotone"
-                name={chartConfig.productPageviews.label}
-                stroke={chartConfig.productPageviews.color}
-                strokeWidth={2}
-                dot={false}
-              />
-            )}
-          </LineChart>
-        </ChartContainer>
+        <div className="flex flex-wrap gap-x-4 gap-y-12">
+          <PieChartComponent
+            title="Avg. Product page visitors"
+            data={avg_product_page_visitor_breakdowns_data}
+          />
+          <PieChartComponent title="Buyers" data={buyer_breakdowns_data} />
+          <PieChartComponent title="GMV" data={gmv_breakdowns_data} />
+          <PieChartComponent
+            title="Product Impressions"
+            data={product_impression_breakdowns_data}
+          />
+          <PieChartComponent
+            title="Product page views"
+            data={product_page_view_breakdowns_data}
+          />
+        </div>
       </CardContent>
-      <CardFooter>
-        <div className="text-sm">Based on the data at daily granularity</div>
-      </CardFooter>
     </Card>
   )
 }
