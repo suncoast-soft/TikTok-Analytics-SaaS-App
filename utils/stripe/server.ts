@@ -11,7 +11,7 @@ export async function createStripePortal(
   return_url: string
 ) {
   try {
-    const supabase = createClient()
+    const supabase = await createClient()
     const user = await getUser(supabase)
 
     if (!user) {

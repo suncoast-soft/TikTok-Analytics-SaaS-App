@@ -74,7 +74,7 @@ export async function requestTikTokShopAPI(
   method: string = 'GET',
   body: string = ''
 ) {
-  const supabase = createClient()
+  const supabase = await createClient()
   const authData = await getSeller(supabase)
 
   if (!authData) {

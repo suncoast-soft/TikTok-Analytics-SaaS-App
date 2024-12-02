@@ -9,7 +9,7 @@ import User from '../User'
 import { getUser } from '@/utils/supabase/queries'
 
 export default async function Navbar() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const user = await getUser(supabase)
 
   const navLinks = [

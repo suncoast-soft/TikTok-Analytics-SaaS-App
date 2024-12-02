@@ -6,7 +6,7 @@ import { getUser } from '@/utils/supabase/queries'
 import { createClient } from '@/utils/supabase/server'
 
 export default async function AuthTiktok() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const user = await getUser(supabase)
   const redirectMethod = getRedirectMethod()
 

@@ -18,7 +18,7 @@ const {
  * @returns Updated seller authentication data or null if unsuccessful.
  */
 export const generateAccessToken = async (auth_code: string) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   // Headers for the API request
   const myHeaders = new Headers({ 'content-type': 'application/json' })
@@ -98,7 +98,7 @@ export const generateAccessToken = async (auth_code: string) => {
  * @returns Refreshed seller authentication data.
  */
 export const refreshAccessToken = async (refresh_token: string) => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const myHeaders = new Headers({ 'content-type': 'application/json' })
 
@@ -152,7 +152,7 @@ export const refreshAccessToken = async (refresh_token: string) => {
  * @returns The valid access token or null if unable to obtain one.
  */
 export const getAccessToken = async () => {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const authData = await getSeller(supabase)
   if (!authData) throw new Error('No token data found.')

@@ -6,7 +6,7 @@ import { format } from 'date-fns'
 import Link from 'next/link'
 
 export default async function AuthTiktok() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const creator = await getCreator(supabase)
 
   return (

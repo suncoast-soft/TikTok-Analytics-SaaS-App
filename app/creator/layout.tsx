@@ -18,7 +18,7 @@ export default async function CreatorLayout({
 }: {
   children: React.ReactNode
 }) {
-  const supabase = createClient()
+  const supabase = await createClient()
   const user = await getUser(supabase)
 
   if (!user || user.type !== 'creator') {

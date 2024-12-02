@@ -7,7 +7,7 @@ export default async function SellerPrivateLayout({
 }: {
   children: React.ReactNode
 }) {
-  const supabase = createClient()
+  const supabase = await createClient()
   const [subscription, seller] = await Promise.all([
     getSubscription(supabase),
     getSeller(supabase)
