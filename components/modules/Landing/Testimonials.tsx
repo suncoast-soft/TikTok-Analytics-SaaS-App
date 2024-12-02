@@ -1,4 +1,3 @@
-import { SmileIcon } from 'lucide-react'
 import Image from 'next/image'
 
 const testimonials = [
@@ -24,7 +23,10 @@ export default function Testimonials() {
       </h2>
       <div className="grid md:grid-cols-2 gap-8 space-y-8 md:space-y-0">
         {testimonials.map((testimonial, index) => (
-          <blockquote className="bg-yellow-50/40 p-6 pl-28 rounded-lg shadow transform hover:-translate-x-1 hover:translate-y-1 transition relative">
+          <blockquote
+            key={index}
+            className="bg-yellow-50/40 p-6 pl-28 rounded-lg shadow transform hover:-translate-x-1 hover:translate-y-1 transition relative"
+          >
             <p className="italic">"{testimonial.text}"</p>
 
             <footer className="mt-4 text-right">— {testimonial.name}</footer>

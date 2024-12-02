@@ -27,7 +27,13 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
       )}
     >
       <div className="w-full md:w-1/2 relative h-80 rounded-lg overflow-hidden">
-        <Image src={image} alt={altText} fill={true} className="object-cover" />
+        <Image
+          src={image}
+          alt={altText}
+          fill={true}
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 644px"
+        />
       </div>
 
       <div className="w-full md:w-1/2 p-2 space-y-4 flex flex-col justify-center">
