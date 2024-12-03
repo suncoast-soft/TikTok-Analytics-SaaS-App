@@ -6,12 +6,14 @@ import {
   ClapperboardIcon,
   HandshakeIcon,
   LayoutDashboardIcon,
-  ShoppingBag
+  ShoppingBag,
+  VideotapeIcon
 } from 'lucide-react'
 import User from '@/components/modules/User'
 import { getUser } from '@/utils/supabase/queries'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import LogoBlue from '@/components/icons/LogoBlue'
+import { cookies } from 'next/headers'
 
 export default async function CreatorLayout({
   children
@@ -25,26 +27,36 @@ export default async function CreatorLayout({
     return redirect('/')
   }
 
+  const cookieStore = await cookies()
+  const seller = cookieStore.get('seller')?.value
+
   const navs = [
     {
       icon: <LayoutDashboardIcon />,
-      name: 'Dashboard',
-      link: '/creator/dashboard'
+      name: 'Analytics',
+      link: seller ? `/creator/sellers/${seller}/analytics` : '/creator/sellers'
     },
     {
       icon: <ShoppingBag />,
       name: 'Products',
-      link: '/creator/products'
+      link: seller ? `/creator/sellers/${seller}/products` : '/creator/sellers'
+    },
+    {
+      icon: <VideotapeIcon />,
+      name: 'Videos',
+      link: seller ? `/creator/sellers/${seller}/videos` : '/creator/sellers'
     },
     {
       icon: <ClapperboardIcon />,
       name: 'Creators',
-      link: '/creator/creators'
+      link: seller ? `/creator/sellers/${seller}/creators` : '/creator/sellers'
     },
     {
       icon: <HandshakeIcon />,
       name: 'Affiliates',
-      link: '/creator/affiliates'
+      link: seller
+        ? `/creator/sellers/${seller}/affiliates`
+        : '/creator/sellers'
     }
   ]
 

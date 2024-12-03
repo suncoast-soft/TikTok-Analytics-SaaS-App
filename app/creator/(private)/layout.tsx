@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import { getSeller, getSubscription } from '@/utils/supabase/queries'
+import { getSubscription } from '@/utils/supabase/queries'
 
 export default async function SellerPrivateLayout({
   children

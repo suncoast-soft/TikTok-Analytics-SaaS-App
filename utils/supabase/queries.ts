@@ -35,6 +35,23 @@ export const getSubscription = cache(async (supabase: SupabaseClient) => {
   return subscription
 })
 
+export const getSellers = cache(async (supabase: SupabaseClient) => {
+  const user = await getUser(supabase)
+
+  if (!user) {
+    return []
+  }
+
+  const { data: sellers, error } = await supabase.from('sellers').select('*')
+
+  if (error) {
+    console.error('Failed to fetch sellers', error)
+    return []
+  }
+
+  return sellers
+})
+
 export const getSeller = cache(async (supabase: SupabaseClient) => {
   const user = await getUser(supabase)
 
