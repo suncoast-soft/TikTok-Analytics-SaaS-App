@@ -16,8 +16,8 @@ export default function Footer() {
               Terms of Service
             </a>{' '}
             |
-            <a href="/contact-us" className="hover:text-white mx-2">
-              Help Center
+            <a href="/seller/signup" className="hover:text-white mx-2">
+              Become a partner
             </a>
           </div>
 

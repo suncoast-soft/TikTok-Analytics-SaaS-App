@@ -6,8 +6,10 @@ import FormHero from '@/components/modules/Landing/FormHero'
 import HowItWorks from '@/components/modules/Landing/HowItWorks'
 import Testimonials from '@/components/modules/Landing/Testimonials'
 
-export default async function Seller(props: { params: Promise<{ id: string }> }) {
-  const params = await props.params;
+export default async function Seller(props: {
+  params: Promise<{ id: string }>
+}) {
+  const params = await props.params
   return (
     <div className="container mx-auto p-8">
       <FormHero
@@ -20,7 +22,7 @@ export default async function Seller(props: { params: Promise<{ id: string }> })
                 ? 'Sign Up'
                 : 'Sign In'
         }
-        subtitle="For TikTok Shop Businesses"
+        subtitle="For TikTok Creators"
         form={<AuthForms params={params} type="creator" />}
       />
 

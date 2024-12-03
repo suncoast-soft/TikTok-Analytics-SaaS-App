@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import { getSeller, getSubscription } from '@/utils/supabase/queries'
+import { getSeller } from '@/utils/supabase/queries'
 
 export default async function SellerPrivateLayout({
   children
@@ -8,17 +8,10 @@ export default async function SellerPrivateLayout({
   children: React.ReactNode
 }) {
   const supabase = await createClient()
-  const [subscription, seller] = await Promise.all([
-    getSubscription(supabase),
-    getSeller(supabase)
-  ])
+  const [seller] = await Promise.all([getSeller(supabase)])
 
   if (!seller) {
     return redirect('/seller/auth-tiktok')
-  }
-
-  if (!subscription) {
-    return redirect('/seller/subscription')
   }
 
   return children

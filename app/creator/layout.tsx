@@ -50,10 +50,6 @@ export default async function CreatorLayout({
 
   const settings = [
     {
-      name: 'Connect TikTok',
-      link: '/creator/auth-tiktok'
-    },
-    {
       name: 'Manage Subscription',
       link: '/creator/subscription'
     },

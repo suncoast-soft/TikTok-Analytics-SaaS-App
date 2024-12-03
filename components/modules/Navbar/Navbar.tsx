@@ -22,10 +22,6 @@ export default async function Navbar() {
       name: 'How It Works'
     },
     {
-      link: '/#pricing',
-      name: 'Pricing'
-    },
-    {
       link: '/#contactus',
       name: 'Contact Us'
     }
@@ -67,13 +63,16 @@ export default async function Navbar() {
             ) : (
               <div className="hidden lg:flex justify-end items-center space-x-4 ml-auto">
                 <Button variant="link" asChild>
-                  <Link href="/seller" className="no-underline">
-                    For Sellers
+                  <Link
+                    href="/creator/password_signin"
+                    className="no-underline"
+                  >
+                    Login
                   </Link>
                 </Button>
                 <Button variant="default" asChild>
-                  <Link href="/creator" className="no-underline">
-                    For Creators
+                  <Link href="/creator/signup" className="no-underline">
+                    Start Free Trial
                   </Link>
                 </Button>
               </div>
@@ -107,14 +106,16 @@ export default async function Navbar() {
                   ) : (
                     <div className="mt-4 flex justify-end">
                       <Button variant="link" asChild>
-                        <Link href="/login" className="no-underline">
-                          Log In
+                        <Link
+                          href="/creator/password_signin"
+                          className="no-underline"
+                        >
+                          Login
                         </Link>
                       </Button>
-
                       <Button variant="default" asChild>
-                        <Link href="/register" className="no-underline">
-                          Register For Free
+                        <Link href="/creator/signup" className="no-underline">
+                          Start Free Trial
                         </Link>
                       </Button>
                     </div>

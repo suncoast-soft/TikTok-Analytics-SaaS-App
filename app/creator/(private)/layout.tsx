@@ -8,17 +8,10 @@ export default async function SellerPrivateLayout({
   children: React.ReactNode
 }) {
   const supabase = await createClient()
-  const [subscription, seller] = await Promise.all([
-    getSubscription(supabase),
-    getSeller(supabase)
-  ])
-
-  if (!seller) {
-    return redirect('/seller/auth-tiktok')
-  }
+  const [subscription] = await Promise.all([getSubscription(supabase)])
 
   if (!subscription) {
-    return redirect('/seller/subscription')
+    return redirect('/creator/subscription')
   }
 
   return children
