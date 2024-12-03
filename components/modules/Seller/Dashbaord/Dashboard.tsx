@@ -21,7 +21,7 @@ const fetchShopPerformance = async (params: APIParams) => {
     ''
   )
 
-  return data.data
+  return data?.data
 }
 
 export default function SellerDashboard() {
@@ -49,8 +49,8 @@ export default function SellerDashboard() {
     console.log(dailyData)
     console.log(overviewData)
 
-    setIntervals(dailyData.performance.intervals || [])
-    setOverview(overviewData.performance.intervals[0] || {})
+    setIntervals(dailyData?.performance.intervals || [])
+    setOverview(overviewData?.performance.intervals[0] || {})
     setIsLoading(false)
   }
 

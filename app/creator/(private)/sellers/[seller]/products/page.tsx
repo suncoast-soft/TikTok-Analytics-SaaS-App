@@ -1,3 +1,5 @@
-export default async function Products() {
-  return <div>Seller Dashboard</div>
+import SellerProducts from '@/components/modules/Seller/Products'
+
+export default function ProductsPage() {
+  return <SellerProducts />
 }

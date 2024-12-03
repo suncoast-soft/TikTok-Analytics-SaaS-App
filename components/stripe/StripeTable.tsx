@@ -12,7 +12,7 @@ interface StripePricingTableProps
   'publishable-key': string
 }
 
-declare global {
+declare module 'react' {
   namespace JSX {
     interface IntrinsicElements {
       'stripe-pricing-table': StripePricingTableProps

@@ -55,7 +55,7 @@ const fetchProducts = async (params: APIParams) => {
     'POST',
     ''
   )
-  return data.data
+  return data?.data
 }
 
 export default function ProductList() {
@@ -67,8 +67,8 @@ export default function ProductList() {
   const loadInitialData = async () => {
     setIsLoading(true)
     const data = await fetchProducts({ status: 'ACTIVATE', page_size: 10 })
-    setProducts(data.products || [])
-    setNextPageToken(data.next_page_token || null)
+    setProducts(data?.products || [])
+    setNextPageToken(data?.next_page_token || null)
     setIsLoading(false)
   }
 
@@ -79,7 +79,7 @@ export default function ProductList() {
       page_size: 10,
       keyword
     })
-    setProducts(data.products || [])
+    setProducts(data?.products || [])
     setIsLoading(false)
   }
 
@@ -93,8 +93,8 @@ export default function ProductList() {
       page_token: nextPageToken
     })
 
-    setProducts((prev) => [...prev, ...(data.products || [])])
-    setNextPageToken(data.next_page_token || null)
+    setProducts((prev) => [...prev, ...(data?.products || [])])
+    setNextPageToken(data?.next_page_token || null)
     setIsLoading(false)
   }
 

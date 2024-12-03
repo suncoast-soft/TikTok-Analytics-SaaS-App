@@ -9,6 +9,47 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      creators: {
+        Row: {
+          access_token: string | null
+          access_token_expire_at: number | null
+          created_at: string
+          refresh_token: string | null
+          refresh_token_expire_at: number | null
+          seller_name: string | null
+          shop_cipher: string | null
+          user_id: string
+        }
+        Insert: {
+          access_token?: string | null
+          access_token_expire_at?: number | null
+          created_at?: string
+          refresh_token?: string | null
+          refresh_token_expire_at?: number | null
+          seller_name?: string | null
+          shop_cipher?: string | null
+          user_id: string
+        }
+        Update: {
+          access_token?: string | null
+          access_token_expire_at?: number | null
+          created_at?: string
+          refresh_token?: string | null
+          refresh_token_expire_at?: number | null
+          seller_name?: string | null
+          shop_cipher?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "creators_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sellers: {
         Row: {
           access_token: string | null
