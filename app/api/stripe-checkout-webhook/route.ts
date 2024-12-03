@@ -34,7 +34,7 @@ export async function POST(request: Request) {
   }
 
   const stripe = new Stripe(stripeSecretKey, {
-    apiVersion: '2024-09-30.acacia',
+    apiVersion: '2024-11-20.acacia',
     typescript: true
   })
 

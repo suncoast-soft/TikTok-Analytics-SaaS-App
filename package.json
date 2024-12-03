@@ -52,9 +52,9 @@
     "embla-carousel-react": "^8.5.1",
     "lucide-react": "^0.451.0",
     "next": "15.0.3",
-    "react": "19.0.0-rc-66855b96-20241106",
+    "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
-    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
     "react-merge-refs": "^2.1.1",
     "recharts": "^2.13.3",
@@ -68,8 +68,8 @@
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",
     "@types/node": "^22.7.5",
-    "@types/react": "npm:types-react@19.0.0-rc.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.0.3",
@@ -84,9 +84,5 @@
   },
   "engines": {
     "node": ">=20.17.0"
-  },
-  "overrides": {
-    "@types/react": "npm:types-react@19.0.0-rc.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
   }
 }
