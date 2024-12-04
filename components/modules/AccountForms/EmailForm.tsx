@@ -37,10 +37,7 @@ export default function EmailForm({
   const router = useRouter()
 
   const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      email: ''
-    }
+    resolver: zodResolver(FormSchema)
   })
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {

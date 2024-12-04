@@ -77,12 +77,14 @@ export const getSeller = cache(async (supabase: SupabaseClient) => {
     const cookieStore = await cookies()
     const sellerName = cookieStore.get('seller')?.value
 
+    console.log(sellerName)
+
     if (sellerName) {
       const { data: seller, error } = await supabase
         .from('sellers')
         .select('*')
         .eq('seller_name', sellerName)
-        .single()
+        .maybeSingle()
 
       if (error) {
         console.error('Failed to fetch seller auth:', error)

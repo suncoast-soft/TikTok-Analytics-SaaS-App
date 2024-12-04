@@ -12,6 +12,7 @@ import {
   CarouselPrevious
 } from '@/components/ui/carousel'
 import Link from 'next/link'
+import { DialogTitle } from '@radix-ui/react-dialog'
 
 interface ProductDetail {
   brand: { id: string; name: string }
@@ -73,6 +74,7 @@ export default function ProductRow({ product }: { product: any }) {
           </DialogTrigger>
 
           <DialogContent className="max-w-xl p-14">
+            <DialogTitle>{product.title}</DialogTitle>
             <Carousel className="w-full max-w-lg mx-auto">
               <CarouselContent>
                 {detail.main_images.map((image, index) => (
