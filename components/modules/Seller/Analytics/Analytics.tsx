@@ -1,7 +1,7 @@
 'use client'
 
 import { requestTikTokShopAPIClient } from '@/app/actions'
-import { PerformanceChart } from '@/components/modules/Seller/Dashbaord/PerformanceChart'
+import { PerformanceChart } from '@/components/modules/Seller/Analytics/PerformanceChart'
 import { formatDate, subDays } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { DateRange } from 'react-day-picker'
@@ -24,7 +24,7 @@ const fetchShopPerformance = async (params: APIParams) => {
   return data?.data
 }
 
-export default function SellerDashboard() {
+export default function SellerAnalytics() {
   const [intervals, setIntervals] = useState([])
   const [overview, setOverview] = useState({})
   const [isLoading, setIsLoading] = useState(false)

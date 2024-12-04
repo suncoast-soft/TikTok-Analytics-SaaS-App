@@ -28,8 +28,8 @@ export default async function SellerLayout({
   const navs = [
     {
       icon: <LayoutDashboardIcon />,
-      name: 'Dashboard',
-      link: '/seller/dashboard'
+      name: 'Analytics',
+      link: '/seller/analytics'
     },
     {
       icon: <ShoppingBag />,

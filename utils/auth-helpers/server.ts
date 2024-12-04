@@ -210,7 +210,7 @@ export async function signUp(formData: { [key: string]: string | number }) {
     )
   } else if (data.session) {
     redirectPath = getStatusRedirect(
-      `/${type}/dashboard`,
+      `/${type}/analytics`,
       'Success!',
       'You are now signed in.'
     )
@@ -226,7 +226,7 @@ export async function signUp(formData: { [key: string]: string | number }) {
     )
   } else if (data.user) {
     redirectPath = getStatusRedirect(
-      `/${type}/dashboard`,
+      `/${type}/analytics`,
       'Success!',
       'Please check your email for a confirmation link. You may now close this tab.'
     )
@@ -356,57 +356,4 @@ export async function updateName(formData: { [key: string]: string | number }) {
       'Your name could not be updated.'
     )
   }
-}
-
-export async function updateUser(formData: { [key: string]: string | number }) {
-  // Get form data
-  const first_name = String(formData['first_name']).trim()
-  const last_name = String(formData['last_name']).trim()
-  const street1 = String(formData['street1']).trim()
-  const street2 = String(formData['street2']).trim()
-  const city = String(formData['city']).trim()
-  const state = String(formData['state']).trim()
-  const zip = String(formData['zip']).trim()
-  const phone = String(formData['phone']).trim()
-
-  const supabase = await createClient()
-  const user = await getUser(supabase)
-  if (!user) {
-    return getErrorRedirect(
-      '/account/onboarding',
-      'Your profile could not be submitted. Please try again.',
-      'Could not get user session.'
-    )
-  }
-
-  const { error: updateError } = await supabase
-    .from('users')
-    .update({
-      id: user?.id,
-      first_name,
-      last_name,
-      street1,
-      street2,
-      city,
-      state,
-      zip,
-      phone
-    })
-    .eq('id', user.id)
-    .select('*')
-    .single()
-
-  if (updateError) {
-    return getErrorRedirect(
-      '/dashboard/settings/profiles',
-      'Your profile could not be submitted. Please try again.',
-      updateError.message
-    )
-  }
-
-  return getStatusRedirect(
-    '/dashboard/settings/profiles',
-    'Success!',
-    'Your profile has been submitted.'
-  )
 }
