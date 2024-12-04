@@ -39,7 +39,11 @@ export default function UpdatePassword({
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema)
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      password: '',
+      passwordConfirm: ''
+    }
   })
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {

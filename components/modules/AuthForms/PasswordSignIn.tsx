@@ -39,7 +39,11 @@ export default function PasswordSignIn({
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema)
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      email: '',
+      password: ''
+    }
   })
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {

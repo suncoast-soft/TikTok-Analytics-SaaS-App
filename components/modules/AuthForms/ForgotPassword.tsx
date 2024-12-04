@@ -38,7 +38,10 @@ export default function ForgotPassword({
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema)
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      email: ''
+    }
   })
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {

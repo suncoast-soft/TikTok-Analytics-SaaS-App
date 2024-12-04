@@ -39,7 +39,11 @@ export default function SignUp({
   type
 }: SignUpProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema)
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      email: '',
+      password: ''
+    }
   })
 
   const router = redirectMethod === 'client' ? useRouter() : null
