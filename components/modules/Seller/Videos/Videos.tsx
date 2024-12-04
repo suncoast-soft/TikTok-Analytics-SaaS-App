@@ -24,7 +24,7 @@ const fetchShopPerformance = async (params: APIParams) => {
   return data?.data
 }
 
-export default function SellerAnalytics() {
+export default function SellerVideos() {
   const [intervals, setIntervals] = useState([])
   const [overview, setOverview] = useState({})
   const [isLoading, setIsLoading] = useState(false)

@@ -32,7 +32,7 @@ const chartConfig = {
   }
 } satisfies ChartConfig
 
-export function PerformanceChart({
+export default function PerformanceChart({
   date,
   overview
 }: {

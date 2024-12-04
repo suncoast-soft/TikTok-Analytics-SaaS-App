@@ -49,7 +49,7 @@ type LineTriggerConfig = {
   setValue: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function MetricsChart({
+export default function MetricsChart({
   date,
   intervals
 }: {
