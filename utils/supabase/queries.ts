@@ -65,7 +65,7 @@ export const getSeller = cache(async (supabase: SupabaseClient) => {
       .from('sellers')
       .select('*')
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
 
     if (error) {
       console.error('Failed to fetch seller auth:', error)
