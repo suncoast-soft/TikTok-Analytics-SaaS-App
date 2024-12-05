@@ -8,6 +8,7 @@ import Loading from '../../Loading'
 import DatePickerWithRange from '../../DateRange'
 import MetricsChart from '../../MetricsChart'
 import PerformanceChart from '../../PerformanceChart'
+import { ChartConfig } from '@/components/ui/chart'
 
 interface APIParams {
   [key: string]: string | number
@@ -25,7 +26,7 @@ const fetchShopPerformance = async (params: APIParams) => {
 }
 
 export default function SellerAnalytics() {
-  const [intervals, setIntervals] = useState([])
+  const [intervals, setIntervals] = useState<any[]>([])
   const [overview, setOverview] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [date, setDate] = useState<DateRange | undefined>({
@@ -55,9 +56,54 @@ export default function SellerAnalytics() {
     loadInitialData()
   }, [date])
 
+  const metricsChartConfig = {
+    buyers: {
+      label: 'Buyers',
+      color: 'hsl(var(--chart-1))'
+    },
+    gmv: {
+      label: 'GMV',
+      color: 'hsl(var(--chart-2))'
+    },
+    orders: {
+      label: 'Orders',
+      color: 'hsl(var(--chart-3))'
+    },
+    productImpressions: {
+      label: 'Product Impressions',
+      color: 'hsl(var(--chart-4))'
+    },
+    productPageviews: {
+      label: 'Product Page Views',
+      color: 'hsl(var(--chart-5))'
+    }
+  } satisfies ChartConfig
+
+  const metricsChartData = intervals.map((interval) => {
+    return {
+      date: interval.end_date,
+      buyers: interval.buyers,
+      gmv: interval.gmv.amount,
+      orders: interval.orders,
+      productImpressions: interval.product_impressions,
+      productPageviews: interval.product_page_views
+    }
+  })
+
+  const performanceChartConfig = [
+    {
+      type: 'avg_product_page_visitor_breakdowns',
+      title: 'Avg. Product page visitors'
+    },
+    { type: 'buyer_breakdowns', title: 'Buyers' },
+    { type: 'gmv_breakdowns', title: 'GMV' },
+    { type: 'product_impression_breakdowns', title: 'Product Impressions' },
+    { type: 'product_page_view_breakdowns', title: 'Product page views' }
+  ]
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between px-4">
+      <div className="flex justify-between flex-wrap px-4">
         <h1 className="text-3xl font-bold mb-4">Analytics</h1>
         <DatePickerWithRange date={date} setDate={setDate} />
       </div>
@@ -67,8 +113,16 @@ export default function SellerAnalytics() {
           <Loading />
         ) : (
           <>
-            <MetricsChart date={date} intervals={intervals} />
-            <PerformanceChart date={date} overview={overview} />
+            <MetricsChart
+              date={date}
+              config={metricsChartConfig}
+              data={metricsChartData}
+            />
+            <PerformanceChart
+              date={date}
+              data={overview}
+              config={performanceChartConfig}
+            />
           </>
         )}
       </div>

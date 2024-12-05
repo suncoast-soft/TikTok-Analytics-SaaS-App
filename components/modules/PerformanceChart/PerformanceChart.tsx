@@ -32,49 +32,28 @@ const chartConfig = {
   }
 } satisfies ChartConfig
 
+interface BreakdownMapping {
+  type: string
+  title: string
+}
+
 export default function PerformanceChart({
   date,
-  overview
+  data,
+  config
 }: {
   date: DateRange | undefined
-  overview: any
+  data: any
+  config: BreakdownMapping[]
 }) {
-  type BreakdownType =
-    | 'avg_product_page_visitor_breakdowns'
-    | 'buyer_breakdowns'
-    | 'gmv_breakdowns'
-    | 'product_impression_breakdowns'
-    | 'product_page_view_breakdowns'
-
-  const getBreakdownData = (overview: any, type: BreakdownType): Entry[] => {
+  const getBreakdownData = (data: any, type: string): Entry[] => {
     return ['Live', 'Video', 'Product Card'].map((name, index) => ({
       name: name as BreakdownName,
       value:
-        parseFloat(overview?.[type]?.[index]?.amount) +
+        parseFloat(data?.[type]?.[index]?.amount || '0') +
         parseFloat((Math.random() * 100).toFixed(2))
     }))
   }
-
-  const avg_product_page_visitor_breakdowns_data: Entry[] = getBreakdownData(
-    overview,
-    'avg_product_page_visitor_breakdowns'
-  )
-  const buyer_breakdowns_data: Entry[] = getBreakdownData(
-    overview,
-    'buyer_breakdowns'
-  )
-  const gmv_breakdowns_data: Entry[] = getBreakdownData(
-    overview,
-    'gmv_breakdowns'
-  )
-  const product_impression_breakdowns_data: Entry[] = getBreakdownData(
-    overview,
-    'product_impression_breakdowns'
-  )
-  const product_page_view_breakdowns_data: Entry[] = getBreakdownData(
-    overview,
-    'product_page_view_breakdowns'
-  )
 
   const PieChartComponent = ({
     title,
@@ -83,7 +62,7 @@ export default function PerformanceChart({
     title: string
     data: Entry[]
   }) => (
-    <div className="w-80">
+    <div className="w-80 max-w-full">
       <h4 className="text-lg font-semibold text-center text-slate-800">
         {title}
       </h4>
@@ -127,21 +106,17 @@ export default function PerformanceChart({
       </CardHeader>
 
       <CardContent>
-        <div className="flex flex-wrap gap-x-4 gap-y-12">
-          <PieChartComponent
-            title="Avg. Product page visitors"
-            data={avg_product_page_visitor_breakdowns_data}
-          />
-          <PieChartComponent title="Buyers" data={buyer_breakdowns_data} />
-          <PieChartComponent title="GMV" data={gmv_breakdowns_data} />
-          <PieChartComponent
-            title="Product Impressions"
-            data={product_impression_breakdowns_data}
-          />
-          <PieChartComponent
-            title="Product page views"
-            data={product_page_view_breakdowns_data}
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-12">
+          {config.map(
+            (breakdown) =>
+              data[breakdown.type] && (
+                <PieChartComponent
+                  key={breakdown.type}
+                  title={breakdown.title}
+                  data={getBreakdownData(data, breakdown.type)}
+                />
+              )
+          )}
         </div>
       </CardContent>
     </Card>

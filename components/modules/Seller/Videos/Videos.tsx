@@ -9,6 +9,7 @@ import DatePickerWithRange from '../../DateRange'
 import MetricsChart from '../../MetricsChart'
 import PerformanceChart from '../../PerformanceChart'
 import MetricsCards from '../../MetricsCards'
+import { ChartConfig } from '@/components/ui/chart'
 
 interface APIParams {
   [key: string]: string | number
@@ -26,7 +27,7 @@ const fetchVideoPerformanceOverview = async (params: APIParams) => {
 }
 
 export default function SellerVideos() {
-  const [intervals, setIntervals] = useState([])
+  const [intervals, setIntervals] = useState<any[]>([])
   const [overview, setOverview] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [date, setDate] = useState<DateRange | undefined>({
@@ -56,9 +57,38 @@ export default function SellerVideos() {
     loadInitialData()
   }, [date])
 
+  const metricsChartConfig = {
+    gmv: {
+      label: 'GMV',
+      color: 'hsl(var(--chart-2))'
+    },
+    sku_orders: {
+      label: 'SKU Orders',
+      color: 'hsl(var(--chart-3))'
+    },
+    units_sold: {
+      label: 'Units Sold',
+      color: 'hsl(var(--chart-4))'
+    },
+    click_through_rate: {
+      label: 'Click Through Rate',
+      color: 'hsl(var(--chart-5))'
+    }
+  } satisfies ChartConfig
+
+  const metricsChartData = intervals.map((interval) => {
+    return {
+      date: interval.end_date ?? 0,
+      gmv: interval.gmv?.amount ?? 0,
+      sku_orders: interval.sku_orders ?? 0,
+      units_sold: interval.units_sold ?? 0,
+      click_through_rate: interval.click_through_rate ?? 0
+    }
+  })
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between px-4">
+      <div className="flex flex-wrap justify-between px-4">
         <h1 className="text-3xl font-bold mb-4">Video Performance Metrics</h1>
         <DatePickerWithRange date={date} setDate={setDate} />
       </div>
@@ -69,7 +99,11 @@ export default function SellerVideos() {
         ) : (
           <>
             <MetricsCards date={date} overview={overview} />
-            {/* <MetricsChart date={date} intervals={intervals} /> */}
+            <MetricsChart
+              date={date}
+              config={metricsChartConfig}
+              data={metricsChartData}
+            />
           </>
         )}
       </div>
