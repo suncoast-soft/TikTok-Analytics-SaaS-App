@@ -12,16 +12,16 @@ import DatePickerWithRange from '../../DateRange'
 import Loading from '../../Loading'
 import { ChevronLeftIcon } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem
+} from '@/components/ui/carousel'
+import Image from 'next/image'
 
 interface APIParams {
   [key: string]: string | number
-}
-
-interface ProductDetail {
-  brand: { id: string; name: string }
-  description: string
-  main_images: { thumb_urls: string[]; urls: string[] }[]
-  category_chains: { local_name: string }[]
 }
 
 const fetchProductDetail = async (productId: string, params: APIParams) => {
@@ -153,40 +153,91 @@ export default function Product({
           <Loading />
         ) : (
           <>
-            <Card>
-              <CardHeader>
-                <CardTitle>{product.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-5">
-                  <p>ID: {product.id}</p>
-                  <p>
-                    Audit:{' '}
-                    {product.audit?.status === 'APPROVED' ? (
-                      <span className="bg-primary text-white px-1 text-sm rounded">
-                        APPROVED
+            {product && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="leading-normal">
+                    {product.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-5">
+                    <p>ID: {product.id}</p>
+                    <Separator orientation="vertical" className="h-6" />
+                    <p>
+                      Audit:{' '}
+                      {product.audit?.status === 'APPROVED' ? (
+                        <span className="bg-primary text-white px-1 text-sm rounded">
+                          APPROVED
+                        </span>
+                      ) : (
+                        <span className="bg-orange-500 text-white px-1 text-sm rounded">
+                          {product.audit?.status}
+                        </span>
+                      )}
+                    </p>
+                    <Separator orientation="vertical" className="h-6" />
+                    <p>
+                      Status:{' '}
+                      {product.status === 'ACTIVATE' ? (
+                        <span className="bg-primary text-white px-1 text-sm rounded">
+                          ACTIVATE
+                        </span>
+                      ) : (
+                        <span className="bg-orange-500 text-white px-1 text-sm rounded">
+                          {product.status}
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                  <Separator className="my-2" />
+                  <div className="flex flex-wrap gap-5 mb-4">
+                    <p>
+                      Shop:{' '}
+                      <span className="bg-secondary px-1 rounded">
+                        {product.brand?.name}
                       </span>
-                    ) : (
-                      <span className="bg-orange-500 text-white px-1 text-sm rounded">
-                        {product.audit?.status}
-                      </span>
-                    )}
-                  </p>
-                  <p>
-                    Status:{' '}
-                    {product.status === 'ACTIVATE' ? (
-                      <span className="bg-primary text-white px-1 text-sm rounded">
-                        ACTIVATE
-                      </span>
-                    ) : (
-                      <span className="bg-orange-500 text-white px-1 text-sm rounded">
-                        {product.status}
-                      </span>
-                    )}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+                    </p>
+                    <Separator orientation="vertical" className="h-6" />
+                    <p className="bg-secondary px-1 rounded">
+                      {product.category_chains
+                        ?.map((chain: any) => chain.local_name)
+                        .join(' > ')}
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-1 lg:grid-cols-3">
+                    <div className="lg:col-span-1">
+                      <Carousel className="w-full max-w-lg mx-auto">
+                        <CarouselContent>
+                          {product.main_images?.map(
+                            (image: any, index: number) => (
+                              <CarouselItem key={index}>
+                                <div className="p-1">
+                                  <Image
+                                    src={image.urls[0]}
+                                    width={600}
+                                    height={600}
+                                    alt={product.title}
+                                  />
+                                </div>
+                              </CarouselItem>
+                            )
+                          )}
+                        </CarouselContent>
+                      </Carousel>
+                    </div>
+                    <div className="lg:col-span-2">
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: product.description
+                        }}
+                        className="text-sm p-5"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </>
         )}
       </div>

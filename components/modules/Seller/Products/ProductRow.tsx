@@ -31,7 +31,13 @@ const fetchProductDetail = async (productId: string) => {
   return data.data
 }
 
-export default function ProductRow({ product }: { product: any }) {
+export default function ProductRow({
+  product,
+  sellerId
+}: {
+  product: any
+  sellerId?: string
+}) {
   const [detail, setDetail] = useState<ProductDetail | null>(null)
 
   useEffect(() => {
@@ -98,7 +104,10 @@ export default function ProductRow({ product }: { product: any }) {
       </TableCell>
 
       <TableCell>
-        <Link href={`/seller/products/${product.id}`} className="no-underline">
+        <Link
+          href={`/creator/sellers/${sellerId}/products/${product.id}`}
+          className="no-underline"
+        >
           <span className="text-blue-800 font-medium">{product.title}</span>
         </Link>
       </TableCell>

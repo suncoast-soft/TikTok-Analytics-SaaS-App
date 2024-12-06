@@ -58,7 +58,7 @@ const fetchProducts = async (params: APIParams) => {
   return data?.data
 }
 
-export default function ProductList() {
+export default function ProductList({ sellerId }: { sellerId?: string }) {
   const [products, setProducts] = useState<Product[]>([])
   const [nextPageToken, setNextPageToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -137,7 +137,7 @@ export default function ProductList() {
 
           <TableBody>
             {products.map((product, index) => (
-              <ProductRow key={index} product={product} />
+              <ProductRow key={index} product={product} sellerId={sellerId} />
             ))}
           </TableBody>
         </Table>
