@@ -30,7 +30,11 @@ const fetchVideoPerformanceList = async (params: APIParams) => {
   return data?.data
 }
 
-export default function SellerVideosDetail() {
+export default function SellerVideosDetail({
+  sellerId
+}: {
+  sellerId?: string
+}) {
   const [videos, setVideos] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [date, setDate] = useState<DateRange | undefined>({
@@ -80,7 +84,7 @@ export default function SellerVideosDetail() {
 
               <TableBody>
                 {videos.map((video, index) => (
-                  <VideoRow key={index} video={video} />
+                  <VideoRow key={index} video={video} sellerId={sellerId} />
                 ))}
               </TableBody>
             </Table>

@@ -46,7 +46,13 @@ const fetchVideoDetail = async (videoId: string) => {
   }
 }
 
-export default function VideoRow({ video }: { video: any }) {
+export default function VideoRow({
+  video,
+  sellerId
+}: {
+  video: any
+  sellerId?: string
+}) {
   const videoId = video.id
   const productId = video.products?.[0]?.id
 
@@ -98,14 +104,19 @@ export default function VideoRow({ video }: { video: any }) {
 
       <TableCell>
         {productDetail.main_images[0] && (
-          <Tooltip>
+          <Tooltip delayDuration={500}>
             <TooltipTrigger>
-              <Image
-                src={productDetail.main_images[0].thumb_urls[0]}
-                width={60}
-                height={60}
-                alt={productDetail.title}
-              />
+              <Link
+                href={`/creator/sellers/${sellerId}/products/${productDetail.id}`}
+                className="no-underline"
+              >
+                <Image
+                  src={productDetail.main_images[0].thumb_urls[0]}
+                  width={60}
+                  height={60}
+                  alt={productDetail.title}
+                />
+              </Link>
             </TooltipTrigger>
             <TooltipContent>
               <p className="max-w-72">{productDetail.title}</p>
