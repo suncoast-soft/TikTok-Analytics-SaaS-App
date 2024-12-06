@@ -4,6 +4,10 @@ module.exports = {
       {
         protocol: 'https',
         hostname: '**.tiktokcdn-us.com'
+      },
+      {
+        protocol: 'https',
+        hostname: '**.ibyteimg.com'
       }
     ]
   }
