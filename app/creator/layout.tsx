@@ -67,9 +67,20 @@ export default async function CreatorLayout({
     {
       icon: <HandshakeIcon />,
       name: 'Affiliates',
-      link: seller
-        ? `/creator/sellers/${seller}/affiliates`
-        : '/creator/sellers'
+      subnavs: [
+        {
+          name: 'Creator Performance',
+          link: seller
+            ? `/creator/sellers/${seller}/affiliates/performance`
+            : '/creator/sellers'
+        },
+        {
+          name: 'Collaboration Products',
+          link: seller
+            ? `/creator/sellers/${seller}/affiliates/products`
+            : '/creator/sellers'
+        }
+      ]
     }
   ]
 
