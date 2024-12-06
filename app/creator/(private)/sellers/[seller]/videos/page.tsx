@@ -1,5 +1,5 @@
-import SellerVideos from '@/components/modules/Seller/Videos'
+import VideosPerformance from '@/components/modules/Seller/VideosPerformance'
 
-export default function VideosPage() {
-  return <SellerVideos />
+export default function VideosPerformancePage() {
+  return <VideosPerformance />
 }

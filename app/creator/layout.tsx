@@ -44,7 +44,20 @@ export default async function CreatorLayout({
     {
       icon: <VideotapeIcon />,
       name: 'Videos',
-      link: seller ? `/creator/sellers/${seller}/videos` : '/creator/sellers'
+      subnavs: [
+        {
+          name: 'Performance',
+          link: seller
+            ? `/creator/sellers/${seller}/videos`
+            : '/creator/sellers'
+        },
+        {
+          name: 'Details',
+          link: seller
+            ? `/creator/sellers/${seller}/videos/details`
+            : '/creator/sellers'
+        }
+      ]
     },
     {
       icon: <ClapperboardIcon />,

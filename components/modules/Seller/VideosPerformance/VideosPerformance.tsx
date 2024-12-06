@@ -7,7 +7,6 @@ import { DateRange } from 'react-day-picker'
 import Loading from '../../Loading'
 import DatePickerWithRange from '../../DateRange'
 import MetricsChart from '../../MetricsChart'
-import PerformanceChart from '../../PerformanceChart'
 import MetricsCards from '../../MetricsCards'
 import { ChartConfig } from '@/components/ui/chart'
 
@@ -26,9 +25,21 @@ const fetchVideoPerformanceOverview = async (params: APIParams) => {
   return data?.data
 }
 
-export default function SellerVideos() {
+const fetchVideoPerformanceList = async (params: APIParams) => {
+  const data = await requestTikTokShopAPIClient(
+    '/analytics/202409/shop_videos/performance',
+    params,
+    'GET',
+    ''
+  )
+
+  return data?.data
+}
+
+export default function SellerVideosPerformance() {
   const [intervals, setIntervals] = useState<any[]>([])
   const [overview, setOverview] = useState({})
+  const [videos, setVideos] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 8),
@@ -47,9 +58,14 @@ export default function SellerVideos() {
       start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
       end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd')
     })
+    const videosData = await fetchVideoPerformanceList({
+      start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
+      end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd')
+    })
 
     setIntervals(dailyData?.performance.intervals || [])
     setOverview(overviewData?.performance.intervals[0] || {})
+    setVideos(videosData?.videos || [])
     setIsLoading(false)
   }
 
