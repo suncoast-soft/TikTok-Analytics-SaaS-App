@@ -2,6 +2,7 @@
 import * as crypto from 'crypto'
 import { createClient } from '../supabase/server'
 import { getSeller } from '../supabase/queries'
+import { getAccessToken } from './seller-auth'
 
 // Environment variables
 const { TIKTOK_APP_KEY, TIKTOK_APP_SECRET, TIKTOK_SHOP_BASE } = process.env
@@ -74,8 +75,7 @@ export async function requestTikTokShopAPI(
   method: string = 'GET',
   body: string = ''
 ) {
-  const supabase = await createClient()
-  const authData = await getSeller(supabase)
+  const authData = await getAccessToken()
 
   if (!authData) {
     return null

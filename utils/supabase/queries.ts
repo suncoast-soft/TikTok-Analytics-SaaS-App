@@ -77,8 +77,6 @@ export const getSeller = cache(async (supabase: SupabaseClient) => {
     const cookieStore = await cookies()
     const sellerName = cookieStore.get('seller')?.value
 
-    console.log(sellerName)
-
     if (sellerName) {
       const { data: seller, error } = await supabase
         .from('sellers')

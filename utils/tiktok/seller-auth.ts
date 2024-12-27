@@ -1,7 +1,7 @@
 // Imports from Supabase and utility modules
 import { saveSeller } from '../supabase/mutations'
 import { createClient } from '../supabase/server'
-import { getSeller } from '../supabase/queries'
+import { getSeller, getUser } from '../supabase/queries'
 import { requestTikTokShopAPI } from './utils'
 
 // Environment variables
@@ -20,6 +20,11 @@ const {
 export const generateAccessToken = async (auth_code: string) => {
   const supabase = await createClient()
 
+  const user = await getUser(supabase)
+  if (!user) {
+    return null
+  }
+
   // Headers for the API request
   const myHeaders = new Headers({ 'content-type': 'application/json' })
 
@@ -33,11 +38,9 @@ export const generateAccessToken = async (auth_code: string) => {
 
   const urlSearchParams = new URLSearchParams(params)
 
-  console.log(urlSearchParams)
-
   // Fetch access token from TikTok API
   const response = await fetch(
-    `${TIKTOK_AUTH_BASE}/${TIKTOK_AUTH_PATH}?${urlSearchParams}`,
+    `${TIKTOK_AUTH_BASE}/api/v2/token/get?${urlSearchParams}`,
     {
       method: 'GET',
       headers: myHeaders,
@@ -45,12 +48,8 @@ export const generateAccessToken = async (auth_code: string) => {
     }
   )
 
-  console.log(response)
-
   const data = await response.json()
   if (!data.data) return null
-
-  console.log(data)
 
   const {
     access_token,
@@ -66,6 +65,7 @@ export const generateAccessToken = async (auth_code: string) => {
 
   // Save seller's token information in the database
   const sellerAuth = await saveSeller(supabase, {
+    user_id: user.id,
     access_token,
     access_token_expire_at,
     refresh_token,
@@ -86,7 +86,8 @@ export const generateAccessToken = async (auth_code: string) => {
 
   // Update seller's information with shop cipher
   const updatedSellerAuth = await saveSeller(supabase, {
-    shop_cipher
+    shop_cipher,
+    seller_name
   })
 
   return updatedSellerAuth
@@ -112,7 +113,7 @@ export const refreshAccessToken = async (refresh_token: string) => {
 
   // Fetch refreshed access token from TikTok API
   const response = await fetch(
-    `${TIKTOK_AUTH_BASE}/${TIKTOK_AUTH_PATH}?${urlSearchParams}`,
+    `${TIKTOK_AUTH_BASE}/api/v2/token/refresh?${urlSearchParams}`,
     {
       method: 'GET',
       headers: myHeaders,
@@ -161,7 +162,8 @@ export const getAccessToken = async () => {
     access_token,
     access_token_expire_at,
     refresh_token,
-    refresh_token_expire_at
+    refresh_token_expire_at,
+    shop_cipher
   } = authData
   const currentTime = Date.now()
 
@@ -175,5 +177,5 @@ export const getAccessToken = async () => {
     return refreshedToken.access_token
   }
 
-  return access_token
+  return { access_token, shop_cipher }
 }
