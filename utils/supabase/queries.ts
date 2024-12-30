@@ -1,5 +1,5 @@
+import { useSellerContext } from '@/app/providers'
 import { SupabaseClient } from '@supabase/supabase-js'
-import { cookies } from 'next/headers'
 import { cache } from 'react'
 
 export const getUser = cache(async (supabase: SupabaseClient) => {
@@ -53,19 +53,13 @@ export const getSellers = cache(async (supabase: SupabaseClient) => {
   return sellers
 })
 
-export const getSeller = cache(async (supabase: SupabaseClient) => {
-  const user = await getUser(supabase)
-
-  if (!user) {
-    return null
-  }
-
-  if (user.type === 'seller') {
+export const getSeller = cache(
+  async (supabase: SupabaseClient, sellerName: string) => {
     const { data: seller, error } = await supabase
       .from('sellers')
       .select('*')
-      .eq('user_id', user.id)
-      .maybeSingle()
+      .eq('seller_name', sellerName)
+      .single()
 
     if (error) {
       console.error('Failed to fetch seller auth:', error)
@@ -73,29 +67,8 @@ export const getSeller = cache(async (supabase: SupabaseClient) => {
     }
 
     return seller
-  } else {
-    const cookieStore = await cookies()
-    const sellerName = cookieStore.get('seller')?.value
-
-    if (sellerName) {
-      const { data: seller, error } = await supabase
-        .from('sellers')
-        .select('*')
-        .eq('seller_name', sellerName)
-        .maybeSingle()
-
-      if (error) {
-        console.error('Failed to fetch seller auth:', error)
-        return null
-      }
-
-      return seller
-    } else {
-      console.error('Failed to fetch selected seller name')
-      return null
-    }
   }
-})
+)
 
 export const getCreator = cache(async (supabase: SupabaseClient) => {
   const user = await getUser(supabase)

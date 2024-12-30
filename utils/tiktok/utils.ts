@@ -70,12 +70,13 @@ export const generateSign = (
  * @returns The response data from the API or null if the request fails.
  */
 export async function requestTikTokShopAPI(
+  seller: string | undefined,
   api_path: string,
   params: APIParams = {},
   method: string = 'GET',
   body: string = ''
 ) {
-  const authData = await getAccessToken()
+  const authData = await getAccessToken(seller)
 
   if (!authData) {
     return null

@@ -1,6 +1,5 @@
-export default async function SellerProfilePage(props: {
-  params: Promise<{ seller: string }>
-}) {
-  const params = await props.params
-  return <></>
+import SellerHome from '@/components/modules/Seller/Home'
+
+export default async function SellerHomePage() {
+  return <SellerHome />
 }

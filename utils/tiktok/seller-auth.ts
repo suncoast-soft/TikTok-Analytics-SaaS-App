@@ -5,12 +5,7 @@ import { getSeller, getUser } from '../supabase/queries'
 import { requestTikTokShopAPI } from './utils'
 
 // Environment variables
-const {
-  TIKTOK_AUTH_BASE,
-  TIKTOK_AUTH_PATH,
-  TIKTOK_APP_KEY,
-  TIKTOK_APP_SECRET
-} = process.env
+const { TIKTOK_AUTH_BASE, TIKTOK_APP_KEY, TIKTOK_APP_SECRET } = process.env
 
 /**
  * Generate a new access token using the provided authorization code.
@@ -152,10 +147,10 @@ export const refreshAccessToken = async (refresh_token: string) => {
  * Retrieve the current access token, refreshing it if necessary.
  * @returns The valid access token or null if unable to obtain one.
  */
-export const getAccessToken = async () => {
+export const getAccessToken = async (seller: string) => {
   const supabase = await createClient()
 
-  const authData = await getSeller(supabase)
+  const authData = await getSeller(supabase, seller)
   if (!authData) throw new Error('No token data found.')
 
   let {
