@@ -49,9 +49,9 @@ export default function SellerVideosPerformance({
 }: {
   seller: string | undefined
 }) {
-  const [intervals, setIntervals] = useState<unknown[]>([])
+  const [intervals, setIntervals] = useState<any[]>([])
   const [overview, setOverview] = useState({})
-  const [videos, setVideos] = useState<unknown[]>([])
+  const [videos, setVideos] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 8),
