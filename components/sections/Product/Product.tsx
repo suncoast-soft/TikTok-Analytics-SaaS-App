@@ -79,13 +79,13 @@ export default function Product({
     setProduct(productData)
 
     const dailyData = await fetchProductPerformance(seller, id, {
-      start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd'),
+      start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
+      end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd'),
       granularity: '1D'
     })
     const overviewData = await fetchProductPerformance(seller, id, {
-      start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd')
+      start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
+      end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd')
     })
 
     setIntervals(dailyData?.performance.intervals || [])

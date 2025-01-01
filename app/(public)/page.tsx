@@ -3,7 +3,6 @@ import FAQs from '@/components/sections/Landing/FAQs'
 import Features from '@/components/sections/Landing/Features'
 import HomeHero from '@/components/sections/Landing/HomeHero'
 import HowItWorks from '@/components/sections/Landing/HowItWorks'
-import Pricing from '@/components/sections/Landing/Pricing'
 import Testimonials from '@/components/sections/Landing/Testimonials'
 
 export default async function HomePage() {

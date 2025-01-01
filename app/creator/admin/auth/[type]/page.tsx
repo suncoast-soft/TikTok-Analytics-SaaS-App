@@ -1,4 +1,4 @@
-import AuthForms from '@/components/modules/AuthForms'
+import Auth from '@/components/sections/Auth'
 import ContactUs from '@/components/sections/Landing/ContactUs'
 import FAQs from '@/components/sections/Landing/FAQs'
 import FeaturesSection from '@/components/sections/Landing/Features'
@@ -7,23 +7,23 @@ import HowItWorks from '@/components/sections/Landing/HowItWorks'
 import Testimonials from '@/components/sections/Landing/Testimonials'
 
 export default async function Seller(props: {
-  params: Promise<{ id: string }>
+  params: Promise<{ type: string }>
 }) {
   const params = await props.params
   return (
     <div className="container mx-auto p-8">
       <FormHero
         title={
-          params.id === 'forgot_password'
+          params.type === 'forgot_password'
             ? 'Reset Password'
-            : params.id === 'update_password'
+            : params.type === 'update_password'
               ? 'Update Password'
-              : params.id === 'signup'
+              : params.type === 'signup'
                 ? 'Sign Up'
                 : 'Sign In'
         }
         subtitle="For TikTok Creators"
-        form={<AuthForms params={params} type="creator" />}
+        form={<Auth params={params} type="creator" />}
       />
 
       <FeaturesSection />

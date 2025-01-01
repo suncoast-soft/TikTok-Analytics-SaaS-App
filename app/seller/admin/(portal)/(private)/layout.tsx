@@ -11,7 +11,7 @@ export default async function SellerPrivateLayout({
   const [seller] = await Promise.all([getSeller(supabase)])
 
   if (!seller) {
-    return redirect('/seller/auth-tiktok')
+    return redirect('/seller/admin/auth-tiktok-seller')
   }
 
   return children

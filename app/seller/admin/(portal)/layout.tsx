@@ -29,33 +29,33 @@ export default async function SellerLayout({
     {
       icon: <LayoutDashboardIcon />,
       name: 'Analytics',
-      link: '/seller/analytics'
+      link: '/seller/admin/analytics'
     },
     {
       icon: <ShoppingBag />,
       name: 'Products',
-      link: '/seller/products'
+      link: '/seller/admin/products'
     },
     {
       icon: <ClapperboardIcon />,
       name: 'Creators',
-      link: '/seller/creators'
+      link: '/seller/admin/creators'
     },
     {
       icon: <HandshakeIcon />,
       name: 'Affiliates',
-      link: '/seller/affiliates'
+      link: '/seller/admin/affiliates'
     }
   ]
 
   const settings = [
     {
       name: 'Connect TikTok Seller',
-      link: '/seller/auth-tiktok'
+      link: '/seller/admin/auth-tiktok'
     },
     {
       name: 'Manange Account',
-      link: '/seller/account'
+      link: '/seller/admin/account'
     }
   ]
 

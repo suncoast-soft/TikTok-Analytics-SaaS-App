@@ -20,7 +20,7 @@ export default async function Seller(props: {
               ? 'Update Password'
               : params.type === 'signup'
                 ? 'Become a Partner'
-                : 'Sign In Partner Portal'
+                : 'Sign In Tiktok Seller Portal'
         }
         subtitle="For TikTok Shop Businesses"
         form={<Auth params={params} type="seller" />}

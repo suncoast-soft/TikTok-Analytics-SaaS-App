@@ -53,7 +53,7 @@ export default function MetricsCards({
 
       <p className="text-sm text-slate-600 flex items-center">
         <span className="mr-3">
-          Vs last {differenceInDays(date?.to!, date?.from!)} days
+          Vs last {differenceInDays(date?.to ?? '', date?.from ?? '')} days
         </span>
         <ArrowUpIcon size={12} className="mr-1" />
         <span>--</span>
@@ -69,7 +69,7 @@ export default function MetricsCards({
             <CardTitle className="mb-2">Performance breakdown</CardTitle>
             <CardDescription>
               Performance breakdown of last{' '}
-              {differenceInDays(date?.to!, date?.from!)} days
+              {differenceInDays(date?.to ?? '', date?.from ?? '')} days
             </CardDescription>
           </div>
         </div>

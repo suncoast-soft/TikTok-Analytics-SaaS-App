@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import SubscriptionForm from '../../modules/Forms/SubscriptionForm'
 
 export default function Footer() {
@@ -16,9 +17,12 @@ export default function Footer() {
               Terms of Service
             </a>{' '}
             |
-            <a href="/seller/signup" className="hover:text-white mx-2">
+            <Link
+              href="/seller/admin/auth/signup"
+              className="hover:text-white mx-2"
+            >
               Become a partner
-            </a>
+            </Link>
           </div>
 
           <div className="text-gray-500 text-center sm:text-right">

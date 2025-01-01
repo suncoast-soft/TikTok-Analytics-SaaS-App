@@ -49,9 +49,9 @@ export default function SellerVideosPerformance({
 }: {
   seller: string | undefined
 }) {
-  const [intervals, setIntervals] = useState<any[]>([])
+  const [intervals, setIntervals] = useState<unknown[]>([])
   const [overview, setOverview] = useState({})
-  const [videos, setVideos] = useState<any[]>([])
+  const [videos, setVideos] = useState<unknown[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 8),
@@ -62,17 +62,17 @@ export default function SellerVideosPerformance({
     setIsLoading(true)
 
     const dailyData = await fetchVideoPerformanceOverview(seller, {
-      start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd'),
+      start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
+      end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd'),
       granularity: '1D'
     })
     const overviewData = await fetchVideoPerformanceOverview(seller, {
-      start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd')
+      start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
+      end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd')
     })
     const videosData = await fetchVideoPerformanceList(seller, {
-      start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd')
+      start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
+      end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd')
     })
 
     setIntervals(dailyData?.performance.intervals || [])

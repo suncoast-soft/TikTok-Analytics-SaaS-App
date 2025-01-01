@@ -73,7 +73,7 @@ export default function MetricsChart({
             <CardTitle className="mb-2">Key metrics</CardTitle>
             <CardDescription className="mb-3">
               Key Metrics Analytics of last{' '}
-              {differenceInDays(date?.to!, date?.from!)} days
+              {differenceInDays(date?.to ?? '', date?.from ?? '')} days
             </CardDescription>
           </div>
 

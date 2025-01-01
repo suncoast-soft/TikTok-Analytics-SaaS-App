@@ -104,14 +104,14 @@ export default function SignUp({
       <div className="mt-4">
         <h5 className="text-md">Already have an account?</h5>
         <Link
-          href={`/${type}/password_signin`}
+          href={`/${type}/admin/auth/password_signin`}
           className="font-medium text-sm text-primary"
         >
           Sign in with email and password
         </Link>
         {allowEmail && (
           <Link
-            href={`/${type}/email_signin`}
+            href={`/${type}/admin/auth/email_signin`}
             className="font-medium text-sm text-primary"
           >
             Sign in via magic link

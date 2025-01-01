@@ -55,9 +55,9 @@ export default function PasswordSignIn({
   return (
     <>
       <p className="mb-4 text-sm text-right">
-        Don't have an account?
+        Don&apos;t have an account?
         <Link
-          href={`/${type}/signup`}
+          href={`/${type}/admin/auth/signup`}
           className="ml-1.5 font-medium text-primary"
         >
           Sign up
@@ -111,7 +111,7 @@ export default function PasswordSignIn({
       <div className="mt-4">
         <p>
           <Link
-            href={`/${type}/forgot_password`}
+            href={`/${type}/admin/auth/forgot_password`}
             className="font-medium text-sm text-primary"
           >
             Forgot your password?
@@ -120,7 +120,7 @@ export default function PasswordSignIn({
         {allowEmail && (
           <p>
             <Link
-              href={`/${type}/email_signin`}
+              href={`/${type}/admin/auth/email_signin`}
               className="font-medium text-sm text-primary"
             >
               Sign in via magic link

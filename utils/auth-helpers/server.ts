@@ -153,20 +153,20 @@ export async function signInWithPassword(formData: {
 
   if (error) {
     redirectPath = getErrorRedirect(
-      `/${type}/password_signin`,
+      `/${type}/admin/auth/password_signin`,
       'Sign in failed.',
       error.message
     )
   } else if (data.user) {
     cookieStore.set('preferredSignInView', 'password_signin', { path: '/' })
     redirectPath = getStatusRedirect(
-      `/${type}/account`,
+      `/${type}/admin/account`,
       'Success!',
       'You are now signed in.'
     )
   } else {
     redirectPath = getErrorRedirect(
-      `/${type}/password_signin`,
+      `/${type}/admin/auth/password_signin`,
       'Hmm... Something went wrong.',
       'You could not be signed in.'
     )
@@ -186,7 +186,7 @@ export async function signUp(formData: { [key: string]: string | number }) {
 
   if (!isValidEmail(email)) {
     redirectPath = getErrorRedirect(
-      `/${type}/signup`,
+      `/${type}/admin/auth/signup`,
       'Invalid email address.',
       'Please try again.'
     )
@@ -204,13 +204,13 @@ export async function signUp(formData: { [key: string]: string | number }) {
 
   if (error) {
     redirectPath = getErrorRedirect(
-      `/${type}/signup`,
+      `/${type}/admin/auth/signup`,
       'Sign up failed.',
       error.message
     )
   } else if (data.session) {
     redirectPath = getStatusRedirect(
-      `/${type}/analytics`,
+      `/${type}/admin/auth/analytics`,
       'Success!',
       'You are now signed in.'
     )
@@ -220,19 +220,19 @@ export async function signUp(formData: { [key: string]: string | number }) {
     data.user.identities.length == 0
   ) {
     redirectPath = getErrorRedirect(
-      `/${type}/signup`,
+      `/${type}/admin/auth/signup`,
       'Sign up failed.',
       'There is already an account associated with this email address. Try resetting your password.'
     )
   } else if (data.user) {
     redirectPath = getStatusRedirect(
-      `/${type}/analytics`,
+      `/${type}/admin/auth/analytics`,
       'Success!',
       'Please check your email for a confirmation link. You may now close this tab.'
     )
   } else {
     redirectPath = getErrorRedirect(
-      `/${type}/signup`,
+      `/${type}/admin/auth/signup`,
       'Hmm... Something went wrong.',
       'You could not be signed up.'
     )

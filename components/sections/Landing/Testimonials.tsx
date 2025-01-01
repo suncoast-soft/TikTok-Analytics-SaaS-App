@@ -27,7 +27,7 @@ export default function Testimonials() {
             key={index}
             className="bg-yellow-50/40 p-6 pl-28 rounded-lg shadow transform hover:-translate-x-1 hover:translate-y-1 transition relative"
           >
-            <p className="italic">"{testimonial.text}"</p>
+            <p className="italic">&quot;{testimonial.text}&quot;</p>
 
             <footer className="mt-4 text-right">— {testimonial.name}</footer>
             <p className="text-xs text-right text-slate-400">

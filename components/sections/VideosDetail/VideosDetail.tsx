@@ -46,8 +46,8 @@ export default function SellerVideosDetail({ seller }: { seller?: string }) {
     setIsLoading(true)
 
     const videosData = await fetchVideoPerformanceList(seller, {
-      start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd')
+      start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
+      end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd')
     })
 
     setVideos(videosData?.videos || [])

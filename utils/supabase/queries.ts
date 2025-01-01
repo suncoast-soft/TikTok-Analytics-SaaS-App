@@ -54,7 +54,7 @@ export const getSellers = cache(async (supabase: SupabaseClient) => {
 })
 
 export const getSeller = cache(
-  async (supabase: SupabaseClient, sellerName: string | undefined) => {
+  async (supabase: SupabaseClient, sellerName?: string | undefined) => {
     if (sellerName) {
       const { data: seller, error } = await supabase
         .from('sellers')

@@ -58,12 +58,15 @@ export default function User({ user }: NavlinksProps) {
         <DropdownMenuLabel>{user.auth?.email}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <Link href={`/${user.type}/analytics`} className={'no-underline'}>
+          <Link
+            href={`/${user.type}/admin/analytics`}
+            className={'no-underline'}
+          >
             Dashboard
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Link href={`/${user.type}/account`} className={'no-underline'}>
+          <Link href={`/${user.type}/admin/account`} className={'no-underline'}>
             Settings
           </Link>
         </DropdownMenuItem>

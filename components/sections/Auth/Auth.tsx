@@ -38,7 +38,7 @@ export default async function Auth({
     const preferredSignInView =
       (await cookies()).get('preferredSignInView')?.value || null
     viewProp = getDefaultSignInView(preferredSignInView)
-    return redirect(`/${type}/${viewProp}`)
+    return redirect(`/${type}/admin/auth/${viewProp}`)
   }
 
   // Check if the user is already logged in and redirect to the account page if so
@@ -47,9 +47,9 @@ export default async function Auth({
   const user = await getUser(supabase)
 
   if (user && viewProp !== 'update_password') {
-    return redirect(`/${type}/account`)
+    return redirect(`/${type}/admin/account`)
   } else if (!user && viewProp === 'update_password') {
-    return redirect(`/${type}/update_password`)
+    return redirect(`/${type}/admin/auth/update_password`)
   }
 
   return (

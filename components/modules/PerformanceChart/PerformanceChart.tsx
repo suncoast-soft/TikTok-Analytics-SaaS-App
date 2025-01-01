@@ -99,7 +99,7 @@ export default function PerformanceChart({
             <CardTitle className="mb-2">Performance breakdown</CardTitle>
             <CardDescription>
               Performance breakdown of last{' '}
-              {differenceInDays(date?.to!, date?.from!)} days
+              {differenceInDays(date?.to ?? '', date?.from ?? '')} days
             </CardDescription>
           </div>
         </div>

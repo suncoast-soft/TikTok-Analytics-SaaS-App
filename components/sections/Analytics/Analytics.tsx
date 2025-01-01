@@ -42,13 +42,13 @@ export default function SellerAnalytics(seller: string | undefined) {
     setIsLoading(true)
 
     const dailyData = await fetchShopPerformance(seller, {
-      start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd'),
+      start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
+      end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd'),
       granularity: '1D'
     })
     const overviewData = await fetchShopPerformance(seller, {
-      start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd')
+      start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
+      end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd')
     })
 
     setIntervals(dailyData?.performance.intervals || [])
