@@ -1,4 +1,4 @@
-import Footer from '@/components/modules/Footer'
+import Footer from '@/components/sections/Footer'
 import Navbar from '@/components/sections/Navbar'
 import { PropsWithChildren } from 'react'
 

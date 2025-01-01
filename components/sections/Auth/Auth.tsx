@@ -21,7 +21,7 @@ export default async function Auth({
   params,
   type
 }: {
-  params: { id: string }
+  params: { type: string }
   type: string
 }) {
   const { allowOauth, allowEmail, allowPassword } = getAuthTypes()
@@ -32,8 +32,8 @@ export default async function Auth({
   let viewProp: string
 
   // Assign url id to 'viewProp' if it's a valid string and ViewTypes includes it
-  if (typeof params.id === 'string' && viewTypes.includes(params.id)) {
-    viewProp = params.id
+  if (typeof params.type === 'string' && viewTypes.includes(params.type)) {
+    viewProp = params.type
   } else {
     const preferredSignInView =
       (await cookies()).get('preferredSignInView')?.value || null

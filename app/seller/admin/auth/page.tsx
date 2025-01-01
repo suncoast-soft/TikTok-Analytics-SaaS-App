@@ -7,5 +7,5 @@ export default async function SignIn() {
     (await cookies()).get('preferredSignInView')?.value || null
   const defaultView = getDefaultSignInView(preferredSignInView)
 
-  return redirect(`/seller/${defaultView}`)
+  return redirect(`/seller/admin/${defaultView}`)
 }
