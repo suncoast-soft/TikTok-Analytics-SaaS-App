@@ -24,8 +24,13 @@ interface APIParams {
   [key: string]: string | number
 }
 
-const fetchProductDetail = async (productId: string, params: APIParams) => {
+const fetchProductDetail = async (
+  seller: string | undefined,
+  productId: string,
+  params: APIParams
+) => {
   const data = await requestTikTokShopAPIClient(
+    seller,
     `/product/202309/products/${productId}`,
     params,
     'GET',
@@ -35,10 +40,12 @@ const fetchProductDetail = async (productId: string, params: APIParams) => {
 }
 
 const fetchProductPerformance = async (
+  seller: string | undefined,
   productId: string,
   params: APIParams
 ) => {
   const data = await requestTikTokShopAPIClient(
+    seller,
     `/analytics/202405/shop_products/${productId}/performance`,
     params,
     'GET',
@@ -48,9 +55,11 @@ const fetchProductPerformance = async (
 }
 
 export default function Product({
+  seller,
   id,
   sellerId
 }: {
+  seller: string | undefined
   id: string
   sellerId?: string
 }) {
@@ -66,15 +75,15 @@ export default function Product({
   const loadInitialData = async () => {
     setIsLoading(true)
 
-    const productData = await fetchProductDetail(id, {})
+    const productData = await fetchProductDetail(seller, id, {})
     setProduct(productData)
 
-    const dailyData = await fetchProductPerformance(id, {
+    const dailyData = await fetchProductPerformance(seller, id, {
       start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
       end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd'),
       granularity: '1D'
     })
-    const overviewData = await fetchProductPerformance(id, {
+    const overviewData = await fetchProductPerformance(seller, id, {
       start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
       end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd')
     })

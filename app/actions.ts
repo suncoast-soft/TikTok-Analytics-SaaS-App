@@ -8,12 +8,13 @@ interface APIParams {
 }
 
 export async function requestTikTokShopAPIClient(
+  seller: string | undefined,
   api_path: string,
   params: APIParams = {},
   method: string = 'GET',
   body: string = ''
 ) {
-  return requestTikTokShopAPI(api_path, params, method, body)
+  return requestTikTokShopAPI(seller, api_path, params, method, body)
 }
 
 export async function SelectSellerAction(seller_name: string) {

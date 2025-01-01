@@ -19,8 +19,12 @@ interface APIParams {
   [key: string]: string | number
 }
 
-const fetchVideoPerformanceList = async (params: APIParams) => {
+const fetchVideoPerformanceList = async (
+  seller: string | undefined,
+  params: APIParams
+) => {
   const data = await requestTikTokShopAPIClient(
+    seller,
     '/analytics/202409/shop_videos/performance',
     params,
     'GET',
@@ -30,11 +34,7 @@ const fetchVideoPerformanceList = async (params: APIParams) => {
   return data?.data
 }
 
-export default function SellerVideosDetail({
-  sellerId
-}: {
-  sellerId?: string
-}) {
+export default function SellerVideosDetail({ seller }: { seller?: string }) {
   const [videos, setVideos] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [date, setDate] = useState<DateRange | undefined>({
@@ -45,7 +45,7 @@ export default function SellerVideosDetail({
   const loadInitialData = async () => {
     setIsLoading(true)
 
-    const videosData = await fetchVideoPerformanceList({
+    const videosData = await fetchVideoPerformanceList(seller, {
       start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
       end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd')
     })
@@ -84,7 +84,7 @@ export default function SellerVideosDetail({
 
               <TableBody>
                 {videos.map((video, index) => (
-                  <VideoRow key={index} video={video} sellerId={sellerId} />
+                  <VideoRow key={index} video={video} seller={seller} />
                 ))}
               </TableBody>
             </Table>

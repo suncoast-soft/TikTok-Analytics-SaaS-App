@@ -48,8 +48,9 @@ interface APIParams {
   [key: string]: string | number
 }
 
-const fetchProducts = async (params: APIParams) => {
+const fetchProducts = async (seller: string | undefined, params: APIParams) => {
   const data = await requestTikTokShopAPIClient(
+    seller,
     '/product/202309/products/search',
     params,
     'POST',
@@ -58,7 +59,7 @@ const fetchProducts = async (params: APIParams) => {
   return data?.data
 }
 
-export default function ProductList({ sellerId }: { sellerId?: string }) {
+export default function ProductList({ seller }: { seller?: string }) {
   const [products, setProducts] = useState<Product[]>([])
   const [nextPageToken, setNextPageToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -66,7 +67,10 @@ export default function ProductList({ sellerId }: { sellerId?: string }) {
 
   const loadInitialData = async () => {
     setIsLoading(true)
-    const data = await fetchProducts({ status: 'ACTIVATE', page_size: 10 })
+    const data = await fetchProducts(seller, {
+      status: 'ACTIVATE',
+      page_size: 10
+    })
     setProducts(data?.products || [])
     setNextPageToken(data?.next_page_token || null)
     setIsLoading(false)
@@ -74,7 +78,7 @@ export default function ProductList({ sellerId }: { sellerId?: string }) {
 
   const handleSearch = async () => {
     setIsLoading(true)
-    const data = await fetchProducts({
+    const data = await fetchProducts(seller, {
       status: 'ACTIVATE',
       page_size: 10,
       keyword
@@ -87,7 +91,7 @@ export default function ProductList({ sellerId }: { sellerId?: string }) {
     if (!nextPageToken) return
 
     setIsLoading(true)
-    const data = await fetchProducts({
+    const data = await fetchProducts(seller, {
       status: 'ACTIVATE',
       page_size: 10,
       page_token: nextPageToken
@@ -137,7 +141,7 @@ export default function ProductList({ sellerId }: { sellerId?: string }) {
 
           <TableBody>
             {products.map((product, index) => (
-              <ProductRow key={index} product={product} sellerId={sellerId} />
+              <ProductRow key={index} product={product} seller={seller} />
             ))}
           </TableBody>
         </Table>

@@ -14,8 +14,12 @@ interface APIParams {
   [key: string]: string | number
 }
 
-const fetchVideoPerformanceOverview = async (params: APIParams) => {
+const fetchVideoPerformanceOverview = async (
+  seller: string | undefined,
+  params: APIParams
+) => {
   const data = await requestTikTokShopAPIClient(
+    seller,
     '/analytics/202409/shop_videos/overview_performance',
     params,
     'GET',
@@ -25,8 +29,12 @@ const fetchVideoPerformanceOverview = async (params: APIParams) => {
   return data?.data
 }
 
-const fetchVideoPerformanceList = async (params: APIParams) => {
+const fetchVideoPerformanceList = async (
+  seller: string | undefined,
+  params: APIParams
+) => {
   const data = await requestTikTokShopAPIClient(
+    seller,
     '/analytics/202409/shop_videos/performance',
     params,
     'GET',
@@ -36,7 +44,11 @@ const fetchVideoPerformanceList = async (params: APIParams) => {
   return data?.data
 }
 
-export default function SellerVideosPerformance() {
+export default function SellerVideosPerformance({
+  seller
+}: {
+  seller: string | undefined
+}) {
   const [intervals, setIntervals] = useState<any[]>([])
   const [overview, setOverview] = useState({})
   const [videos, setVideos] = useState<any[]>([])
@@ -49,16 +61,16 @@ export default function SellerVideosPerformance() {
   const loadInitialData = async () => {
     setIsLoading(true)
 
-    const dailyData = await fetchVideoPerformanceOverview({
+    const dailyData = await fetchVideoPerformanceOverview(seller, {
       start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
       end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd'),
       granularity: '1D'
     })
-    const overviewData = await fetchVideoPerformanceOverview({
+    const overviewData = await fetchVideoPerformanceOverview(seller, {
       start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
       end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd')
     })
-    const videosData = await fetchVideoPerformanceList({
+    const videosData = await fetchVideoPerformanceList(seller, {
       start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
       end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd')
     })

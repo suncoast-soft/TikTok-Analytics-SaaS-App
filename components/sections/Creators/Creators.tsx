@@ -17,8 +17,9 @@ interface APIParams {
   [key: string]: string | number
 }
 
-const fetchCreators = async (params: APIParams) => {
+const fetchCreators = async (seller: string | undefined, params: APIParams) => {
   const data = await requestTikTokShopAPIClient(
+    seller,
     '/affiliate_seller/202406/marketplace_creators/search',
     params,
     'POST',
@@ -37,7 +38,11 @@ const fetchCreators = async (params: APIParams) => {
   }
 }
 
-export default function SellerCreators() {
+export default function SellerCreators({
+  seller
+}: {
+  seller: string | undefined
+}) {
   const [creators, setCreators] = useState<any[]>([])
   const [nextPageToken, setNextPageToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -51,7 +56,7 @@ export default function SellerCreators() {
   const loadInitialData = async () => {
     setIsLoading(true)
 
-    const data = await fetchCreators({ page_size: 20 })
+    const data = await fetchCreators(seller, { page_size: 20 })
 
     setCreators(data.creators || [])
     setNextPageToken(data.next_page_token || null)
@@ -62,7 +67,7 @@ export default function SellerCreators() {
     setCreators([])
     setIsLoading(true)
 
-    const data = await fetchCreators({
+    const data = await fetchCreators(seller, {
       page_size: 20,
       keyword
     })
@@ -75,7 +80,7 @@ export default function SellerCreators() {
     setCreators([])
     setIsLoading(true)
 
-    const data = await fetchCreators({
+    const data = await fetchCreators(seller, {
       page_size: 20,
       keyword,
       gender_distribution: genderFilter
@@ -89,7 +94,7 @@ export default function SellerCreators() {
     if (!nextPageToken) return
 
     setIsLoading(true)
-    const data = await fetchCreators({
+    const data = await fetchCreators(seller, {
       page_size: 20,
       page_token: nextPageToken
     })

@@ -14,8 +14,12 @@ interface APIParams {
   [key: string]: string | number
 }
 
-const fetchShopPerformance = async (params: APIParams) => {
+const fetchShopPerformance = async (
+  seller: string | undefined,
+  params: APIParams
+) => {
   const data = await requestTikTokShopAPIClient(
+    seller,
     '/analytics/202405/shop/performance',
     params,
     'GET',
@@ -25,7 +29,7 @@ const fetchShopPerformance = async (params: APIParams) => {
   return data?.data
 }
 
-export default function SellerAnalytics() {
+export default function SellerAnalytics(seller: string | undefined) {
   const [intervals, setIntervals] = useState<any[]>([])
   const [overview, setOverview] = useState({})
   const [isLoading, setIsLoading] = useState(false)
@@ -37,12 +41,12 @@ export default function SellerAnalytics() {
   const loadInitialData = async () => {
     setIsLoading(true)
 
-    const dailyData = await fetchShopPerformance({
+    const dailyData = await fetchShopPerformance(seller, {
       start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
       end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd'),
       granularity: '1D'
     })
-    const overviewData = await fetchShopPerformance({
+    const overviewData = await fetchShopPerformance(seller, {
       start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
       end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd')
     })

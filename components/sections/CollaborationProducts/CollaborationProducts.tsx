@@ -65,8 +65,13 @@ interface APIParams {
   [key: string]: string | number
 }
 
-const fetchProducts = async (params: APIParams, body?: any) => {
+const fetchProducts = async (
+  seller: string | undefined,
+  params: APIParams,
+  body?: any
+) => {
   const data = await requestTikTokShopAPIClient(
+    seller,
     '/affiliate_seller/202405/open_collaborations/products/search',
     params,
     'POST',
@@ -75,7 +80,11 @@ const fetchProducts = async (params: APIParams, body?: any) => {
   return data?.data
 }
 
-export default function CollaborationProducts() {
+export default function CollaborationProducts({
+  seller
+}: {
+  seller: string | undefined
+}) {
   const [products, setProducts] = useState<Product[]>([])
   const [nextPageToken, setNextPageToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -83,7 +92,7 @@ export default function CollaborationProducts() {
 
   const loadInitialData = async () => {
     setIsLoading(true)
-    const data = await fetchProducts({
+    const data = await fetchProducts(seller, {
       sort_field: 'units_sold',
       page_size: 20,
       sort_order: 'DESC'
@@ -96,6 +105,7 @@ export default function CollaborationProducts() {
   const handleSearch = async () => {
     setIsLoading(true)
     const data = await fetchProducts(
+      seller,
       {
         sort_field: 'units_sold',
         page_size: 20,
@@ -113,7 +123,7 @@ export default function CollaborationProducts() {
     if (!nextPageToken) return
 
     setIsLoading(true)
-    const data = await fetchProducts({
+    const data = await fetchProducts(seller, {
       sort_field: 'units_sold',
       page_size: 20,
       sort_order: 'DESC',

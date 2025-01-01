@@ -72,6 +72,7 @@ export const generateAccessToken = async (auth_code: string) => {
 
   // Retrieve shop cipher data
   const shopCipherData = await requestTikTokShopAPI(
+    undefined,
     '/authorization/202309/shops'
   )
   const shop = shopCipherData.data.shops.find(
@@ -147,7 +148,7 @@ export const refreshAccessToken = async (refresh_token: string) => {
  * Retrieve the current access token, refreshing it if necessary.
  * @returns The valid access token or null if unable to obtain one.
  */
-export const getAccessToken = async (seller: string) => {
+export const getAccessToken = async (seller: string | undefined) => {
   const supabase = await createClient()
 
   const authData = await getSeller(supabase, seller)

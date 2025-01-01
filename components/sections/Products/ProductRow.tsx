@@ -21,8 +21,12 @@ interface ProductDetail {
   category_chains: { local_name: string }[]
 }
 
-const fetchProductDetail = async (productId: string) => {
+const fetchProductDetail = async (
+  seller: string | undefined,
+  productId: string
+) => {
   const data = await requestTikTokShopAPIClient(
+    seller,
     `/product/202309/products/${productId}`,
     {},
     'GET',
@@ -32,18 +36,18 @@ const fetchProductDetail = async (productId: string) => {
 }
 
 export default function ProductRow({
-  product,
-  sellerId
+  seller,
+  product
 }: {
+  seller: string | undefined
   product: any
-  sellerId?: string
 }) {
   const [detail, setDetail] = useState<ProductDetail | null>(null)
 
   useEffect(() => {
     const loadProductDetail = async () => {
       try {
-        const fetchedDetail = await fetchProductDetail(product.id)
+        const fetchedDetail = await fetchProductDetail(seller, product.id)
         setDetail(fetchedDetail)
       } catch (error) {
         console.error('Failed to fetch product detail:', error)
@@ -105,7 +109,7 @@ export default function ProductRow({
 
       <TableCell>
         <Link
-          href={`/creator/sellers/${sellerId}/products/${product.id}`}
+          href={`/creator/sellers/${seller}/products/${product.id}`}
           className="no-underline"
         >
           <span className="text-blue-800 font-medium">{product.title}</span>

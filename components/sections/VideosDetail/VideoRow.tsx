@@ -27,8 +27,12 @@ interface VideoDetail {
   video: string
 }
 
-const fetchProductDetail = async (productId: string) => {
+const fetchProductDetail = async (
+  seller: string | undefined,
+  productId: string
+) => {
   const data = await requestTikTokShopAPIClient(
+    seller,
     `/product/202309/products/${productId}`,
     {},
     'GET',
@@ -47,11 +51,11 @@ const fetchVideoDetail = async (videoId: string) => {
 }
 
 export default function VideoRow({
-  video,
-  sellerId
+  seller,
+  video
 }: {
+  seller: string | undefined
   video: any
-  sellerId?: string
 }) {
   const videoId = video.id
   const productId = video.products?.[0]?.id
@@ -65,7 +69,7 @@ export default function VideoRow({
         const fetchedVideoDetail = await fetchVideoDetail(videoId)
         setVideoDetail(fetchedVideoDetail)
 
-        const fetchedProductDetail = await fetchProductDetail(productId)
+        const fetchedProductDetail = await fetchProductDetail(seller, productId)
         setProductDetail(fetchedProductDetail)
       } catch (error) {
         console.error('Failed to fetch product detail:', error)
@@ -107,7 +111,7 @@ export default function VideoRow({
           <Tooltip delayDuration={500}>
             <TooltipTrigger>
               <Link
-                href={`/creator/sellers/${sellerId}/products/${productDetail.id}`}
+                href={`/creator/sellers/${seller}/products/${productDetail.id}`}
                 className="no-underline"
               >
                 <Image

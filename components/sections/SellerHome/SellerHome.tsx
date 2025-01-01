@@ -5,8 +5,9 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import Loading from '@/components/modules/Loading'
 
-const fetchSeller = async () => {
+const fetchSeller = async (seller: string | undefined) => {
   const data = await requestTikTokShopAPIClient(
+    seller,
     '/authorization/202309/shops',
     {},
     'GET',
@@ -18,16 +19,16 @@ const fetchSeller = async () => {
   return null
 }
 
-export default function SellerHome() {
+export default function SellerHome({ seller }: { seller: string | undefined }) {
   const [isLoading, setIsLoading] = useState(false)
-  const [seller, setSeller] = useState<any>(null)
+  const [sellerData, setSellerData] = useState<any>(null)
 
   const loadInitialData = async () => {
     setIsLoading(true)
 
-    const seller = await fetchSeller()
+    const data = await fetchSeller(seller)
 
-    setSeller(seller)
+    setSellerData(data)
     setIsLoading(false)
   }
 
@@ -43,7 +44,7 @@ export default function SellerHome() {
     )
   }
 
-  if (!seller) {
+  if (!sellerData) {
     return <></>
   }
 
@@ -52,28 +53,28 @@ export default function SellerHome() {
       <section className="max-w-3xl mx-auto bg-orange-50 p-4 rounded-lg shadow-lg transform hover:translate-y-1 transition flex flex-col md:flex-row gap-8 items-center">
         <div>
           <Image
-            src={seller.image ?? '/logo-icon.png'}
-            alt={seller.name}
+            src={sellerData.image ?? '/logo-icon.png'}
+            alt={sellerData.name}
             width={200}
             height={200}
           />
         </div>
         <div>
-          <h1 className="text-2xl font-bold mb-4">{seller.name}</h1>
+          <h1 className="text-2xl font-bold mb-4">{sellerData.name}</h1>
 
           <p>
             <span>Shop Code: </span>
-            <span>{seller.code}</span>
+            <span>{sellerData.code}</span>
           </p>
 
           <p>
             <span>Region: </span>
-            <span>{seller.region}</span>
+            <span>{sellerData.region}</span>
           </p>
 
           <p>
             <span>Type: </span>
-            <span>{seller.seller_type}</span>
+            <span>{sellerData.seller_type}</span>
           </p>
         </div>
       </section>
