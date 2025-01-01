@@ -1,4 +1,4 @@
-import SellerVideosDetail from '@/components/modules/Seller/VideosDetail'
+import SellerVideosDetail from '@/components/sections/VideosDetail'
 import { cookies } from 'next/headers'
 
 export default async function VideosDetailPage() {

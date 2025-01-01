@@ -4,19 +4,19 @@ import { requestTikTokShopAPIClient } from '@/app/actions'
 import { formatDate, subDays } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { DateRange } from 'react-day-picker'
-import Loading from '../../Loading'
-import DatePickerWithRange from '../../DateRange'
-import MetricsChart from '../../MetricsChart'
-import MetricsCards from '../../MetricsCards'
+import Loading from '@/components/modules/Loading'
+import DatePickerWithRange from '@/components/modules/DateRange'
+import MetricsChart from '@/components/modules/MetricsChart'
+import PerformanceChart from '@/components/modules/PerformanceChart'
 import { ChartConfig } from '@/components/ui/chart'
 
 interface APIParams {
   [key: string]: string | number
 }
 
-const fetchVideoPerformanceOverview = async (params: APIParams) => {
+const fetchShopPerformance = async (params: APIParams) => {
   const data = await requestTikTokShopAPIClient(
-    '/analytics/202409/shop_videos/overview_performance',
+    '/analytics/202405/shop/performance',
     params,
     'GET',
     ''
@@ -25,21 +25,9 @@ const fetchVideoPerformanceOverview = async (params: APIParams) => {
   return data?.data
 }
 
-const fetchVideoPerformanceList = async (params: APIParams) => {
-  const data = await requestTikTokShopAPIClient(
-    '/analytics/202409/shop_videos/performance',
-    params,
-    'GET',
-    ''
-  )
-
-  return data?.data
-}
-
-export default function SellerVideosPerformance() {
+export default function SellerAnalytics() {
   const [intervals, setIntervals] = useState<any[]>([])
   const [overview, setOverview] = useState({})
-  const [videos, setVideos] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 8),
@@ -49,23 +37,18 @@ export default function SellerVideosPerformance() {
   const loadInitialData = async () => {
     setIsLoading(true)
 
-    const dailyData = await fetchVideoPerformanceOverview({
+    const dailyData = await fetchShopPerformance({
       start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
       end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd'),
       granularity: '1D'
     })
-    const overviewData = await fetchVideoPerformanceOverview({
-      start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd')
-    })
-    const videosData = await fetchVideoPerformanceList({
+    const overviewData = await fetchShopPerformance({
       start_date_ge: formatDate(date?.from!, 'yyyy-MM-dd'),
       end_date_lt: formatDate(date?.to!, 'yyyy-MM-dd')
     })
 
     setIntervals(dailyData?.performance.intervals || [])
     setOverview(overviewData?.performance.intervals[0] || {})
-    setVideos(videosData?.videos || [])
     setIsLoading(false)
   }
 
@@ -74,38 +57,54 @@ export default function SellerVideosPerformance() {
   }, [date])
 
   const metricsChartConfig = {
+    buyers: {
+      label: 'Buyers',
+      color: 'hsl(var(--chart-1))'
+    },
     gmv: {
       label: 'GMV',
       color: 'hsl(var(--chart-2))'
     },
-    sku_orders: {
-      label: 'SKU Orders',
+    orders: {
+      label: 'Orders',
       color: 'hsl(var(--chart-3))'
     },
-    units_sold: {
-      label: 'Units Sold',
+    productImpressions: {
+      label: 'Product Impressions',
       color: 'hsl(var(--chart-4))'
     },
-    click_through_rate: {
-      label: 'Click Through Rate',
+    productPageviews: {
+      label: 'Product Page Views',
       color: 'hsl(var(--chart-5))'
     }
   } satisfies ChartConfig
 
   const metricsChartData = intervals.map((interval) => {
     return {
-      date: interval.end_date ?? 0,
-      gmv: interval.gmv?.amount ?? 0,
-      sku_orders: interval.sku_orders ?? 0,
-      units_sold: interval.units_sold ?? 0,
-      click_through_rate: interval.click_through_rate ?? 0
+      date: interval.end_date,
+      buyers: interval.buyers,
+      gmv: interval.gmv.amount,
+      orders: interval.orders,
+      productImpressions: interval.product_impressions,
+      productPageviews: interval.product_page_views
     }
   })
 
+  const performanceChartConfig = [
+    {
+      type: 'avg_product_page_visitor_breakdowns',
+      title: 'Avg. Product page visitors'
+    },
+    { type: 'buyer_breakdowns', title: 'Buyers' },
+    { type: 'gmv_breakdowns', title: 'GMV' },
+    { type: 'product_impression_breakdowns', title: 'Product Impressions' },
+    { type: 'product_page_view_breakdowns', title: 'Product page views' }
+  ]
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-wrap justify-between px-4">
-        <h1 className="text-3xl font-bold mb-4">Video Performance Metrics</h1>
+      <div className="flex justify-between flex-wrap px-4">
+        <h1 className="text-3xl font-bold mb-4">Analytics</h1>
         <DatePickerWithRange date={date} setDate={setDate} />
       </div>
 
@@ -114,11 +113,15 @@ export default function SellerVideosPerformance() {
           <Loading />
         ) : (
           <>
-            <MetricsCards date={date} overview={overview} />
             <MetricsChart
               date={date}
               config={metricsChartConfig}
               data={metricsChartData}
+            />
+            <PerformanceChart
+              date={date}
+              data={overview}
+              config={performanceChartConfig}
             />
           </>
         )}

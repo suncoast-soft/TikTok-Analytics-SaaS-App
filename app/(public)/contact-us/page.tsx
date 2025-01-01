@@ -1,6 +1,6 @@
-import ContactForm from '@/components/modules/AccountForms/ContactForm'
-import FAQs from '@/components/modules/Landing/FAQs'
-import PageHero from '@/components/modules/Landing/PageHero'
+import ContactForm from '@/components/modules/Forms/ContactForm'
+import FAQs from '@/components/sections/Landing/FAQs'
+import PageHero from '@/components/sections/Landing/PageHero'
 
 export default async function ContactUsPage() {
   return (

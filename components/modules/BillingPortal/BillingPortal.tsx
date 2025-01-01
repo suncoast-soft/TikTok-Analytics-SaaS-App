@@ -12,11 +12,7 @@ import {
 } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
-export default function CustomerPortalForm({
-  return_url
-}: {
-  return_url: string
-}) {
+export default function BillingPortal({ return_url }: { return_url: string }) {
   const router = useRouter()
   const currentPath = usePathname()
 

@@ -1,4 +1,4 @@
-import EmailForm from '@/components/modules/AccountForms/EmailForm'
+import EmailForm from '@/components/modules/Forms/EmailForm'
 import UpdatePassword from '@/components/modules/AuthForms/UpdatePassword'
 import { getRedirectMethod } from '@/utils/auth-helpers/settings'
 import { getUser } from '@/utils/supabase/queries'

@@ -1,4 +1,4 @@
-import SellerHome from '@/components/modules/Seller/Home'
+import SellerHome from '@/components/sections/SellerHome'
 
 export default async function SellerHomePage() {
   return <SellerHome />

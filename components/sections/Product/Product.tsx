@@ -6,10 +6,6 @@ import Link from 'next/link'
 import { ChartConfig } from '@/components/ui/chart'
 import { formatDate, subDays } from 'date-fns'
 import { DateRange } from 'react-day-picker'
-import MetricsChart from '../../MetricsChart'
-import PerformanceChart from '../../PerformanceChart'
-import DatePickerWithRange from '../../DateRange'
-import Loading from '../../Loading'
 import { ChevronLeftIcon } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
@@ -19,6 +15,10 @@ import {
   CarouselItem
 } from '@/components/ui/carousel'
 import Image from 'next/image'
+import DatePickerWithRange from '@/components/modules/DateRange'
+import Loading from '@/components/modules/Loading'
+import MetricsChart from '@/components/modules/MetricsChart'
+import PerformanceChart from '@/components/modules/PerformanceChart'
 
 interface APIParams {
   [key: string]: string | number

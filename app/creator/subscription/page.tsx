@@ -1,5 +1,5 @@
-import CustomerPortalForm from '@/components/modules/AccountForms/CustomerPortalForm'
-import StripePricingTable from '@/components/stripe/StripeTable'
+import BillingPortal from '@/components/modules/BillingPortal'
+import StripePricingTable from '@/components/sections/StripeTable'
 import { getSubscription, getUser } from '@/utils/supabase/queries'
 import { createClient } from '@/utils/supabase/server'
 
@@ -17,7 +17,7 @@ export default async function AuthTiktok() {
       </p>
 
       {subscription ? (
-        <CustomerPortalForm return_url="/creator/subscription" />
+        <BillingPortal return_url="/creator/subscription" />
       ) : (
         <StripePricingTable user={user} />
       )}

@@ -1,10 +1,10 @@
 import AuthForms from '@/components/modules/AuthForms'
-import ContactUs from '@/components/modules/Landing/ContactUs'
-import FAQs from '@/components/modules/Landing/FAQs'
-import FeaturesSection from '@/components/modules/Landing/Features'
-import FormHero from '@/components/modules/Landing/FormHero'
-import HowItWorks from '@/components/modules/Landing/HowItWorks'
-import Testimonials from '@/components/modules/Landing/Testimonials'
+import ContactUs from '@/components/sections/Landing/ContactUs'
+import FAQs from '@/components/sections/Landing/FAQs'
+import FeaturesSection from '@/components/sections/Landing/Features'
+import FormHero from '@/components/sections/Landing/FormHero'
+import HowItWorks from '@/components/sections/Landing/HowItWorks'
+import Testimonials from '@/components/sections/Landing/Testimonials'
 
 export default async function Seller(props: {
   params: Promise<{ id: string }>

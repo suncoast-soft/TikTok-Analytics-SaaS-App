@@ -1,4 +1,4 @@
-import PageHero from '@/components/modules/Landing/PageHero'
+import PageHero from '@/components/sections/Landing/PageHero'
 
 export default async function PrivacyPolicyPage() {
   return (

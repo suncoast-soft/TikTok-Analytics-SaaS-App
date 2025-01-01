@@ -2,7 +2,7 @@ interface SeparatorProps {
   text: string
 }
 
-export default function Separator({ text }: SeparatorProps) {
+export default function TextSeparator({ text }: SeparatorProps) {
   return (
     <div className="relative">
       <div className="relative flex items-center py-1">

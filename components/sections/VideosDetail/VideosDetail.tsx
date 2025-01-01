@@ -4,8 +4,8 @@ import { requestTikTokShopAPIClient } from '@/app/actions'
 import { formatDate, subDays } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { DateRange } from 'react-day-picker'
-import Loading from '../../Loading'
-import DatePickerWithRange from '../../DateRange'
+import Loading from '@/components/modules/Loading'
+import DatePickerWithRange from '@/components/modules/DateRange'
 import {
   Table,
   TableBody,

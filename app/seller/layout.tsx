@@ -1,14 +1,14 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import DashboardBreadcrumb from '@/components/modules/DashboardBreadcrumb'
-import Sidenav from '@/components/modules/Sidenav'
+import Sidenav from '@/components/sections/Sidenav'
 import {
   ClapperboardIcon,
   HandshakeIcon,
   LayoutDashboardIcon,
   ShoppingBag
 } from 'lucide-react'
-import User from '@/components/modules/User'
+import User from '@/components/modules/UserDropdown'
 import { getUser } from '@/utils/supabase/queries'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import LogoBlue from '@/components/icons/LogoBlue'

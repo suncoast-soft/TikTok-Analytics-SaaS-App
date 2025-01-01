@@ -3,7 +3,7 @@
 import { requestTikTokShopAPIClient } from '@/app/actions'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import Loading from '../../Loading'
+import Loading from '@/components/modules/Loading'
 
 const fetchSeller = async () => {
   const data = await requestTikTokShopAPIClient(

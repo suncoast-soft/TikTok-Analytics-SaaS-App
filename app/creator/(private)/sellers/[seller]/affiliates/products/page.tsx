@@ -1,4 +1,4 @@
-import CollaborationProducts from '@/components/modules/Seller/CollaborationProducts'
+import CollaborationProducts from '@/components/sections/CollaborationProducts'
 
 export default async function CollaborationProductsPage() {
   return <CollaborationProducts />

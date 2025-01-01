@@ -1,4 +1,4 @@
-import SellerProducts from '@/components/modules/Seller/Products'
+import SellerProducts from '@/components/sections/Products'
 import { cookies } from 'next/headers'
 
 export default async function ProductsPage() {

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { MenuIcon } from 'lucide-react'
 import { createClient } from '@/utils/supabase/server'
-import User from '../User'
+import User from '@/components/modules/UserDropdown'
 import { getUser } from '@/utils/supabase/queries'
 
 export default async function Navbar() {

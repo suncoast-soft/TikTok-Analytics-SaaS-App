@@ -1,4 +1,4 @@
-import SellerProducts from '@/components/modules/Seller/Products'
+import SellerProducts from '@/components/sections/Products'
 
 export default function ProductsPage() {
   return <SellerProducts />

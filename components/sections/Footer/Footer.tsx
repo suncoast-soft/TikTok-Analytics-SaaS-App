@@ -1,4 +1,4 @@
-import SubscriptionForm from '../AccountForms/SubscriptionForm'
+import SubscriptionForm from '../../modules/Forms/SubscriptionForm'
 
 export default function Footer() {
   return (

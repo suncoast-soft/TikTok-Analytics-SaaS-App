@@ -1,4 +1,4 @@
-import CreatorPerformance from '@/components/modules/Seller/CreatorPerformance'
+import CreatorPerformance from '@/components/sections/CreatorPerformance'
 
 export default async function CreatorPerformancePage() {
   return <CreatorPerformance />

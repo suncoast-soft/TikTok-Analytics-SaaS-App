@@ -7,23 +7,17 @@ import {
   getDefaultSignInView,
   getRedirectMethod
 } from '@/utils/auth-helpers/settings'
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-import PasswordSignIn from '@/components/modules/AuthForms/PasswordSignIn'
-import EmailSignIn from '@/components/modules/AuthForms/EmailSignIn'
-import Separator from '@/components/modules/AuthForms/Separator'
-import OauthSignIn from '@/components/modules/AuthForms/OauthSignIn'
-import ForgotPassword from '@/components/modules/AuthForms/ForgotPassword'
-import UpdatePassword from '@/components/modules/AuthForms/UpdatePassword'
-import SignUp from '@/components/modules/AuthForms/Signup'
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import PasswordSignIn from '@/components/modules/Forms/PasswordSignIn'
+import EmailSignIn from '@/components/modules/Forms/EmailSignIn'
+import OauthSignIn from '@/components/modules/Forms/OauthSignIn'
+import ForgotPassword from '@/components/modules/Forms/ForgotPassword'
+import UpdatePassword from '@/components/modules/Forms/UpdatePassword'
+import SignUp from '@/components/modules/Forms/Signup'
 import { getUser } from '@/utils/supabase/queries'
+import TextSeparator from '@/components/modules/TextSeparator'
 
-export default async function AuthForms({
+export default async function Auth({
   params,
   type
 }: {
@@ -101,7 +95,7 @@ export default async function AuthForms({
             allowOauth && (
               <CardFooter>
                 <div className="w-full">
-                  <Separator text="or Sign in with" />
+                  <TextSeparator text="or Sign in with" />
                   <OauthSignIn />
                 </div>
               </CardFooter>

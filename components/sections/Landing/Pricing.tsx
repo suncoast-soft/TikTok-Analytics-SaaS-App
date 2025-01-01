@@ -1,5 +1,3 @@
-import StripePricingTable from '@/components/stripe/StripeTable'
-
 export default function Pricing() {
   return (
     <section
