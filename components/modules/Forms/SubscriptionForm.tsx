@@ -29,7 +29,7 @@ export default function SubscriptionForm() {
     }
   })
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  function onSubmit() {
     toast({
       title: 'Subscription Success!'
     })

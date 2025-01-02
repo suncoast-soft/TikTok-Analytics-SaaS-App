@@ -1,7 +1,6 @@
 'use server'
 
 import { requestTikTokShopAPI } from '@/utils/tiktok/utils'
-import { cookies } from 'next/headers'
 
 interface APIParams {
   [key: string]: string | number

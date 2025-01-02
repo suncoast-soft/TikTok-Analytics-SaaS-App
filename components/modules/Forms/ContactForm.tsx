@@ -39,7 +39,7 @@ export default function ContactForm() {
     }
   })
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  function onSubmit() {
     toast({
       title: 'Your request has been received successfully!'
     })

@@ -72,30 +72,30 @@ export default function Product({
     to: subDays(new Date(), 1)
   })
 
-  const loadInitialData = async () => {
-    setIsLoading(true)
-
-    const productData = await fetchProductDetail(seller, id, {})
-    setProduct(productData)
-
-    const dailyData = await fetchProductPerformance(seller, id, {
-      start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd'),
-      granularity: '1D'
-    })
-    const overviewData = await fetchProductPerformance(seller, id, {
-      start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd')
-    })
-
-    setIntervals(dailyData?.performance.intervals || [])
-    setOverview(overviewData?.performance.intervals[0] || {})
-    setIsLoading(false)
-  }
-
   useEffect(() => {
+    const loadInitialData = async () => {
+      setIsLoading(true)
+
+      const productData = await fetchProductDetail(seller, id, {})
+      setProduct(productData)
+
+      const dailyData = await fetchProductPerformance(seller, id, {
+        start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
+        end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd'),
+        granularity: '1D'
+      })
+      const overviewData = await fetchProductPerformance(seller, id, {
+        start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
+        end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd')
+      })
+
+      setIntervals(dailyData?.performance.intervals || [])
+      setOverview(overviewData?.performance.intervals[0] || {})
+      setIsLoading(false)
+    }
+
     loadInitialData()
-  }, [date])
+  }, [date, id, seller])
 
   const metricsChartConfig = {
     gmv: {

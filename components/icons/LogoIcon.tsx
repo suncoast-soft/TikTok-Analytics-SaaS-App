@@ -1,5 +1,14 @@
+import Image from 'next/image'
+
 const LogoIcon = ({ ...props }) => (
-  <img src="/logo-icon.png" alt="Logo" className="h-8 text-white" />
+  <Image
+    src="/logo-icon.png"
+    width={32}
+    height={32}
+    alt="Logo"
+    className="h-8 text-white"
+    {...props}
+  />
 )
 
 export default LogoIcon

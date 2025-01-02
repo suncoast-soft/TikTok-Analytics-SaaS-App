@@ -29,20 +29,20 @@ const fetchVideoPerformanceOverview = async (
   return data?.data
 }
 
-const fetchVideoPerformanceList = async (
-  seller: string | undefined,
-  params: APIParams
-) => {
-  const data = await requestTikTokShopAPIClient(
-    seller,
-    '/analytics/202409/shop_videos/performance',
-    params,
-    'GET',
-    ''
-  )
+// const fetchVideoPerformanceList = async (
+//   seller: string | undefined,
+//   params: APIParams
+// ) => {
+//   const data = await requestTikTokShopAPIClient(
+//     seller,
+//     '/analytics/202409/shop_videos/performance',
+//     params,
+//     'GET',
+//     ''
+//   )
 
-  return data?.data
-}
+//   return data?.data
+// }
 
 export default function SellerVideosPerformance({
   seller
@@ -51,39 +51,39 @@ export default function SellerVideosPerformance({
 }) {
   const [intervals, setIntervals] = useState<any[]>([])
   const [overview, setOverview] = useState({})
-  const [videos, setVideos] = useState<any[]>([])
+  // const [videos, setVideos] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 8),
     to: subDays(new Date(), 1)
   })
 
-  const loadInitialData = async () => {
-    setIsLoading(true)
-
-    const dailyData = await fetchVideoPerformanceOverview(seller, {
-      start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd'),
-      granularity: '1D'
-    })
-    const overviewData = await fetchVideoPerformanceOverview(seller, {
-      start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd')
-    })
-    const videosData = await fetchVideoPerformanceList(seller, {
-      start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd')
-    })
-
-    setIntervals(dailyData?.performance.intervals || [])
-    setOverview(overviewData?.performance.intervals[0] || {})
-    setVideos(videosData?.videos || [])
-    setIsLoading(false)
-  }
-
   useEffect(() => {
+    const loadInitialData = async () => {
+      setIsLoading(true)
+
+      const dailyData = await fetchVideoPerformanceOverview(seller, {
+        start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
+        end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd'),
+        granularity: '1D'
+      })
+      const overviewData = await fetchVideoPerformanceOverview(seller, {
+        start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
+        end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd')
+      })
+      // const videosData = await fetchVideoPerformanceList(seller, {
+      //   start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
+      //   end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd')
+      // })
+
+      setIntervals(dailyData?.performance.intervals || [])
+      setOverview(overviewData?.performance.intervals[0] || {})
+      // setVideos(videosData?.videos || [])
+      setIsLoading(false)
+    }
+
     loadInitialData()
-  }, [date])
+  }, [date, seller])
 
   const metricsChartConfig = {
     gmv: {

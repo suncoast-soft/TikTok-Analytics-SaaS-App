@@ -90,17 +90,21 @@ export default function CollaborationProducts({
   const [isLoading, setIsLoading] = useState(false)
   const [keyword, setKeyword] = useState<string>('')
 
-  const loadInitialData = async () => {
-    setIsLoading(true)
-    const data = await fetchProducts(seller, {
-      sort_field: 'units_sold',
-      page_size: 20,
-      sort_order: 'DESC'
-    })
-    setProducts(data?.products || [])
-    setNextPageToken(data?.next_page_token || null)
-    setIsLoading(false)
-  }
+  useEffect(() => {
+    const loadInitialData = async () => {
+      setIsLoading(true)
+      const data = await fetchProducts(seller, {
+        sort_field: 'units_sold',
+        page_size: 20,
+        sort_order: 'DESC'
+      })
+      setProducts(data?.products || [])
+      setNextPageToken(data?.next_page_token || null)
+      setIsLoading(false)
+    }
+
+    loadInitialData()
+  }, [seller])
 
   const handleSearch = async () => {
     setIsLoading(true)
@@ -134,10 +138,6 @@ export default function CollaborationProducts({
     setNextPageToken(data?.next_page_token || null)
     setIsLoading(false)
   }
-
-  useEffect(() => {
-    loadInitialData()
-  }, [])
 
   return (
     <>

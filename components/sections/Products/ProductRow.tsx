@@ -53,8 +53,9 @@ export default function ProductRow({
         console.error('Failed to fetch product detail:', error)
       }
     }
+
     loadProductDetail()
-  }, [product.id])
+  }, [product.id, seller])
 
   if (!detail) {
     return (
