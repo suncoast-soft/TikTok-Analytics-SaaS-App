@@ -51,7 +51,7 @@ export default async function SellerLayout({
   const settings = [
     {
       name: 'Connect TikTok Seller',
-      link: '/seller/admin/auth-tiktok'
+      link: '/seller/admin/link-tiktok-seller'
     },
     {
       name: 'Manange Account',
