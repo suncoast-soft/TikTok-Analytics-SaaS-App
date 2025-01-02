@@ -34,7 +34,11 @@ const fetchVideoPerformanceList = async (
   return data?.data
 }
 
-export default function SellerVideosDetail({ seller }: { seller?: string }) {
+export default function SellerVideosDetail({
+  seller
+}: {
+  seller: string | undefined
+}) {
   const [videos, setVideos] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [date, setDate] = useState<DateRange | undefined>({
@@ -42,21 +46,21 @@ export default function SellerVideosDetail({ seller }: { seller?: string }) {
     to: subDays(new Date(), 1)
   })
 
-  const loadInitialData = async () => {
-    setIsLoading(true)
-
-    const videosData = await fetchVideoPerformanceList(seller, {
-      start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd')
-    })
-
-    setVideos(videosData?.videos || [])
-    setIsLoading(false)
-  }
-
   useEffect(() => {
+    const loadInitialData = async () => {
+      setIsLoading(true)
+
+      const videosData = await fetchVideoPerformanceList(seller, {
+        start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
+        end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd')
+      })
+
+      setVideos(videosData?.videos || [])
+      setIsLoading(false)
+    }
+
     loadInitialData()
-  }, [date])
+  }, [date, seller])
 
   return (
     <div className="container mx-auto px-4 py-8">

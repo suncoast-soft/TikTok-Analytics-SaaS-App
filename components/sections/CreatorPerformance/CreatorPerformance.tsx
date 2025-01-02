@@ -1,5 +1,6 @@
 // pages/creator-dashboard.tsx
 
+import Image from 'next/image'
 import React from 'react'
 
 type Amount = {
@@ -177,8 +178,10 @@ const CreatorDashboard: React.FC<Props> = ({ creator }) => {
   return (
     <div className="max-w-2xl mx-auto py-10 px-4">
       <div className="flex items-center space-x-4 mb-6">
-        <img
+        <Image
           src={creator.avatar.url}
+          width={80}
+          height={80}
           alt="Creator Avatar"
           className="w-20 h-20 rounded-full"
         />

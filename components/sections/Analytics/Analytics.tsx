@@ -29,7 +29,11 @@ const fetchShopPerformance = async (
   return data?.data
 }
 
-export default function SellerAnalytics(seller: string | undefined) {
+export default function SellerAnalytics({
+  seller
+}: {
+  seller: string | undefined
+}) {
   const [intervals, setIntervals] = useState<any[]>([])
   const [overview, setOverview] = useState({})
   const [isLoading, setIsLoading] = useState(false)
@@ -38,27 +42,27 @@ export default function SellerAnalytics(seller: string | undefined) {
     to: subDays(new Date(), 1)
   })
 
-  const loadInitialData = async () => {
-    setIsLoading(true)
-
-    const dailyData = await fetchShopPerformance(seller, {
-      start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd'),
-      granularity: '1D'
-    })
-    const overviewData = await fetchShopPerformance(seller, {
-      start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
-      end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd')
-    })
-
-    setIntervals(dailyData?.performance.intervals || [])
-    setOverview(overviewData?.performance.intervals[0] || {})
-    setIsLoading(false)
-  }
-
   useEffect(() => {
+    const loadInitialData = async () => {
+      setIsLoading(true)
+
+      const dailyData = await fetchShopPerformance(seller, {
+        start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
+        end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd'),
+        granularity: '1D'
+      })
+      const overviewData = await fetchShopPerformance(seller, {
+        start_date_ge: formatDate(date?.from ?? '', 'yyyy-MM-dd'),
+        end_date_lt: formatDate(date?.to ?? '', 'yyyy-MM-dd')
+      })
+
+      setIntervals(dailyData?.performance.intervals || [])
+      setOverview(overviewData?.performance.intervals[0] || {})
+      setIsLoading(false)
+    }
+
     loadInitialData()
-  }, [date])
+  }, [date, seller])
 
   const metricsChartConfig = {
     buyers: {

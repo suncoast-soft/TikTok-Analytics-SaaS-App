@@ -41,7 +41,7 @@ const fetchProductDetail = async (
   return data.data
 }
 
-const fetchVideoDetail = async (videoId: string) => {
+const fetchVideoDetail = async () => {
   return {
     name: 'API access pending',
     thumb: '',
@@ -66,7 +66,7 @@ export default function VideoRow({
   useEffect(() => {
     const loadVideoDetail = async () => {
       try {
-        const fetchedVideoDetail = await fetchVideoDetail(videoId)
+        const fetchedVideoDetail = await fetchVideoDetail()
         setVideoDetail(fetchedVideoDetail)
 
         const fetchedProductDetail = await fetchProductDetail(seller, productId)
@@ -76,7 +76,7 @@ export default function VideoRow({
       }
     }
     loadVideoDetail()
-  }, [videoId, productId])
+  }, [videoId, productId, seller])
 
   if (!videoDetail || !productDetail) {
     return (

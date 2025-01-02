@@ -1,7 +1,5 @@
 // Import necessary modules
 import * as crypto from 'crypto'
-import { createClient } from '../supabase/server'
-import { getSeller } from '../supabase/queries'
 import { getAccessToken } from './seller-auth'
 
 // Environment variables

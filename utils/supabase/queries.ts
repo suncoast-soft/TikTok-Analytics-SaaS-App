@@ -1,4 +1,3 @@
-import { useSellerContext } from '@/app/providers'
 import { SupabaseClient } from '@supabase/supabase-js'
 import { cache } from 'react'
 
@@ -54,7 +53,7 @@ export const getSellers = cache(async (supabase: SupabaseClient) => {
 })
 
 export const getSeller = cache(
-  async (supabase: SupabaseClient, sellerName?: string | undefined) => {
+  async (supabase: SupabaseClient, sellerName?: string) => {
     if (sellerName) {
       const { data: seller, error } = await supabase
         .from('sellers')

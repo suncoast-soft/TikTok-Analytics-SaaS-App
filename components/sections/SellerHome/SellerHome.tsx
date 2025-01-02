@@ -23,18 +23,18 @@ export default function SellerHome({ seller }: { seller: string | undefined }) {
   const [isLoading, setIsLoading] = useState(false)
   const [sellerData, setSellerData] = useState<any>(null)
 
-  const loadInitialData = async () => {
-    setIsLoading(true)
-
-    const data = await fetchSeller(seller)
-
-    setSellerData(data)
-    setIsLoading(false)
-  }
-
   useEffect(() => {
+    const loadInitialData = async () => {
+      setIsLoading(true)
+
+      const data = await fetchSeller(seller)
+
+      setSellerData(data)
+      setIsLoading(false)
+    }
+
     loadInitialData()
-  }, [])
+  }, [seller])
 
   if (isLoading) {
     return (

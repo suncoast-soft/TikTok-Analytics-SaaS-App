@@ -59,22 +59,30 @@ const fetchProducts = async (seller: string | undefined, params: APIParams) => {
   return data?.data
 }
 
-export default function ProductList({ seller }: { seller?: string }) {
+export default function ProductList({
+  seller
+}: {
+  seller: string | undefined
+}) {
   const [products, setProducts] = useState<Product[]>([])
   const [nextPageToken, setNextPageToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [keyword, setKeyword] = useState<string>('')
 
-  const loadInitialData = async () => {
-    setIsLoading(true)
-    const data = await fetchProducts(seller, {
-      status: 'ACTIVATE',
-      page_size: 10
-    })
-    setProducts(data?.products || [])
-    setNextPageToken(data?.next_page_token || null)
-    setIsLoading(false)
-  }
+  useEffect(() => {
+    const loadInitialData = async () => {
+      setIsLoading(true)
+      const data = await fetchProducts(seller, {
+        status: 'ACTIVATE',
+        page_size: 10
+      })
+      setProducts(data?.products || [])
+      setNextPageToken(data?.next_page_token || null)
+      setIsLoading(false)
+    }
+
+    loadInitialData()
+  }, [seller])
 
   const handleSearch = async () => {
     setIsLoading(true)
@@ -101,10 +109,6 @@ export default function ProductList({ seller }: { seller?: string }) {
     setNextPageToken(data?.next_page_token || null)
     setIsLoading(false)
   }
-
-  useEffect(() => {
-    loadInitialData()
-  }, [])
 
   return (
     <>

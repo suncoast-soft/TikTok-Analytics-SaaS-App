@@ -154,7 +154,7 @@ export const getAccessToken = async (seller: string | undefined) => {
   const authData = await getSeller(supabase, seller)
   if (!authData) throw new Error('No token data found.')
 
-  let {
+  const {
     access_token,
     access_token_expire_at,
     refresh_token,

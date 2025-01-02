@@ -5,7 +5,7 @@ import { requestTikTokShopAPIClient } from '@/app/actions'
 import { Table, TableBody, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import Loading from '@/components/modules/Loading'
-import { SearchIcon, XIcon } from 'lucide-react'
+import { SearchIcon } from 'lucide-react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import CreatorRow from './CreatorRow'
@@ -53,15 +53,37 @@ export default function SellerCreators({
   const [ageRange, setAgeRange] = useState<string>('')
   const [genderFilter, setGenderFilter] = useState<string>('')
 
-  const loadInitialData = async () => {
-    setIsLoading(true)
+  useEffect(() => {
+    const loadInitialData = async () => {
+      setIsLoading(true)
 
-    const data = await fetchCreators(seller, { page_size: 20 })
+      const data = await fetchCreators(seller, { page_size: 20 })
 
-    setCreators(data.creators || [])
-    setNextPageToken(data.next_page_token || null)
-    setIsLoading(false)
-  }
+      setCreators(data.creators || [])
+      setNextPageToken(data.next_page_token || null)
+      setIsLoading(false)
+    }
+
+    loadInitialData()
+  }, [seller])
+
+  useEffect(() => {
+    const handleFilterChange = async () => {
+      setCreators([])
+      setIsLoading(true)
+
+      const data = await fetchCreators(seller, {
+        page_size: 20,
+        keyword,
+        gender_distribution: genderFilter
+      })
+
+      setCreators(data.creators || [])
+      setIsLoading(false)
+    }
+
+    handleFilterChange()
+  }, [ageRange, genderFilter, keyword, seller])
 
   const handleSearch = async () => {
     setCreators([])
@@ -70,20 +92,6 @@ export default function SellerCreators({
     const data = await fetchCreators(seller, {
       page_size: 20,
       keyword
-    })
-
-    setCreators(data.creators || [])
-    setIsLoading(false)
-  }
-
-  const handleFilterChange = async () => {
-    setCreators([])
-    setIsLoading(true)
-
-    const data = await fetchCreators(seller, {
-      page_size: 20,
-      keyword,
-      gender_distribution: genderFilter
     })
 
     setCreators(data.creators || [])
@@ -124,14 +132,6 @@ export default function SellerCreators({
 
     setCreators(sortedCreators)
   }
-
-  useEffect(() => {
-    loadInitialData()
-  }, [])
-
-  useEffect(() => {
-    handleFilterChange()
-  }, [ageRange, genderFilter])
 
   return (
     <>
