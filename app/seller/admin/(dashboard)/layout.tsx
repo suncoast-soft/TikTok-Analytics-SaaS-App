@@ -8,7 +8,7 @@ import {
   LayoutDashboardIcon,
   ShoppingBag
 } from 'lucide-react'
-import User from '@/components/modules/UserDropdown'
+import UserDropdown from '@/components/modules/UserDropdown'
 import { getUser } from '@/utils/supabase/queries'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import LogoBlue from '@/components/icons/LogoBlue'
@@ -73,7 +73,7 @@ export default async function SellerLayout({
           <div className="p-2.5">
             <div className="bg-white shadow-sm px-4 py-3 flex justify-between items-center rounded-md border">
               <DashboardBreadcrumb />
-              <User user={user} />
+              <UserDropdown user={user} />
             </div>
 
             <div className="py-8">{children}</div>

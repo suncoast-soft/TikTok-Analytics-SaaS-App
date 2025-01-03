@@ -11,7 +11,7 @@ export default async function SellerPrivateLayout({
   const [subscription] = await Promise.all([getSubscription(supabase)])
 
   if (!subscription) {
-    return redirect('/creator/subscription')
+    return redirect('/creator/admin/subscription')
   }
 
   return children

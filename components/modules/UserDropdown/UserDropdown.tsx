@@ -30,7 +30,7 @@ const FormSchema = z.object({
   pathName: z.string()
 })
 
-export default function User({ user }: NavlinksProps) {
+export default function UserDropdown({ user }: NavlinksProps) {
   const router = getRedirectMethod() === 'client' ? useRouter() : null
   const [isSubmitting, setIsSubmitting] = useState(false)
 

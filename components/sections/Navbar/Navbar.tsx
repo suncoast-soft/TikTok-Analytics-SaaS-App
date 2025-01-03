@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { MenuIcon } from 'lucide-react'
 import { createClient } from '@/utils/supabase/server'
-import User from '@/components/modules/UserDropdown'
+import UserDropdown from '@/components/modules/UserDropdown'
 import { getUser } from '@/utils/supabase/queries'
 
 export default async function Navbar() {
@@ -58,20 +58,23 @@ export default async function Navbar() {
 
             {user ? (
               <div className="ml-auto">
-                <User user={user} />
+                <UserDropdown user={user} />
               </div>
             ) : (
               <div className="hidden lg:flex justify-end items-center space-x-4 ml-auto">
                 <Button variant="link" asChild>
                   <Link
-                    href="/creator/password_signin"
+                    href="/creator/admin/auth/password_signin"
                     className="no-underline"
                   >
                     Login
                   </Link>
                 </Button>
                 <Button variant="default" asChild>
-                  <Link href="/creator/signup" className="no-underline">
+                  <Link
+                    href="/creator/admin/auth/signup"
+                    className="no-underline"
+                  >
                     Start Free Trial
                   </Link>
                 </Button>
@@ -101,20 +104,23 @@ export default async function Navbar() {
 
                   {user ? (
                     <div className="ml-auto">
-                      <User user={user} />
+                      <UserDropdown user={user} />
                     </div>
                   ) : (
                     <div className="mt-4 flex justify-end">
                       <Button variant="link" asChild>
                         <Link
-                          href="/creator/password_signin"
+                          href="/creator/admin/auth/password_signin"
                           className="no-underline"
                         >
                           Login
                         </Link>
                       </Button>
                       <Button variant="default" asChild>
-                        <Link href="/creator/signup" className="no-underline">
+                        <Link
+                          href="/creator/admin/auth/signup"
+                          className="no-underline"
+                        >
                           Start Free Trial
                         </Link>
                       </Button>

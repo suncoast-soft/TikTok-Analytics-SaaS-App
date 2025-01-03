@@ -3,6 +3,10 @@ module.exports = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: '**.tiktokcdn.com'
+      },
+      {
+        protocol: 'https',
         hostname: '**.tiktokcdn-us.com'
       },
       {

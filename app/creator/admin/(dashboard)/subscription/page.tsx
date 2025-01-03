@@ -17,7 +17,7 @@ export default async function AuthTiktok() {
       </p>
 
       {subscription ? (
-        <BillingPortal return_url="/creator/subscription" />
+        <BillingPortal return_url="/creator/admin/subscription" />
       ) : (
         <StripePricingTable user={user} />
       )}
