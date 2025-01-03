@@ -59,7 +59,7 @@ export default function SellerHome({
 
   return (
     <div className="container py-20">
-      <section className="max-w-3xl mx-auto bg-orange-50 px-4 py-8 rounded-lg shadow-lg transform hover:translate-y-1 transition flex flex-col md:flex-row gap-8 items-center overflow-hidden">
+      <section className="max-w-3xl mx-auto bg-orange-50 px-4 py-8 rounded-lg shadow-lg transform hover:translate-y-1 transition flex flex-col md:flex-row gap-8 overflow-hidden">
         <Image
           src={sellerData.image ?? '/logo-icon.png'}
           alt={sellerData.name}
@@ -85,7 +85,7 @@ export default function SellerHome({
             <strong>{sellerData.seller_type}</strong>
           </p>
 
-          <div className="flex justify-between mt-6">
+          <div className="flex justify-between mt-6 gap-4">
             <StarRating score={4.6} />
 
             {!user ? (
@@ -100,21 +100,24 @@ export default function SellerHome({
             ) : user.type === 'creator' ? (
               <Button variant="default" asChild>
                 <Link
-                  href={`/creator/admin/auth?seller=${seller}`}
+                  href={`/seller/${seller}/analytics/overview`}
                   className="no-underline"
                 >
-                  View Brand Affiliates
+                  View Affiliates
                 </Link>
               </Button>
             ) : (
-              <Button variant="default" asChild>
-                <Link
-                  href={`/creator/admin/auth?seller=${seller}`}
-                  className="no-underline"
-                >
+              <div className="text-right">
+                <Button variant="default" disabled className="mb-2">
                   Creator Login
-                </Link>
-              </Button>
+                </Button>
+                <p>
+                  <small>Access is restricted to creators only.</small>
+                </p>
+                <p>
+                  <small>Please log out and log in as a creator.</small>
+                </p>
+              </div>
             )}
           </div>
         </div>

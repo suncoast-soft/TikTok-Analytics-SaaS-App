@@ -16,7 +16,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { CircleUserIcon, LogOut } from 'lucide-react'
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
+import { Form } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -74,21 +74,10 @@ export default function UserDropdown({ user }: NavlinksProps) {
         <DropdownMenuItem>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <FormField
-                control={form.control}
-                name="pathName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        type="hidden"
-                        {...field}
-                        defaultValue={usePathname()}
-                        {...form.register('pathName')}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
+              <Input
+                type="hidden"
+                defaultValue={usePathname()}
+                {...form.register('pathName')}
               />
 
               <button

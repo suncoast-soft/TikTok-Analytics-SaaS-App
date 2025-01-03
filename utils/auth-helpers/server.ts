@@ -29,7 +29,7 @@ export async function SignOut(formData: { [key: string]: string | number }) {
     )
   }
 
-  return '/'
+  return pathName
 }
 
 export async function signInWithEmail(formData: {
@@ -163,6 +163,18 @@ export async function signInWithPassword(formData: {
       'Success!',
       'You are now signed in.'
     )
+
+    if (type === 'creator') {
+      const seller = cookieStore.get('seller')?.value
+      if (seller) {
+        cookieStore.delete('seller')
+        redirectPath = getStatusRedirect(
+          `/seller/${seller}/analytics/overview`,
+          'Success!',
+          'You are now signed in.'
+        )
+      }
+    }
   } else {
     redirectPath = getErrorRedirect(
       `/${type}/admin/auth/password_signin`,
