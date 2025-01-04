@@ -169,7 +169,7 @@ export async function signInWithPassword(formData: {
       if (seller) {
         cookieStore.delete('seller')
         redirectPath = getStatusRedirect(
-          `/seller/${seller}/analytics/overview`,
+          `/seller/${seller}/campaigns/active`,
           'Success!',
           'You are now signed in.'
         )

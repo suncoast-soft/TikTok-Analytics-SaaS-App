@@ -100,7 +100,7 @@ export default function SellerHome({
             ) : user.type === 'creator' ? (
               <Button variant="default" asChild>
                 <Link
-                  href={`/seller/${seller}/analytics/overview`}
+                  href={`/seller/${seller}/campaigns/active`}
                   className="no-underline"
                 >
                   View Affiliates

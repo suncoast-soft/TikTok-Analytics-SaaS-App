@@ -10,6 +10,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -44,9 +45,10 @@ type NavItem = {
 interface NavProps {
   navs: NavItem[]
   settings: NavItem[]
+  label?: string
 }
 
-export default function Sidenav({ navs, settings }: NavProps) {
+export default function Sidenav({ navs, settings, label }: NavProps) {
   const currentPath = usePathname()
 
   return (
@@ -63,6 +65,14 @@ export default function Sidenav({ navs, settings }: NavProps) {
 
       <SidebarContent>
         <SidebarGroup>
+          {label && (
+            <SidebarGroupLabel>
+              <span className="bg-primary text-white px-1.5 py-0.5 rounded">
+                {label}
+              </span>
+            </SidebarGroupLabel>
+          )}
+
           <SidebarGroupContent>
             <SidebarMenu>
               {navs.map((nav) =>
