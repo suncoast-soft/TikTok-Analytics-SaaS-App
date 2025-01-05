@@ -1,8 +1,22 @@
+import { requestTikTokShopAPIClient } from '@/app/actions'
 import MilestoneBar from '@/components/modules/MilestoneBar'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { cn } from '@/utils/cn'
-import { CheckIcon, LockIcon } from 'lucide-react'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { differenceInDays, format } from 'date-fns'
 import Image from 'next/image'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table'
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog'
 
 const mock__creatorTargetCollaborations = {
   code: 0,
@@ -15,7 +29,7 @@ const mock__creatorTargetCollaborations = {
         products: [
           {
             commission: {
-              amount: '121.25',
+              amount: '161.5',
               currency: 'USD',
               rate: 1500
             },
@@ -27,7 +41,7 @@ const mock__creatorTargetCollaborations = {
           },
           {
             commission: {
-              amount: '241.50',
+              amount: '341.25',
               currency: 'USD',
               rate: 1500
             },
@@ -171,40 +185,254 @@ const mock__sellerTargetCollaboration = {
   request_id: '20250103181731834A69E381BC37005D10'
 }
 
+const fetchSeller = async (seller: string | undefined) => {
+  const data = await requestTikTokShopAPIClient(
+    seller,
+    '/authorization/202309/shops',
+    {},
+    'GET',
+    ''
+  )
+  if (data.data && Array.isArray(data.data.shops)) {
+    return data.data.shops[0]
+  }
+  return null
+}
+
 const Collaboration = ({ collaboration }: { collaboration: any }) => {
+  const totalCommissionAmount = collaboration.products
+    .reduce(
+      (sum: number, product: any) =>
+        sum + parseFloat(product.commission.amount),
+      0
+    )
+    .toFixed(2)
+  const formattedTotalCommissionAmount = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  }).format(parseFloat(totalCommissionAmount))
+
+  const totalSalesGMV = collaboration.products
+    .reduce((sum: number, product: any) => {
+      const salesGMV =
+        parseFloat(product.commission.amount) /
+        (product.commission.rate / 10000)
+      return sum + salesGMV
+    }, 0)
+    .toFixed(2)
+  const formattedTotalSalesGMV = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  }).format(parseFloat(totalSalesGMV))
+
   const collaborationData =
     mock__sellerTargetCollaboration.data.target_collaboration
+  const {
+    name,
+    start_time,
+    end_time,
+    products: sellerProducts,
+    seller_contact_info,
+    free_sample_rule
+  } = collaborationData
 
-  const { name, creators, products, seller_contact_info, free_sample_rule } =
-    collaborationData
+  const creatorProducts = collaboration.products
+
+  const products = creatorProducts.map((creatorProduct: any) => {
+    const sellerProduct = sellerProducts.find(
+      (sp) => sp.id === creatorProduct.id
+    )
+    return {
+      ...creatorProduct,
+      original_price: sellerProduct?.original_price,
+      status: sellerProduct?.status,
+      commission_effective_status: sellerProduct?.commission_effective_status
+    }
+  })
 
   const milestones = [
     { gmv: 1000, reward: 'iPhone 15', image: '/images/temp/iPhone.png' },
-    { gmv: 10000, reward: 'iPad', image: '/images/temp/iPad.png' },
-    { gmv: 25000, reward: 'MacBook', image: '/images/temp/macBook.png' },
-    { gmv: 50000, reward: 'iMac Pro', image: '/images/temp/iMac.png' }
+    { gmv: 3000, reward: 'iPad', image: '/images/temp/iPad.png' },
+    { gmv: 10000, reward: 'MacBook', image: '/images/temp/macBook.png' },
+    { gmv: 20000, reward: 'iMac Pro', image: '/images/temp/iMac.png' }
   ]
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{name}</CardTitle>
         <CardContent>
-          <MilestoneBar milestones={milestones} currentMilestone={13000} />
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="md:col-span-1 space-y-3 py-10">
+              <h3 className="text-xl font-bold text-slate-700">
+                <span>{name}</span>
+                <span className="text-base ml-3 px-1.5 rounded-sm bg-secondary text-white font-bold">
+                  {collaboration.status}
+                </span>
+                <br />
+                <span className="text-sm font-normal">Seller Contact: </span>
+                <span className="text-sm font-medium underline">
+                  {seller_contact_info.email}
+                </span>
+              </h3>
+              <p>
+                <span>{format(start_time * 1000, 'MM/dd/yy')}</span> -{' '}
+                <span>{format(end_time * 1000, 'MM/dd/yy')}</span>
+                <br />
+                <span className="text-sm font-medium px-1">
+                  Ends in {differenceInDays(end_time * 1000, new Date())} days
+                </span>
+              </p>
+              <hr />
+              <p>
+                <strong className="text-slate-700">Total GMV: </strong>
+                <span>{formattedTotalSalesGMV}</span>
+              </p>
+              <p>
+                <strong className="text-slate-700">Commission: </strong>
+                <span>{formattedTotalCommissionAmount}</span>
+              </p>
+              <hr />
+              <p>
+                <strong className="text-slate-700">Free Sample: </strong>
+                <span>{free_sample_rule?.has_free_sample ? 'Yes' : 'No'}</span>
+              </p>
+            </div>
+
+            <div className="md:col-span-3">
+              <MilestoneBar
+                milestones={milestones}
+                currentMilestone={totalSalesGMV}
+              />
+
+              <div className="mt-6">
+                {products.map((product: any, index: number) => (
+                  <div
+                    key={index}
+                    className="mb-4 p-3 border border-orange-500"
+                  >
+                    <div className="flex flex-col md:flex-row gap-4">
+                      <Dialog>
+                        <DialogTrigger className="min-w-36">
+                          <Image
+                            src={product.main_image_url}
+                            width={144}
+                            height={144}
+                            alt={product.title}
+                          />
+                        </DialogTrigger>
+
+                        <DialogContent className="max-w-xl p-14">
+                          <DialogTitle>{product.title}</DialogTitle>
+                          <Image
+                            src={product.main_image_url}
+                            width={600}
+                            height={600}
+                            alt={product.title}
+                          />
+                        </DialogContent>
+                      </Dialog>
+
+                      <div>
+                        <p className="text-lg font-semibold mb-4">
+                          {product.title}
+                        </p>
+
+                        <Table className="bg-orange-50/10">
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead className="px-4 py-2">
+                                Commission Rate
+                              </TableHead>
+                              <TableHead className="px-4 py-2">
+                                Commission Amount
+                              </TableHead>
+                              <TableHead className="px-4 py-2">
+                                Original Price
+                              </TableHead>
+                              <TableHead className="px-4 py-2">
+                                Product Status
+                              </TableHead>
+                              <TableHead className="px-4 py-2">
+                                Commission Effective Status
+                              </TableHead>
+                            </TableRow>
+                          </TableHeader>
+
+                          <TableBody>
+                            <TableRow
+                              key={`${product.id}-row2`}
+                              className="border-t"
+                            >
+                              <TableCell className="border px-4 py-2">
+                                {product.commission.rate / 100}%
+                              </TableCell>
+                              <TableCell className="border px-4 py-2">
+                                ${product.commission.amount}{' '}
+                                {product.commission.currency}
+                              </TableCell>
+                              <TableCell className="border px-4 py-2">
+                                ${product.original_price.minimum_amount}{' '}
+                                {product.original_price.currency}
+                              </TableCell>
+                              <TableCell
+                                className={`border px-4 py-2 ${product.status === 'LIVE' ? 'text-blue-500' : 'text-red-500'}`}
+                              >
+                                {product.status}
+                              </TableCell>
+                              <TableCell className={`border px-4 py-2`}>
+                                {product.commission_effective_status}
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </CardContent>
       </CardHeader>
     </Card>
   )
 }
 
-export default function SellerActiveCampaignsPage() {
+type Params = Promise<{ seller: string }>
+
+export default async function SellerActiveCampaignsPage({
+  params
+}: {
+  params: Params
+}) {
+  const seller = await fetchSeller((await params).seller)
+
   const targetCollaborations =
     mock__creatorTargetCollaborations.data.target_collaborations
 
   return (
-    <div>
+    <div className="container max-w-7xl">
+      <section className="flex items-center gap-4 overflow-hidden px-6 mb-8">
+        <Image
+          src={seller.image ?? '/images/temp/locked.jpeg'}
+          alt={seller.name}
+          width={96}
+          height={96}
+          className="w-24 h-24 object-contain"
+        />
+
+        <div className="w-full">
+          <h1 className="text-2xl font-bold">{seller.name}</h1>
+
+          <p>
+            (<span>Shop Code: </span>
+            <strong>{seller.code}</strong>)
+          </p>
+        </div>
+      </section>
+
       {targetCollaborations.map((collaboration, index) => (
-        <div key={index}>
+        <div key={index} className="mb-8">
           <Collaboration collaboration={collaboration} />
         </div>
       ))}

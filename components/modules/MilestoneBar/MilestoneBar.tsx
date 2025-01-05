@@ -1,5 +1,5 @@
 import { cn } from '@/utils/cn'
-import { CheckIcon, LockIcon } from 'lucide-react'
+import { CheckIcon, HexagonIcon, LockIcon } from 'lucide-react'
 import Image from 'next/image'
 
 export default function MilestoneBar({
@@ -16,20 +16,29 @@ export default function MilestoneBar({
   return (
     <div className="flex flex-col items-center">
       <div className="relative w-full max-w-4xl mt-32 mb-16">
-        <div className="absolute top-1/2 transform -translate-y-1/2 w-full h-2 bg-gray-300 rounded-full">
+        <div className="absolute top-1/2 transform -translate-y-1/2 w-full h-1.5 bg-gray-300 rounded-full">
           {milestones.map((milestone, index) => {
-            const leftPosition = `${(index / 5) * 100}%`
-            const isCompleted = currentMilestone >= milestone.gmv
+            const leftPosition = `${(index / (milestones.length + 1)) * 100}%`
+
+            const milestoneProgress =
+              currentMilestone >= milestone.gmv
+                ? 1
+                : Math.max(
+                    0,
+                    (currentMilestone - (milestones[index - 1]?.gmv || 0)) /
+                      (milestone.gmv - (milestones[index - 1]?.gmv || 0))
+                  )
+
+            const widthPercentage =
+              milestoneProgress * (100 / milestones.length)
 
             return (
               <div
                 key={index}
-                className={cn('absolute h-2 rounded-full', {
-                  'bg-yellow-500': isCompleted
-                })}
+                className="absolute h-1.5 rounded-full bg-yellow-500"
                 style={{
                   left: leftPosition,
-                  width: isCompleted ? `${100 / 5}%` : 0
+                  width: `${widthPercentage}%`
                 }}
               />
             )
@@ -38,8 +47,11 @@ export default function MilestoneBar({
 
         <div className="relative w-full">
           {milestones.map((milestone, index) => {
-            const leftPosition = `calc(${((index + 1) / 5) * 100}% - 48px)`
+            const leftPosition = `calc(${((index + 1) / (milestones.length + 1)) * 100}% - 48px)`
             const isCompleted = currentMilestone >= milestone.gmv
+            const isNextMilestone =
+              !isCompleted &&
+              (index === 0 || currentMilestone >= milestones[index - 1].gmv)
 
             return (
               <div
@@ -57,19 +69,25 @@ export default function MilestoneBar({
                   />
                 </div>
 
-                <div
-                  className={cn(
-                    'w-6 h-6 absolute -top-3 rounded-full flex items-center justify-center border',
-                    {
-                      'bg-yellow-500 border-yellow-500': isCompleted,
-                      'bg-white border-gray-300': !isCompleted
-                    }
-                  )}
-                >
+                <div className="absolute w-6 h-6 -top-3 flex items-center justify-center">
+                  <HexagonIcon
+                    className={cn(
+                      'w-6 h-6 stroke-1',
+                      isCompleted ? 'fill-yellow-500' : 'fill-white',
+                      isCompleted
+                        ? 'stroke-yellow-600'
+                        : isNextMilestone
+                          ? 'stroke-yellow-500'
+                          : 'stroke-gray-400'
+                    )}
+                  />
+
                   {isCompleted ? (
-                    <CheckIcon className="w-4 h-4 text-white" />
+                    <CheckIcon className="absolute w-3 h-3 text-white" />
                   ) : (
-                    <LockIcon className="w-4 h-4 text-gray-300" />
+                    <LockIcon
+                      className={`absolute w-3 h-3 stroke-2 ${isNextMilestone ? 'text-yellow-500' : 'text-gray-400'}`}
+                    />
                   )}
                 </div>
 

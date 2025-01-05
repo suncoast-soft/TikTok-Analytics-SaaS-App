@@ -24,10 +24,12 @@ const fetchSeller = async (seller: string | undefined) => {
 
 export default function SellerHome({
   seller,
-  user
+  user,
+  cta
 }: {
   seller: string | undefined
   user: any
+  cta?: boolean
 }) {
   const [isLoading, setIsLoading] = useState(false)
   const [sellerData, setSellerData] = useState<any>(null)
@@ -58,10 +60,10 @@ export default function SellerHome({
   }
 
   return (
-    <div className="container py-20">
-      <section className="max-w-3xl mx-auto bg-orange-50 px-4 py-8 rounded-lg shadow-lg transform hover:translate-y-1 transition flex flex-col md:flex-row gap-8 overflow-hidden">
+    <div className="container max-w-3xl mx-auto py-20">
+      <section className="bg-orange-50 px-4 py-8 rounded-lg shadow-lg transform hover:translate-y-1 transition flex flex-col md:flex-row gap-8 overflow-hidden">
         <Image
-          src={sellerData.image ?? '/logo-icon.png'}
+          src={sellerData.image ?? '/images/temp/locked.jpeg'}
           alt={sellerData.name}
           width={200}
           height={200}
@@ -85,41 +87,43 @@ export default function SellerHome({
             <strong>{sellerData.seller_type}</strong>
           </p>
 
-          <div className="flex justify-between mt-6 gap-4">
-            <StarRating score={4.6} />
+          {cta && (
+            <div className="flex justify-between items-center mt-6 gap-4">
+              <StarRating score={4.6} />
 
-            {!user ? (
-              <Button variant="default" asChild>
-                <Link
-                  href={`/creator/admin/auth?seller=${seller}`}
-                  className="no-underline"
-                >
-                  Creator Login
-                </Link>
-              </Button>
-            ) : user.type === 'creator' ? (
-              <Button variant="default" asChild>
-                <Link
-                  href={`/seller/${seller}/campaigns/active`}
-                  className="no-underline"
-                >
-                  View Affiliates
-                </Link>
-              </Button>
-            ) : (
-              <div className="text-right">
-                <Button variant="default" disabled className="mb-2">
-                  Creator Login
+              {!user ? (
+                <Button variant="default" asChild>
+                  <Link
+                    href={`/creator/admin/auth?seller=${seller}`}
+                    className="no-underline"
+                  >
+                    Creator Login
+                  </Link>
                 </Button>
-                <p>
-                  <small>Access is restricted to creators only.</small>
-                </p>
-                <p>
-                  <small>Please log out and log in as a creator.</small>
-                </p>
-              </div>
-            )}
-          </div>
+              ) : user.type === 'creator' ? (
+                <Button variant="default" asChild>
+                  <Link
+                    href={`/seller/${seller}/campaigns/active`}
+                    className="no-underline"
+                  >
+                    View Affiliates
+                  </Link>
+                </Button>
+              ) : (
+                <div className="text-right">
+                  <Button variant="default" disabled className="mb-2">
+                    Creator Login
+                  </Button>
+                  <p>
+                    <small>Access is restricted to creators only.</small>
+                  </p>
+                  <p>
+                    <small>Please log out and log in as a creator.</small>
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </section>
     </div>
