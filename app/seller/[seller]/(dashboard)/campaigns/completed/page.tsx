@@ -10,6 +10,14 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table'
 
 const mock__creatorTargetCollaborations = {
   code: 0,
@@ -45,7 +53,7 @@ const mock__creatorTargetCollaborations = {
               'Locked Unisex Permanent Couples Bracelets with Special Clasp - Perfect Date Night Gift for Anniversary and Birthday'
           }
         ],
-        status: 'LIVE'
+        status: 'ENDED'
       }
     ],
     total_count: 1
@@ -190,16 +198,16 @@ const mock__sellerAffiliateOrders = {
         skus: [
           {
             actual_commission_base: {
-              amount: '50000',
-              currency: 'VND'
+              amount: '50',
+              currency: 'USD'
             },
             actual_paid_commission: {
-              amount: '10000',
-              currency: 'VND'
+              amount: '10',
+              currency: 'USD'
             },
             actual_paid_shop_ads_commission: {
-              amount: '20000',
-              currency: 'VND'
+              amount: '20',
+              currency: 'USD'
             },
             campaign_id: '73661290629',
             commission_rate: '1000',
@@ -207,28 +215,28 @@ const mock__sellerAffiliateOrders = {
             content_type: 'LIVE',
             creator_username: 'abc123',
             estimated_commission_base: {
-              amount: '1000',
-              currency: 'VND'
+              amount: '1',
+              currency: 'USD'
             },
             estimated_paid_commission: {
-              amount: '20000',
-              currency: 'VND'
+              amount: '20',
+              currency: 'USD'
             },
             estimated_paid_shop_ads_commission: {
-              amount: '1000',
-              currency: 'VND'
+              amount: '1',
+              currency: 'USD'
             },
             open_collaboration_id: '73661290629',
             price: {
-              amount: '1000',
-              currency: 'VND'
+              amount: '1',
+              currency: 'USD'
             },
             product_id: '1729503179457070324',
             quantity: 1,
             refunded_quantity: 1,
             returned_quantity: 1,
-            shop_ads_commission_rate: '5000',
-            target_collaboration_id: '73661290629'
+            shop_ads_commission_rate: '5',
+            target_collaboration_id: '7441611127140075307'
           }
         ],
         status: '"COMPLETED" '
@@ -329,7 +337,8 @@ const Collaboration = ({ collaboration }: { collaboration: any }) => {
 
   const orders = mock__sellerAffiliateOrders.data.orders.filter(
     (order) =>
-      order.skus[0].creator_username === mock__creatorProfile.data.username
+      order.skus[0].creator_username === mock__creatorProfile.data.username &&
+      order.skus[0].target_collaboration_id === collaboration.id
   )
 
   console.log(orders)
@@ -378,6 +387,42 @@ const Collaboration = ({ collaboration }: { collaboration: any }) => {
                   <DialogTitle className="text-slate-800 leading-relaxed">
                     Orders
                   </DialogTitle>
+
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>ID</TableHead>
+                        <TableHead>Created</TableHead>
+                        <TableHead>Delivered</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Commission Earned</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {orders.map((order, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{order.id}</TableCell>
+                          <TableCell>
+                            {format(order.create_time * 1000, 'MM/dd/yyyy')}
+                          </TableCell>
+                          <TableCell>
+                            {format(order.delivery_time * 1000, 'MM/dd/yyyy')}
+                          </TableCell>
+                          <TableCell>{order.status}</TableCell>
+                          <TableCell>
+                            {order.skus.map((sku) => (
+                              <p key={sku.product_id}>
+                                {sku.quantity} x{' '}
+                                {formatPrice(
+                                  parseFloat(sku.actual_paid_commission.amount)
+                                )}
+                              </p>
+                            ))}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </DialogContent>
               </Dialog>
             </div>

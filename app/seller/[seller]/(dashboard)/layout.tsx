@@ -36,8 +36,8 @@ export default async function SellerLayout({
           link: `/seller/${seller}/campaigns/active`
         },
         {
-          name: 'Pending Invitations',
-          link: `/seller/${seller}/campaigns/pending`
+          name: 'Showcase Products',
+          link: `/seller/${seller}/campaigns/showcase`
         },
         {
           name: 'Completed',
