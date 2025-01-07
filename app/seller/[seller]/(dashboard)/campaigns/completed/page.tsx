@@ -1,23 +1,15 @@
 import { requestTikTokShopAPIClient } from '@/app/actions'
-import MilestoneBar from '@/components/modules/MilestoneBar'
-import { Card, CardContent } from '@/components/ui/card'
-import { differenceInDays, format } from 'date-fns'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { format } from 'date-fns'
 import Image from 'next/image'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
+import { formatPrice } from '@/utils/helpers'
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import { formatPrice } from '@/utils/helpers'
+import { Button } from '@/components/ui/button'
 
 const mock__creatorTargetCollaborations = {
   code: 0,
@@ -186,12 +178,104 @@ const mock__sellerTargetCollaboration = {
   request_id: '20250103181731834A69E381BC37005D10'
 }
 
+const mock__sellerAffiliateOrders = {
+  code: 0,
+  data: {
+    next_page_token: 'WzE2OTUxMTY2NTQ2OTMsNTc2NDczNDg5ODYxNDEyMDI1XQ==',
+    orders: [
+      {
+        create_time: 1722420186,
+        delivery_time: 1723748656,
+        id: '579125529499110202',
+        skus: [
+          {
+            actual_commission_base: {
+              amount: '50000',
+              currency: 'VND'
+            },
+            actual_paid_commission: {
+              amount: '10000',
+              currency: 'VND'
+            },
+            actual_paid_shop_ads_commission: {
+              amount: '20000',
+              currency: 'VND'
+            },
+            campaign_id: '73661290629',
+            commission_rate: '1000',
+            content_id: '7493990579714164574',
+            content_type: 'LIVE',
+            creator_username: 'abc123',
+            estimated_commission_base: {
+              amount: '1000',
+              currency: 'VND'
+            },
+            estimated_paid_commission: {
+              amount: '20000',
+              currency: 'VND'
+            },
+            estimated_paid_shop_ads_commission: {
+              amount: '1000',
+              currency: 'VND'
+            },
+            open_collaboration_id: '73661290629',
+            price: {
+              amount: '1000',
+              currency: 'VND'
+            },
+            product_id: '1729503179457070324',
+            quantity: 1,
+            refunded_quantity: 1,
+            returned_quantity: 1,
+            shop_ads_commission_rate: '5000',
+            target_collaboration_id: '73661290629'
+          }
+        ],
+        status: '"COMPLETED" '
+      }
+    ],
+    total_count: 10000
+  },
+  message: 'Success',
+  request_id: '202203070749000101890810281E8C70B7'
+}
+
+const mock__creatorProfile = {
+  code: 0,
+  data: {
+    avatar: {
+      height: 100,
+      url: 'https://p16-sign.tiktokcdn-us.com/tos-useast5-avt-0068-tx/d76b8cc1b598de90ad5048df46e672b3~c5_100x100.webp?x-expires=1691895600&x-signature=oAT9KOL7aCN3Did9U%2FoKEsbBDj0%3D',
+      width: 100
+    },
+    creator_user_id: '7495383576032499210',
+    permissions: [
+      'LIVE_STREAM_PERMISSION',
+      'SELF_SALE_PERMISSION',
+      'ADD_AFFILIATE_PERMISSION'
+    ],
+    register_region: 'US',
+    selection_region: 'US',
+    seller_type: 'LOCAL',
+    user_type: 'TIKTOK_SHOP_OFFICIAL_ACCOUNT',
+    username: 'abc123'
+  },
+  message: 'Success',
+  request_id: '202203070749000101890810281E8C70B7'
+}
+
 const milestones = [
   { gmv: 1000, reward: 'iPhone 15', image: '/images/temp/iPhone.png' },
   { gmv: 3000, reward: 'iPad', image: '/images/temp/iPad.png' },
   { gmv: 10000, reward: 'MacBook', image: '/images/temp/macBook.png' },
   { gmv: 20000, reward: 'iMac Pro', image: '/images/temp/iMac.png' }
 ]
+
+interface Milestone {
+  gmv: number
+  reward: string
+  image: string
+}
 
 const fetchSeller = async (seller: string | undefined) => {
   const data = await requestTikTokShopAPIClient(
@@ -205,6 +289,17 @@ const fetchSeller = async (seller: string | undefined) => {
     return data.data.shops[0]
   }
   return null
+}
+
+const getLatestCompletedMilestone = (
+  milestones: Milestone[],
+  currentMilestone: number
+) => {
+  const completedMilestones = milestones.filter(
+    (milestone) => currentMilestone >= milestone.gmv
+  )
+  completedMilestones.sort((a, b) => b.gmv - a.gmv)
+  return completedMilestones.length > 0 ? completedMilestones[0] : null
 }
 
 const Collaboration = ({ collaboration }: { collaboration: any }) => {
@@ -225,160 +320,91 @@ const Collaboration = ({ collaboration }: { collaboration: any }) => {
 
   const collaborationData =
     mock__sellerTargetCollaboration.data.target_collaboration
-  const {
-    name,
-    start_time,
-    end_time,
-    products: sellerProducts,
-    seller_contact_info,
-    free_sample_rule
-  } = collaborationData
+  const { name, start_time, end_time } = collaborationData
 
-  const creatorProducts = collaboration.products
+  const latestCompletedMilestone = getLatestCompletedMilestone(
+    milestones,
+    totalSalesGMV
+  )
 
-  const products = creatorProducts.map((creatorProduct: any) => {
-    const sellerProduct = sellerProducts.find(
-      (sp) => sp.id === creatorProduct.id
-    )
-    return {
-      ...creatorProduct,
-      original_price: sellerProduct?.original_price,
-      status: sellerProduct?.status,
-      commission_effective_status: sellerProduct?.commission_effective_status
-    }
-  })
+  const orders = mock__sellerAffiliateOrders.data.orders.filter(
+    (order) =>
+      order.skus[0].creator_username === mock__creatorProfile.data.username
+  )
+
+  console.log(orders)
 
   return (
     <Card>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="md:col-span-1 space-y-3 py-10">
-            <h3 className="text-xl font-bold text-slate-700">
-              <span>{name}</span>
-              <span className="text-base ml-3 px-1.5 rounded-sm bg-secondary text-white font-bold">
-                {collaboration.status}
-              </span>
-              <br />
-              <span className="text-sm font-normal">Seller Contact: </span>
-              <span className="text-sm font-medium underline">
-                {seller_contact_info.email}
-              </span>
-            </h3>
-            <p>
-              <span>{format(start_time * 1000, 'MM/dd/yy')}</span> -{' '}
-              <span>{format(end_time * 1000, 'MM/dd/yy')}</span>
-              <br />
-              <span className="text-sm font-medium px-1">
-                Ends in {differenceInDays(end_time * 1000, new Date())} days
-              </span>
-            </p>
-            <hr />
-            <p>
-              <strong className="text-slate-700">Total GMV: </strong>
-              <span>{formatPrice(totalSalesGMV)}</span>
-            </p>
-            <p>
-              <strong className="text-slate-700">Commission: </strong>
-              <span>{formatPrice(totalCommissionAmount)}</span>
-            </p>
-            <hr />
-            <p>
-              <strong className="text-slate-700">Free Sample: </strong>
-              <span>{free_sample_rule?.has_free_sample ? 'Yes' : 'No'}</span>
-            </p>
-          </div>
+        <CardHeader>
+          <CardTitle>
+            <span>{name}</span>
+            <span className="text-base ml-3 px-1.5 rounded-sm bg-secondary text-white">
+              {collaboration.status}
+            </span>
+          </CardTitle>
+        </CardHeader>
 
-          <div className="md:col-span-3">
-            <MilestoneBar
-              milestones={milestones}
-              currentMilestone={totalSalesGMV}
-            />
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="md:col-span-1">
+              <p>
+                <span>{format(start_time * 1000, 'MM/dd/yy')}</span> -{' '}
+                <span>{format(end_time * 1000, 'MM/dd/yy')}</span>
+              </p>
+            </div>
 
-            <div className="mt-6">
-              {products.map((product: any, index: number) => (
-                <div key={index} className="mb-4 p-3 border border-orange-500">
-                  <div className="flex flex-col md:flex-row gap-4">
-                    <Dialog>
-                      <DialogTrigger className="min-w-36">
-                        <Image
-                          src={product.main_image_url}
-                          width={144}
-                          height={144}
-                          alt={product.title}
-                        />
-                      </DialogTrigger>
+            <div className="md:col-span-1">
+              <p>
+                <strong className="text-slate-700">Total GMV: </strong>
+                <span>{formatPrice(totalSalesGMV)}</span>
+              </p>
+              <p>
+                <strong className="text-slate-700">Commission: </strong>
+                <span>{formatPrice(totalCommissionAmount)}</span>
+              </p>
+            </div>
 
-                      <DialogContent className="max-w-xl p-14">
-                        <DialogTitle>{product.title}</DialogTitle>
-                        <Image
-                          src={product.main_image_url}
-                          width={600}
-                          height={600}
-                          alt={product.title}
-                        />
-                      </DialogContent>
-                    </Dialog>
+            <div className="md:col-span-1">
+              <p>124 Orders</p>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="link" size="sm" className="p-0">
+                    View Orders
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-3xl p-14 max-h-[80vh] overflow-y-auto">
+                  <DialogTitle className="text-slate-800 leading-relaxed">
+                    Orders
+                  </DialogTitle>
+                </DialogContent>
+              </Dialog>
+            </div>
 
-                    <div>
-                      <p className="text-lg font-semibold mb-4">
-                        {product.title}
-                      </p>
-
-                      <Table className="bg-orange-50/10">
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead className="px-4 py-2">
-                              Commission Rate
-                            </TableHead>
-                            <TableHead className="px-4 py-2">
-                              Commission Amount
-                            </TableHead>
-                            <TableHead className="px-4 py-2">
-                              Original Price
-                            </TableHead>
-                            <TableHead className="px-4 py-2">
-                              Product Status
-                            </TableHead>
-                            <TableHead className="px-4 py-2">
-                              Commission Effective Status
-                            </TableHead>
-                          </TableRow>
-                        </TableHeader>
-
-                        <TableBody>
-                          <TableRow
-                            key={`${product.id}-row2`}
-                            className="border-t"
-                          >
-                            <TableCell className="border px-4 py-2">
-                              {product.commission.rate / 100}%
-                            </TableCell>
-                            <TableCell className="border px-4 py-2">
-                              ${product.commission.amount}{' '}
-                              {product.commission.currency}
-                            </TableCell>
-                            <TableCell className="border px-4 py-2">
-                              ${product.original_price.minimum_amount}{' '}
-                              {product.original_price.currency}
-                            </TableCell>
-                            <TableCell
-                              className={`border px-4 py-2 ${product.status === 'LIVE' ? 'text-blue-500' : 'text-red-500'}`}
-                            >
-                              {product.status}
-                            </TableCell>
-                            <TableCell className={`border px-4 py-2`}>
-                              {product.commission_effective_status}
-                            </TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
-                    </div>
+            <div className="md:col-span-1">
+              {latestCompletedMilestone ? (
+                <div>
+                  <h4 className="text-lg font-bold mb-4">Reward Earned</h4>
+                  <div className="text-center">
+                    <Image
+                      src={latestCompletedMilestone.image}
+                      width={64}
+                      height={64}
+                      alt={latestCompletedMilestone.reward}
+                      className="w-16 h-16 object-contain"
+                    />
+                    <p className="w-16 text-xs text-gray-600">
+                      ({latestCompletedMilestone.reward})
+                    </p>
                   </div>
                 </div>
-              ))}
+              ) : (
+                <span>No Reward Earned</span>
+              )}
             </div>
           </div>
-        </div>
+        </CardContent>
       </CardContent>
     </Card>
   )
