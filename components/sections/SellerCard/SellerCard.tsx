@@ -47,7 +47,7 @@ export default function SellerHome({
               {!user ? (
                 <Button variant="default" asChild>
                   <Link
-                    href={`/creator/admin/auth?seller=${seller}`}
+                    href={`/creator/admin/auth?seller=${seller.name}`}
                     className="no-underline"
                   >
                     Creator Login
