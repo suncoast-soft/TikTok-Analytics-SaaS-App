@@ -64,10 +64,6 @@ export default async function SellerLayout({
         {
           name: 'Products',
           link: `/seller/${seller}/analytics/products`
-        },
-        {
-          name: 'Other Creators',
-          link: `/seller/${seller}/analytics/creators`
         }
       ]
     }

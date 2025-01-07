@@ -384,12 +384,10 @@ const Collaboration = ({ collaboration }: { collaboration: any }) => {
   )
 }
 
-type Params = Promise<{ seller: string }>
-
 export default async function SellerActiveCampaignsPage({
   params
 }: {
-  params: Params
+  params: Promise<{ seller: string }>
 }) {
   const seller = await fetchSeller((await params).seller)
 
