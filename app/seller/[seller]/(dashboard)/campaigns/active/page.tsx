@@ -1,6 +1,6 @@
 import { requestTikTokShopAPIClient } from '@/app/actions'
 import MilestoneBar from '@/components/modules/MilestoneBar'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { differenceInDays, format } from 'date-fns'
 import Image from 'next/image'
 import {
@@ -17,6 +17,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
+import { formatPrice } from '@/utils/helpers'
 
 const mock__creatorTargetCollaborations = {
   code: 0,
@@ -200,30 +201,20 @@ const fetchSeller = async (seller: string | undefined) => {
 }
 
 const Collaboration = ({ collaboration }: { collaboration: any }) => {
-  const totalCommissionAmount = collaboration.products
-    .reduce(
-      (sum: number, product: any) =>
-        sum + parseFloat(product.commission.amount),
-      0
-    )
-    .toFixed(2)
-  const formattedTotalCommissionAmount = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  }).format(parseFloat(totalCommissionAmount))
+  const totalCommissionAmount = collaboration.products.reduce(
+    (sum: number, product: any) => sum + parseFloat(product.commission.amount),
+    0
+  )
 
-  const totalSalesGMV = collaboration.products
-    .reduce((sum: number, product: any) => {
+  const totalSalesGMV = collaboration.products.reduce(
+    (sum: number, product: any) => {
       const salesGMV =
         parseFloat(product.commission.amount) /
         (product.commission.rate / 10000)
       return sum + salesGMV
-    }, 0)
-    .toFixed(2)
-  const formattedTotalSalesGMV = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  }).format(parseFloat(totalSalesGMV))
+    },
+    0
+  )
 
   const collaborationData =
     mock__sellerTargetCollaboration.data.target_collaboration
@@ -259,141 +250,136 @@ const Collaboration = ({ collaboration }: { collaboration: any }) => {
 
   return (
     <Card>
-      <CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="md:col-span-1 space-y-3 py-10">
-              <h3 className="text-xl font-bold text-slate-700">
-                <span>{name}</span>
-                <span className="text-base ml-3 px-1.5 rounded-sm bg-secondary text-white font-bold">
-                  {collaboration.status}
-                </span>
-                <br />
-                <span className="text-sm font-normal">Seller Contact: </span>
-                <span className="text-sm font-medium underline">
-                  {seller_contact_info.email}
-                </span>
-              </h3>
-              <p>
-                <span>{format(start_time * 1000, 'MM/dd/yy')}</span> -{' '}
-                <span>{format(end_time * 1000, 'MM/dd/yy')}</span>
-                <br />
-                <span className="text-sm font-medium px-1">
-                  Ends in {differenceInDays(end_time * 1000, new Date())} days
-                </span>
-              </p>
-              <hr />
-              <p>
-                <strong className="text-slate-700">Total GMV: </strong>
-                <span>{formattedTotalSalesGMV}</span>
-              </p>
-              <p>
-                <strong className="text-slate-700">Commission: </strong>
-                <span>{formattedTotalCommissionAmount}</span>
-              </p>
-              <hr />
-              <p>
-                <strong className="text-slate-700">Free Sample: </strong>
-                <span>{free_sample_rule?.has_free_sample ? 'Yes' : 'No'}</span>
-              </p>
-            </div>
+      <CardContent>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="md:col-span-1 space-y-3 py-10">
+            <h3 className="text-xl font-bold text-slate-700">
+              <span>{name}</span>
+              <span className="text-base ml-3 px-1.5 rounded-sm bg-secondary text-white font-bold">
+                {collaboration.status}
+              </span>
+              <br />
+              <span className="text-sm font-normal">Seller Contact: </span>
+              <span className="text-sm font-medium underline">
+                {seller_contact_info.email}
+              </span>
+            </h3>
+            <p>
+              <span>{format(start_time * 1000, 'MM/dd/yy')}</span> -{' '}
+              <span>{format(end_time * 1000, 'MM/dd/yy')}</span>
+              <br />
+              <span className="text-sm font-medium px-1">
+                Ends in {differenceInDays(end_time * 1000, new Date())} days
+              </span>
+            </p>
+            <hr />
+            <p>
+              <strong className="text-slate-700">Total GMV: </strong>
+              <span>{formatPrice(totalSalesGMV)}</span>
+            </p>
+            <p>
+              <strong className="text-slate-700">Commission: </strong>
+              <span>{formatPrice(totalCommissionAmount)}</span>
+            </p>
+            <hr />
+            <p>
+              <strong className="text-slate-700">Free Sample: </strong>
+              <span>{free_sample_rule?.has_free_sample ? 'Yes' : 'No'}</span>
+            </p>
+          </div>
 
-            <div className="md:col-span-3">
-              <MilestoneBar
-                milestones={milestones}
-                currentMilestone={totalSalesGMV}
-              />
+          <div className="md:col-span-3">
+            <MilestoneBar
+              milestones={milestones}
+              currentMilestone={totalSalesGMV}
+            />
 
-              <div className="mt-6">
-                {products.map((product: any, index: number) => (
-                  <div
-                    key={index}
-                    className="mb-4 p-3 border border-orange-500"
-                  >
-                    <div className="flex flex-col md:flex-row gap-4">
-                      <Dialog>
-                        <DialogTrigger className="min-w-36">
-                          <Image
-                            src={product.main_image_url}
-                            width={144}
-                            height={144}
-                            alt={product.title}
-                          />
-                        </DialogTrigger>
+            <div className="mt-6">
+              {products.map((product: any, index: number) => (
+                <div key={index} className="mb-4 p-3 border border-orange-500">
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <Dialog>
+                      <DialogTrigger className="min-w-36">
+                        <Image
+                          src={product.main_image_url}
+                          width={144}
+                          height={144}
+                          alt={product.title}
+                        />
+                      </DialogTrigger>
 
-                        <DialogContent className="max-w-xl p-14">
-                          <DialogTitle>{product.title}</DialogTitle>
-                          <Image
-                            src={product.main_image_url}
-                            width={600}
-                            height={600}
-                            alt={product.title}
-                          />
-                        </DialogContent>
-                      </Dialog>
+                      <DialogContent className="max-w-xl p-14">
+                        <DialogTitle>{product.title}</DialogTitle>
+                        <Image
+                          src={product.main_image_url}
+                          width={600}
+                          height={600}
+                          alt={product.title}
+                        />
+                      </DialogContent>
+                    </Dialog>
 
-                      <div>
-                        <p className="text-lg font-semibold mb-4">
-                          {product.title}
-                        </p>
+                    <div>
+                      <p className="text-lg font-semibold mb-4">
+                        {product.title}
+                      </p>
 
-                        <Table className="bg-orange-50/10">
-                          <TableHeader>
-                            <TableRow>
-                              <TableHead className="px-4 py-2">
-                                Commission Rate
-                              </TableHead>
-                              <TableHead className="px-4 py-2">
-                                Commission Amount
-                              </TableHead>
-                              <TableHead className="px-4 py-2">
-                                Original Price
-                              </TableHead>
-                              <TableHead className="px-4 py-2">
-                                Product Status
-                              </TableHead>
-                              <TableHead className="px-4 py-2">
-                                Commission Effective Status
-                              </TableHead>
-                            </TableRow>
-                          </TableHeader>
+                      <Table className="bg-orange-50/10">
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead className="px-4 py-2">
+                              Commission Rate
+                            </TableHead>
+                            <TableHead className="px-4 py-2">
+                              Commission Amount
+                            </TableHead>
+                            <TableHead className="px-4 py-2">
+                              Original Price
+                            </TableHead>
+                            <TableHead className="px-4 py-2">
+                              Product Status
+                            </TableHead>
+                            <TableHead className="px-4 py-2">
+                              Commission Effective Status
+                            </TableHead>
+                          </TableRow>
+                        </TableHeader>
 
-                          <TableBody>
-                            <TableRow
-                              key={`${product.id}-row2`}
-                              className="border-t"
+                        <TableBody>
+                          <TableRow
+                            key={`${product.id}-row2`}
+                            className="border-t"
+                          >
+                            <TableCell className="border px-4 py-2">
+                              {product.commission.rate / 100}%
+                            </TableCell>
+                            <TableCell className="border px-4 py-2">
+                              ${product.commission.amount}{' '}
+                              {product.commission.currency}
+                            </TableCell>
+                            <TableCell className="border px-4 py-2">
+                              ${product.original_price.minimum_amount}{' '}
+                              {product.original_price.currency}
+                            </TableCell>
+                            <TableCell
+                              className={`border px-4 py-2 ${product.status === 'LIVE' ? 'text-blue-500' : 'text-red-500'}`}
                             >
-                              <TableCell className="border px-4 py-2">
-                                {product.commission.rate / 100}%
-                              </TableCell>
-                              <TableCell className="border px-4 py-2">
-                                ${product.commission.amount}{' '}
-                                {product.commission.currency}
-                              </TableCell>
-                              <TableCell className="border px-4 py-2">
-                                ${product.original_price.minimum_amount}{' '}
-                                {product.original_price.currency}
-                              </TableCell>
-                              <TableCell
-                                className={`border px-4 py-2 ${product.status === 'LIVE' ? 'text-blue-500' : 'text-red-500'}`}
-                              >
-                                {product.status}
-                              </TableCell>
-                              <TableCell className={`border px-4 py-2`}>
-                                {product.commission_effective_status}
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </div>
+                              {product.status}
+                            </TableCell>
+                            <TableCell className={`border px-4 py-2`}>
+                              {product.commission_effective_status}
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
-        </CardContent>
-      </CardHeader>
+        </div>
+      </CardContent>
     </Card>
   )
 }

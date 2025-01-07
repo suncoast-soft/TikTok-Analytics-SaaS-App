@@ -23,7 +23,7 @@ export const getURL = (path: string = '') => {
 }
 
 export const toDateTime = (secs: number) => {
-  var t = new Date(+0) // Unix epoch start.
+  const t = new Date(+0) // Unix epoch start.
   t.setSeconds(secs)
   return t
 }
@@ -135,4 +135,13 @@ export const slugToTitle = (slug: string): string => {
     .split('-')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ')
+}
+
+export const formatPrice = (price: number, currency: string = 'USD') => {
+  const formattedPrice = Math.round(price * 100) / 100
+
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency
+  }).format(formattedPrice)
 }
