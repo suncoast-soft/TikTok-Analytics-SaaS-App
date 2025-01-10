@@ -28,7 +28,7 @@ export default function ContactUs() {
   return (
     <section
       id="contactus"
-      className="bg-secondary text-black py-12 px-8 rounded-lg shadow-lg"
+      className="bg-secondary text-slate-800 py-12 px-8 rounded-lg shadow-lg"
     >
       <div className="flex flex-col items-center md:flex-row md:justify-center md:items-center">
         <div className="w-60 h-60 mb-8 md:mb-0 md:mr-16 relative">

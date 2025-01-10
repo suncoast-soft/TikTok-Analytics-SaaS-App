@@ -3,12 +3,12 @@ import SubscriptionForm from '../../modules/Forms/SubscriptionForm'
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-800 text-white py-12 mt-16">
+    <footer className="bg-slate-800 text-white py-12 mt-16">
       <div className="container mx-auto sm:grid grid-cols-2">
         <SubscriptionForm />
 
         <div>
-          <div className="text-sm text-gray-400 mb-6 text-center sm:text-right">
+          <div className="text-sm text-slate-400 mb-6 text-center sm:text-right">
             <a href="/privacy-policy" className="hover:text-white mx-2">
               Privacy Policy
             </a>{' '}
@@ -25,7 +25,7 @@ export default function Footer() {
             </Link>
           </div>
 
-          <div className="text-gray-500 text-center sm:text-right">
+          <div className="text-slate-500 text-center sm:text-right">
             <small>
               &copy; {new Date().getFullYear()} Flicker, Co. All rights
               reserved.

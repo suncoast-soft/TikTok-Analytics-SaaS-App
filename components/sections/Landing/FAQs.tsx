@@ -17,6 +17,29 @@ export default function FAQs() {
       question: 'Can I monitor multiple campaigns at once?',
       answer:
         'Yes, our platform is designed to handle multiple campaigns efficiently.'
+    },
+    {
+      id: 'faq3',
+      question: 'Is the service free for businesses?',
+      answer: 'Yes, businesses can use our platform free of charge.'
+    },
+    {
+      id: 'faq4',
+      question: 'What features do creators get with the subscription?',
+      answer:
+        'Creators receive detailed analytics, performance tracking, and additional promotional tools.'
+    },
+    {
+      id: 'faq5',
+      question: 'How can I cancel my subscription?',
+      answer:
+        'You can cancel your subscription anytime through your account settings.'
+    },
+    {
+      id: 'faq6',
+      question: 'Are there any limits on the number of links I can create?',
+      answer:
+        'No, there are no limits on the number of affiliate links you can create.'
     }
   ]
 

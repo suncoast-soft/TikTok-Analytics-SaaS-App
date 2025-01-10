@@ -12,12 +12,12 @@ const buttonVariants = cva(
         default:
           'bg-primary text-slate-50 hover:bg-primary/90 dark:bg-slate-50 dark:text-primary dark:hover:bg-slate-50/90',
         outline:
-          'bg-white text-primary font-semibold rounded-lg shadow-md hover:bg-gray-100 outline-none ring-2 ring-offset-2 ring-secondary',
+          'bg-white text-primary font-semibold rounded-lg shadow-md hover:bg-slate-100 outline-none ring-2 ring-offset-2 ring-secondary',
         destructive:
           'bg-red-500 text-slate-50 hover:bg-red-500/90 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90',
         link: 'text-primary underline-offset-4 hover:underline dark:text-slate-50',
         white:
-          'px-8 py-3 bg-white text-primary font-semibold rounded-md shadow hover:bg-gray-100 transition transform hover:scale-105',
+          'px-8 py-3 bg-white text-primary font-semibold rounded-md shadow hover:bg-slate-100 transition transform hover:scale-105',
         glassy: 'relative inline-block font-medium group',
         secondary:
           'bg-zinc-100 text-zinc-900 hover:bg-zinc-100/80 dark:bg-zinc-800 dark:text-zinc-50 dark:hover:bg-zinc-800/80',
@@ -69,11 +69,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {variant === 'glassy' ? (
-          <>
+          <div>
             <span className={glassyInnerSpanClasses}></span>
             <span className={glassyBorderSpanClasses}></span>
             <span className={glassyContentSpanClasses}>{props.children}</span>
-          </>
+          </div>
         ) : (
           props.children
         )}

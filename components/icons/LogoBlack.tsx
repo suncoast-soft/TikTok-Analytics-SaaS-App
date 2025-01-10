@@ -6,7 +6,7 @@ const LogoBlack = ({ ...props }) => (
     width={120}
     height={32}
     alt="Logo"
-    className="h-8 text-black"
+    className="h-8 text-slate-800"
     {...props}
   />
 )

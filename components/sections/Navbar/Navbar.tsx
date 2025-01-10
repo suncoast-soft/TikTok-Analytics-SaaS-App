@@ -2,11 +2,17 @@ import React from 'react'
 import Link from 'next/link'
 import LogoBlue from '@/components/icons/LogoBlue'
 import { Button } from '@/components/ui/button'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger
+} from '@/components/ui/sheet'
 import { MenuIcon } from 'lucide-react'
 import { createClient } from '@/utils/supabase/server'
 import UserDropdown from '@/components/modules/UserDropdown'
 import { getUser } from '@/utils/supabase/queries'
+import { cn } from '@/utils/cn'
 
 export default async function Navbar() {
   const supabase = await createClient()
@@ -24,6 +30,11 @@ export default async function Navbar() {
     {
       link: '/#contactus',
       name: 'Contact Us'
+    },
+    {
+      link: '/seller/admin/auth/password_signin',
+      name: 'Seller Login',
+      highlight: true
     }
   ]
 
@@ -49,7 +60,10 @@ export default async function Navbar() {
                 <Link
                   key={index}
                   href={nav.link}
-                  className="inline-flex items-center leading-6 font-medium transition ease-in-out duration-75 cursor-pointer text-slate-700 rounded-md p-1 hover:text-slate-900"
+                  className={cn(
+                    'inline-flex items-center leading-6 font-medium transition ease-in-out duration-75 cursor-pointer text-slate-700 rounded-md p-1 hover:text-slate-900',
+                    nav.highlight && 'text-red-600 hover:text-red-700'
+                  )}
                 >
                   {nav.name}
                 </Link>
@@ -91,6 +105,8 @@ export default async function Navbar() {
               </SheetTrigger>
 
               <SheetContent side="top" className="p-4 bg-white shadow-lg">
+                <SheetTitle hidden>Menu</SheetTitle>
+
                 <nav className="space-y-2">
                   {navLinks.map((nav, index) => (
                     <Link

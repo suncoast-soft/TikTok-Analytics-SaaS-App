@@ -51,7 +51,7 @@ export function CreatorFilterClear({
   setValue: Function
 }) {
   return (
-    <div className="bg-secondary text-black rounded px-2 flex items-center gap-1">
+    <div className="bg-secondary text-slate-800 rounded px-2 flex items-center gap-1">
       <span>{label}:</span>
       <span className="font-semibold">{value}</span>
       <XIcon

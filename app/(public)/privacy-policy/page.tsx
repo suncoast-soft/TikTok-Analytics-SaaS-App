@@ -8,7 +8,7 @@ export default async function PrivacyPolicyPage() {
       <main className="max-w-4xl mx-auto py-10 px-6">
         <section className="mb-8">
           <h2 className="text-xl font-semibold">1. Introduction</h2>
-          <p className="mt-2 text-gray-700">
+          <p className="mt-2 text-slate-700">
             Welcome to Flicker (“we”, “us”, “our”). We are committed to
             protecting your privacy and handling your personal data responsibly.
             This Privacy Policy explains how we collect, use, share, and protect
@@ -22,7 +22,7 @@ export default async function PrivacyPolicyPage() {
 
         <section className="mb-8">
           <h2 className="text-xl font-semibold">2. Information We Collect</h2>
-          <ul className="list-disc list-inside mt-2 text-gray-700">
+          <ul className="list-disc list-inside mt-2 text-slate-700">
             <li>
               <strong>Account Information:</strong> When you connect your TikTok
               account to our Platform, we collect account-related information
@@ -52,7 +52,7 @@ export default async function PrivacyPolicyPage() {
           <h2 className="text-xl font-semibold">
             3. How We Use Your Information
           </h2>
-          <ul className="list-disc list-inside mt-2 text-gray-700">
+          <ul className="list-disc list-inside mt-2 text-slate-700">
             <li>
               <strong>Providing Services:</strong> To deliver TikTok analytics
               services, including data tracking, reporting, and insights related
@@ -75,11 +75,11 @@ export default async function PrivacyPolicyPage() {
 
         <section className="mb-8">
           <h2 className="text-xl font-semibold">4. Sharing of Information</h2>
-          <p className="mt-2 text-gray-700">
+          <p className="mt-2 text-slate-700">
             We do not sell or rent your personal information to third parties.
             However, we may share your information in the following situations:
           </p>
-          <ul className="list-disc list-inside mt-2 text-gray-700">
+          <ul className="list-disc list-inside mt-2 text-slate-700">
             <li>
               <strong>With TikTok:</strong> As our Platform integrates with
               TikTok, we may share certain data with TikTok to facilitate the
@@ -101,7 +101,7 @@ export default async function PrivacyPolicyPage() {
 
         <section className="mb-8">
           <h2 className="text-xl font-semibold">5. Data Security</h2>
-          <p className="mt-2 text-gray-700">
+          <p className="mt-2 text-slate-700">
             We implement appropriate technical and organizational measures to
             protect your personal data against unauthorized access, alteration,
             disclosure, or destruction. Despite these measures, no data
@@ -112,11 +112,11 @@ export default async function PrivacyPolicyPage() {
 
         <section className="mb-8">
           <h2 className="text-xl font-semibold">6. Your Rights</h2>
-          <p className="mt-2 text-gray-700">
+          <p className="mt-2 text-slate-700">
             Depending on your location, you may have certain rights regarding
             your personal information, including:
           </p>
-          <ul className="list-disc list-inside mt-2 text-gray-700">
+          <ul className="list-disc list-inside mt-2 text-slate-700">
             <li>
               <strong>Access:</strong> You can request access to the personal
               data we hold about you.
@@ -134,7 +134,7 @@ export default async function PrivacyPolicyPage() {
               your data in specific situations.
             </li>
           </ul>
-          <p className="mt-2 text-gray-700">
+          <p className="mt-2 text-slate-700">
             To exercise any of these rights, please contact us at
             support@goflicker.co
           </p>
@@ -142,7 +142,7 @@ export default async function PrivacyPolicyPage() {
 
         <section className="mb-8">
           <h2 className="text-xl font-semibold">7. Data Retention</h2>
-          <p className="mt-2 text-gray-700">
+          <p className="mt-2 text-slate-700">
             We retain personal data only for as long as necessary to fulfill the
             purposes described in this Privacy Policy, comply with legal
             obligations, or resolve disputes.
@@ -151,7 +151,7 @@ export default async function PrivacyPolicyPage() {
 
         <section className="mb-8">
           <h2 className="text-xl font-semibold">8. Children’s Privacy</h2>
-          <p className="mt-2 text-gray-700">
+          <p className="mt-2 text-slate-700">
             Our Platform is not intended for individuals under the age of 13. We
             do not knowingly collect personal data from children. If you believe
             we have unintentionally collected such data, please contact us, and
@@ -163,7 +163,7 @@ export default async function PrivacyPolicyPage() {
           <h2 className="text-xl font-semibold">
             9. International Data Transfers
           </h2>
-          <p className="mt-2 text-gray-700">
+          <p className="mt-2 text-slate-700">
             If you are accessing our Platform from outside the USA, please be
             aware that your data may be transferred to, stored, and processed in
             your country or other jurisdictions. We take steps to ensure that
@@ -176,7 +176,7 @@ export default async function PrivacyPolicyPage() {
           <h2 className="text-xl font-semibold">
             10. Changes to this Privacy Policy
           </h2>
-          <p className="mt-2 text-gray-700">
+          <p className="mt-2 text-slate-700">
             We may update this Privacy Policy from time to time. Any changes
             will be posted on this page with an updated “Effective Date.” We
             encourage you to review this Privacy Policy periodically to stay
@@ -186,7 +186,7 @@ export default async function PrivacyPolicyPage() {
 
         <section className="mb-8">
           <h2 className="text-xl font-semibold">11. Contact Us</h2>
-          <p className="mt-2 text-gray-700">
+          <p className="mt-2 text-slate-700">
             If you have any questions or concerns regarding this Privacy Policy
             or our data practices, please contact us at: <br />
             Email:{' '}

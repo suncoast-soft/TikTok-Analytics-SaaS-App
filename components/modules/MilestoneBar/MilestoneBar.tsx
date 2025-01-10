@@ -16,7 +16,7 @@ export default function MilestoneBar({
   return (
     <div className="flex flex-col items-center">
       <div className="relative w-full max-w-4xl mt-32 mb-16">
-        <div className="absolute top-1/2 transform -translate-y-1/2 w-full h-1.5 bg-gray-300 rounded-full">
+        <div className="absolute top-1/2 transform -translate-y-1/2 w-full h-1.5 bg-slate-300 rounded-full">
           {milestones.map((milestone, index) => {
             const leftPosition = `${(index / (milestones.length + 1)) * 100}%`
 
@@ -78,7 +78,7 @@ export default function MilestoneBar({
                         ? 'stroke-yellow-600'
                         : isNextMilestone
                           ? 'stroke-yellow-500'
-                          : 'stroke-gray-400'
+                          : 'stroke-slate-400'
                     )}
                   />
 
@@ -86,7 +86,7 @@ export default function MilestoneBar({
                     <CheckIcon className="absolute w-3 h-3 text-white" />
                   ) : (
                     <LockIcon
-                      className={`absolute w-3 h-3 stroke-2 ${isNextMilestone ? 'text-yellow-500' : 'text-gray-400'}`}
+                      className={`absolute w-3 h-3 stroke-2 ${isNextMilestone ? 'text-yellow-500' : 'text-slate-400'}`}
                     />
                   )}
                 </div>
@@ -95,7 +95,7 @@ export default function MilestoneBar({
                   <p className="text-sm font-bold">
                     ${milestone.gmv.toLocaleString()} GMV
                   </p>
-                  <p className="text-xs text-gray-600">{milestone.reward}</p>
+                  <p className="text-xs text-slate-600">{milestone.reward}</p>
                 </div>
               </div>
             )

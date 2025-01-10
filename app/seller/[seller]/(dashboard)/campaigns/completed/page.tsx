@@ -439,7 +439,7 @@ const Collaboration = ({ collaboration }: { collaboration: any }) => {
                       alt={latestCompletedMilestone.reward}
                       className="w-16 h-16 object-contain"
                     />
-                    <p className="w-16 text-xs text-gray-600">
+                    <p className="w-16 text-xs text-slate-600">
                       ({latestCompletedMilestone.reward})
                     </p>
                   </div>

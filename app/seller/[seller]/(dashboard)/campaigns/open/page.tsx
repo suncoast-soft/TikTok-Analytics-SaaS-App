@@ -119,24 +119,24 @@ const OpenCollaboration = async ({
             </span>
           </div>
 
-          <p className="text-gray-700 text-base">
+          <p className="text-slate-700 text-base">
             Original Price: {formatPrice(product.original_price.minimum_amount)}
           </p>
 
-          <p className="text-gray-700 text-base">
+          <p className="text-slate-700 text-base">
             Commission Rate: {current_commission.rate / 100}%
           </p>
 
-          <p className="text-gray-700 text-base">
+          <p className="text-slate-700 text-base">
             Require Seller Approval:{' '}
             {require_seller_approve_creator ? 'Yes' : 'No'}
           </p>
 
-          <p className="text-gray-700 text-base">
+          <p className="text-slate-700 text-base">
             <span>Overall Status:</span>
             <span
               className={cn(
-                'inline-block rounded-lg ml-2 px-3 py-1 text-sm font-semibold text-gray-700',
+                'inline-block rounded-lg ml-2 px-3 py-1 text-sm font-semibold text-slate-700',
                 status === 'NORMAL' ? 'bg-green-200' : 'bg-yellow-200'
               )}
             >

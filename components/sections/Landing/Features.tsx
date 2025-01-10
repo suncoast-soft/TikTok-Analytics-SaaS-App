@@ -97,7 +97,7 @@ export default function FeaturesSection() {
 
   return (
     <section id="features" className="mt-28">
-      <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">
+      <h2 className="text-4xl font-bold text-center text-slate-900 mb-12">
         Our Features
       </h2>
       {features.map((feature, index) => (
