@@ -1,15 +1,20 @@
+import HeroSection from '@/components/sections/Landing/Hero'
 import ContactForm from '@/components/modules/Forms/ContactForm'
-import FAQs from '@/components/sections/Landing/FAQs'
-import PageHero from '@/components/sections/Landing/PageHero'
 
 export default async function ContactUsPage() {
   return (
-    <div className="container mx-auto p-8">
-      <PageHero title="Contact Us" subtitle="Have questions or need support?" />
+    <>
+      <section className="mt-8 mb-24 px-2">
+        <HeroSection
+          title="Contact Us"
+          subTitle="Have questions or need support?"
+          showCTAs={false}
+        />
+      </section>
 
-      <ContactForm />
-
-      <FAQs />
-    </div>
+      <section className="mb-32 px-2">
+        <ContactForm />
+      </section>
+    </>
   )
 }

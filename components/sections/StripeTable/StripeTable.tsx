@@ -39,8 +39,8 @@ const StripePricingTable = ({ user }: { user: User }) => {
       <stripe-pricing-table
         pricing-table-id={process.env.NEXT_PUBLIC_STRIPE_PRICING_TABLE_ID || ''}
         publishable-key={process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''}
-        client-reference-id={user.id}
-        customer-email={user.email}
+        // client-reference-id={user.id}
+        // customer-email={user.email}
       ></stripe-pricing-table>
     </div>
   )

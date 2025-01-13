@@ -46,7 +46,7 @@ export default function ContactForm() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto shadow-lg px-6 py-12 rounded bg-orange-50/40 mb-24">
+    <div className="container max-w-2xl shadow-lg px-6 py-12 rounded bg-orange-50 mb-24">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField

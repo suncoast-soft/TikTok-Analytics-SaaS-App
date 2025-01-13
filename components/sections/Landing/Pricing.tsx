@@ -1,4 +1,11 @@
-export default function Pricing() {
+import { createClient } from '@/utils/supabase/server'
+import StripePricingTable from '../StripeTable'
+import { getUser } from '@/utils/supabase/queries'
+
+export default async function Pricing() {
+  const supabase = await createClient()
+  const user = await getUser(supabase)
+
   return (
     <section
       id="pricing"
@@ -28,7 +35,7 @@ export default function Pricing() {
         </p>
 
         <div className="pt-8 my-8 rounded bg-white">
-          {/* <StripePricingTable /> */}
+          <StripePricingTable user={user} />
         </div>
       </div>
     </section>

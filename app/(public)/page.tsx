@@ -6,6 +6,7 @@ import IconColumnsSection from '@/components/sections/Landing/IconColumns'
 import CardColumnsSection from '@/components/sections/Landing/CardColumns'
 import AccordionRowsSection from '@/components/sections/Landing/AccordionRows'
 import ImageCTASection from '@/components/sections/Landing/ImageCTA'
+import Pricing from '@/components/sections/Landing/Pricing'
 
 export default async function HomePage() {
   return (
@@ -201,6 +202,8 @@ export default async function HomePage() {
           ]}
         />
       </section>
+
+      <Pricing />
     </>
   )
 }
