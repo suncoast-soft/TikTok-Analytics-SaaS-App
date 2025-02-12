@@ -19,10 +19,10 @@ const Logo = ({
   return (
     <Image
       src={LOGO_MAP[type] || LOGO_MAP.black}
-      width={type === 'icon' ? 32 : 120}
-      height={32}
+      width={type === 'icon' ? 1200 : 2786}
+      height={type === 'icon' ? 1200 : 761}
       alt="Logo"
-      className={cn('h-8', className)}
+      className={cn('w-auto h-10', className)}
       {...props}
     />
   );

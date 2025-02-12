@@ -59,10 +59,8 @@ export default function PublicLayout({
             <SidebarTrigger />
           </div>
 
-          <div className="p-2.5">
-            <Header />
-            {children}
-          </div>
+          <Header />
+          {children}
         </main>
       </SidebarProvider>
     </main>

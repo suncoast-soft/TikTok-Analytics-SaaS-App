@@ -30,7 +30,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger
 } from '@/components/ui/collapsible';
-import Logo from '@/components/icons/Logo';
 
 type NavItem = {
   icon?: ReactElement;
@@ -53,15 +52,7 @@ export default function Sidenav({ navs, settings, label }: NavProps) {
 
   return (
     <Sidebar variant="inset">
-      <SidebarHeader className="border-b mb-3">
-        <Link
-          href="/"
-          className="cursor-pointer rounded-full transform duration-100 ease-in-out no-underline p-4"
-          aria-label="Logo"
-        >
-          <Logo type="black" />
-        </Link>
-      </SidebarHeader>
+      <SidebarHeader className="h-16"></SidebarHeader>
 
       <SidebarContent>
         <SidebarGroup>
