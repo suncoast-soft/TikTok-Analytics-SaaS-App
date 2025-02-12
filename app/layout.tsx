@@ -1,20 +1,27 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter } from 'next/font/google';
+import { getURL } from '@/utils/helpers';
+import { Suspense } from 'react';
+import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin']
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap'
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin']
-});
+const title = 'Flicker | TikTok Shop Analytics Tool';
+const description = 'Join Affiliate Reward Campaigns for TikTok Shop Brands';
 
 export const metadata: Metadata = {
-  title: 'TikTok Shop Analytics Tool',
-  description: 'Join Affiliate Reward Campaigns for TikTok Shop Brands'
+  metadataBase: new URL(getURL()),
+  title: title,
+  description: description,
+  openGraph: {
+    title: title,
+    description: description
+  }
 };
 
 export default function RootLayout({
@@ -23,11 +30,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" className={inter.variable}>
+      <body className={`antialiased`}>
         {children}
+
+        <Suspense>
+          <Toaster />
+        </Suspense>
       </body>
     </html>
   );

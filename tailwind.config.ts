@@ -11,51 +11,27 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))'
+        navy: {
+          900: 'rgb(0 0 0 / 87%)',
+          800: 'rgb(25 25 57)',
+          700: 'rgb(44 40 82)',
+          600: 'rgb(70 62 122)',
+          500: 'rgb(151 137 205)',
+          400: 'rgb(180 166 226)',
+          300: 'rgb(204 191 247)',
+          200: 'rgb(226 218 251)',
+          100: 'rgb(242 240 251)'
         },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))'
-        },
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))'
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))'
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))'
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))'
-        },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))'
-        },
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        chart: {
-          '1': 'hsl(var(--chart-1))',
-          '2': 'hsl(var(--chart-2))',
-          '3': 'hsl(var(--chart-3))',
-          '4': 'hsl(var(--chart-4))',
-          '5': 'hsl(var(--chart-5))'
+        sidebar: {
+          DEFAULT: 'rgb(25, 25, 57)',
+          foreground: 'rgb(242, 240, 251)',
+          primary: 'rgb(226, 218, 251)',
+          'primary-foreground': 'var(--rgb(25, 25, 57)',
+          accent: 'rgb(44, 40, 82)',
+          'accent-foreground': 'var(--rgb(242, 240, 251)',
+          border: 'rgb(44, 40, 82)',
+          ring: 'rgb(180, 166, 226)'
         }
-      },
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)'
       }
     }
   },
