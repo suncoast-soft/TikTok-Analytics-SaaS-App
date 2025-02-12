@@ -1,14 +1,15 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import { getURL } from '@/utils/helpers';
 import { Suspense } from 'react';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 
-const inter = Inter({
+const poppins = Poppins({
   subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap'
+  variable: '--font-poppins',
+  display: 'swap',
+  weight: ['100', '300', '400', '500', '600', '700', '800', '900']
 });
 
 const title = 'Flicker | TikTok Shop Analytics Tool';
@@ -30,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={poppins.variable}>
       <body className={`antialiased`}>
         {children}
 

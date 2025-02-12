@@ -22,7 +22,7 @@ const Logo = ({
       width={type === 'icon' ? 1200 : 2786}
       height={type === 'icon' ? 1200 : 761}
       alt="Logo"
-      className={cn('w-auto h-10', className)}
+      className={cn('w-auto h-9', className)}
       {...props}
     />
   );

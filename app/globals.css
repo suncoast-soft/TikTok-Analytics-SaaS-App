@@ -22,7 +22,7 @@ html {
 body,
 html {
   @apply m-0 p-0 h-full w-full;
-  font-family: var(--font-inter);
+  font-family: var(--font-poppins);
   text-rendering: optimizeLegibility;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -61,4 +61,8 @@ a:not(.no-underline):hover::after {
 .animated {
   @apply duration-1000;
   animation-fill-mode: both;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
 }
