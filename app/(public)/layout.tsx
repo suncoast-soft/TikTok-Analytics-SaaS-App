@@ -75,7 +75,7 @@ export default function PublicLayout({
     {
       icon: <HandCoinsIcon width={20} height={20} />,
       name: 'My Earnings',
-      link: '/creator/gmv'
+      link: '/creator/earning'
     },
     {
       icon: <LineChartIcon width={20} height={20} />,
@@ -85,12 +85,12 @@ export default function PublicLayout({
         {
           icon: <VideoIcon width={20} height={20} />,
           name: 'My Top Videos',
-          link: '/creator/videos'
+          link: '/creator/analytics/videos'
         },
         {
           icon: <ActivityIcon width={20} height={20} />,
           name: 'Affiliate Analytics',
-          link: '/creator/analytics'
+          link: '/creator/analytics/affiliate'
         }
       ]
     },

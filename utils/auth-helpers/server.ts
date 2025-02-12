@@ -1,10 +1,10 @@
 'use server';
 
 import { createClient } from '@/utils/supabase/server';
-import { getErrorRedirect, getStatusRedirect } from 'utils/helpers';
 import { redirect } from 'next/navigation';
 import { createProfile } from '../supabase/mutations';
 import { getUser } from '../supabase/queries';
+import { getErrorRedirect, getStatusRedirect } from '../helpers';
 
 interface FormData {
   [key: string]: string | number | boolean;

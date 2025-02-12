@@ -13,7 +13,6 @@ interface FormData {
 
 export async function handleRequest(
   data: FormData,
-  // eslint-disable-next-line no-unused-vars
   requestFunc: (data: FormData) => Promise<string | void>,
   router: AppRouterInstance | null = null
 ): Promise<boolean | void> {
