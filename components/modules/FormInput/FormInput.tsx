@@ -41,8 +41,8 @@ export default function FormInput({
         <FormItem className={cn('w-full', className)}>
           <FormLabel
             className={cn(
-              'font-semibold text-lg',
-              theme === 'white' ? 'text-white' : 'text-dark'
+              'text-sm',
+              theme === 'white' ? 'text-navy-300' : 'text-navy-800'
             )}
           >
             <span>{label}</span>
@@ -61,10 +61,10 @@ export default function FormInput({
                 placeholder={placeholder || label}
                 {...field}
                 className={cn(
-                  'bg-transparent py-3',
+                  'bg-transparent py-3 border border-navy-300 focus:border-navy-500',
                   theme === 'white'
-                    ? 'text-white [&::placeholder]:text-white/60'
-                    : 'text-dark [&::placeholder]:text-dark/60 border-dark/60 bg-white'
+                    ? 'text-navy-200 [&::placeholder]:text-navy-200/60'
+                    : 'text-navy-800 [&::placeholder]:text-navy-800/60 navy-800/60 bg-navy-300'
                 )}
               />
             </div>

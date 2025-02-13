@@ -18,6 +18,7 @@ import {
   UtensilsIcon,
   VideoIcon
 } from 'lucide-react';
+import Link from 'next/link';
 
 export default function PublicLayout({
   children
@@ -119,7 +120,9 @@ export default function PublicLayout({
 
         <main className="w-full overflow-auto">
           <div className="flex md:hidden w-full justify-between p-4 shadow">
-            <Logo type="white" />
+            <Link href="/" className="no-underline">
+              <Logo type="white" />
+            </Link>
             <SidebarTrigger />
           </div>
 

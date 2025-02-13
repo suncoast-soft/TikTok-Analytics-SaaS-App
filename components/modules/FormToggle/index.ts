@@ -1,1 +1,1 @@
-export { default } from './FormToggle'
+export { default } from './FormToggle';

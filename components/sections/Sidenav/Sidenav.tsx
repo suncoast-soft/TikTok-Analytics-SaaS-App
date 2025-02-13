@@ -173,7 +173,7 @@ export default function Sidenav({ navs, settings, label }: NavProps) {
               </Button>
 
               <Button asChild className="mt-8 flex md:hidden">
-                <Link href="/creator/signin" className="no-underline">
+                <Link href="/login" className="no-underline">
                   Login
                 </Link>
               </Button>
@@ -183,7 +183,7 @@ export default function Sidenav({ navs, settings, label }: NavProps) {
                 className="mt-2 flex md:hidden"
                 asChild
               >
-                <Link href="/creator/signup" className="no-underline">
+                <Link href="/register" className="no-underline">
                   Register
                 </Link>
               </Button>

@@ -6,18 +6,20 @@ export default function Header() {
   return (
     <header>
       <div className="h-[72px] container max-w-7xl flex justify-between items-center">
-        <Logo type="white" />
+        <Link href="/" className="no-underline">
+          <Logo type="white" />
+        </Link>
 
         <div>
           <div className="flex gap-2 bg-navy-900 p-1 rounded-2xl">
             <Button asChild>
-              <Link href="/creator/signin" className="no-underline">
+              <Link href="/login" className="no-underline">
                 Login
               </Link>
             </Button>
 
             <Button variant="secondary" asChild>
-              <Link href="/creator/signup" className="no-underline">
+              <Link href="/register" className="no-underline">
                 Register
               </Link>
             </Button>

@@ -1,34 +1,34 @@
-'use client'
+'use client';
 
-import { Button } from '@/components/ui/button'
-import { signInWithOAuth } from '@/utils/auth-helpers/client'
-import { type Provider } from '@supabase/supabase-js'
-import Image from 'next/image'
-import { useState, type JSX } from 'react'
+import { Button } from '@/components/ui/button';
+import { signInWithOAuth } from '@/utils/auth-helpers/client';
+import { type Provider } from '@supabase/supabase-js';
+import Image from 'next/image';
+import { useState, type JSX } from 'react';
 
 type OAuthProviders = {
-  name: Provider
-  displayName: string
-  icon: JSX.Element
-}
+  name: Provider;
+  displayName: string;
+  icon: JSX.Element;
+};
 
 export default function OauthSignIn() {
   const oAuthProviders: OAuthProviders[] = [
     {
       name: 'google',
-      displayName: 'Continue with Google',
+      displayName: 'Google',
       icon: (
         <Image src="/icons/google.svg" width={20} height={20} alt="Google" />
       )
     }
-  ]
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  ];
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    setIsSubmitting(true)
-    await signInWithOAuth(e)
-    setIsSubmitting(false)
-  }
+    setIsSubmitting(true);
+    await signInWithOAuth(e);
+    setIsSubmitting(false);
+  };
 
   return (
     <div className="mt-4">
@@ -42,7 +42,7 @@ export default function OauthSignIn() {
           <Button
             variant="default"
             type="submit"
-            className="w-full bg-white hover:bg-white/90"
+            className="w-full text-navy-700 bg-white hover:bg-white/90"
             disabled={isSubmitting}
           >
             <span className="mr-2">{provider.icon}</span>
@@ -51,5 +51,5 @@ export default function OauthSignIn() {
         </form>
       ))}
     </div>
-  )
+  );
 }
