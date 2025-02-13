@@ -9,6 +9,7 @@ import { all_campaigns } from '@/utils/mock';
 import { TrophyIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 export default function Home() {
   const featured_campaign = all_campaigns[0];
@@ -103,7 +104,9 @@ export default function Home() {
         </div>
       </div>
 
-      <Listing />
+      <Suspense>
+        <Listing />
+      </Suspense>
     </div>
   );
 }
