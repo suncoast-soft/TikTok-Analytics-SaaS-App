@@ -119,7 +119,7 @@ export default function Listing() {
                   {campaign.name}
                 </h2>
 
-                <p className="text-navy-300 text-xs tracking-wide mb-3">
+                <p className="text-navy-300 text-xs tracking-wide mb-3 line-clamp-2">
                   {campaign.description}
                 </p>
 
@@ -134,10 +134,10 @@ export default function Listing() {
 
               <div className="relative w-32 h-32 rounded-xl overflow-hidden flex-shrink-0">
                 <Image
-                  src={campaign.image}
-                  width={5472}
-                  height={3648}
-                  alt="Register"
+                  src={campaign.brand_logo}
+                  width={1000}
+                  height={1000}
+                  alt={campaign.brand}
                   className="w-full h-full object-cover"
                 />
               </div>

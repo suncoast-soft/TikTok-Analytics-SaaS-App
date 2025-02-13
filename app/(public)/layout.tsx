@@ -36,37 +36,37 @@ export default function PublicLayout({
         {
           icon: <ShirtIcon width={20} height={20} />,
           name: 'Fashion and Beauty',
-          link: '/campaigns?category=fashion'
+          link: '/campaigns?category=Fashion+and+Beauty'
         },
         {
           icon: <DumbbellIcon width={20} height={20} />,
           name: 'Fitness and Wellness',
-          link: '/campaigns?category=fitness'
+          link: '/campaigns?category=Fitness+and+Wellness'
         },
         {
           icon: <LaptopIcon width={20} height={20} />,
           name: 'Technology and Gadgets',
-          link: '/campaigns?category=technology'
+          link: '/campaigns?category=Technology+and+Gadgets'
         },
         {
           icon: <HomeIcon width={20} height={20} />,
           name: 'Lifestyle and Home',
-          link: '/campaigns?category=lifestyle'
+          link: '/campaigns?category=Lifestyle+and+Home'
         },
         {
           icon: <UtensilsIcon width={20} height={20} />,
           name: 'Food and Beverage',
-          link: '/campaigns?category=food'
+          link: '/campaigns?category=Food+and+Beverage'
         },
         {
           icon: <PlaneIcon width={20} height={20} />,
           name: 'Travel and Experiences',
-          link: '/campaigns?category=travel'
+          link: '/campaigns?category=Travel+and+Experiences'
         },
         {
           icon: <BoxesIcon width={20} height={20} />,
           name: 'Others',
-          link: '/campaigns?category=other'
+          link: '/campaigns?category=Others'
         }
       ]
     },
