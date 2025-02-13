@@ -3,7 +3,6 @@
 import DarkShadow from '@/components/modules/DarkShadow';
 import { Button } from '@/components/ui/button';
 import { all_campaigns } from '@/utils/mock';
-import { TimerIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -18,6 +17,7 @@ import {
 import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { TimeLeftBox } from '@/components/modules/TimeLeft';
 
 export default function Listing() {
   const pathname = usePathname();
@@ -108,14 +108,12 @@ export default function Listing() {
           >
             <div className="flex flex-row items-center gap-2 p-3 h-full">
               <div className="w-full">
-                <DarkShadow className="rounded-lg mb-2">
-                  <div className="flex items-center gap-1.5 px-3">
-                    <TimerIcon className="text-amber-400" width={16} />
-                    <p className="text-white text-xs font-semibold">3d 12h</p>
-                  </div>
-                </DarkShadow>
+                <TimeLeftBox
+                  start_date={campaign.start_date}
+                  end_date={campaign.end_date}
+                />
 
-                <h2 className="text-white text-sm font-bold mb-1">
+                <h2 className="text-white text-sm font-bold mt-2 mb-1">
                   {campaign.name}
                 </h2>
 
@@ -125,7 +123,10 @@ export default function Listing() {
 
                 <DarkShadow className="rounded-lg">
                   <Button size="sm" asChild>
-                    <Link href="/campaigns/1" className="no-underline">
+                    <Link
+                      href={`/campaigns/${campaign.id}`}
+                      className="no-underline"
+                    >
                       Learn More
                     </Link>
                   </Button>

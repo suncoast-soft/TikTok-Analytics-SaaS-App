@@ -1,7 +1,6 @@
-import TimeLeftBar from '@/components/modules/TimeLeftBar';
 import { cn } from '@/utils/cn';
 import { all_campaigns } from '@/utils/mock';
-import { ClockIcon, TrophyIcon } from 'lucide-react';
+import { TrophyIcon } from 'lucide-react';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import {
@@ -12,6 +11,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
+import { TimeLeftBar } from '@/components/modules/TimeLeft';
 
 export default async function Campaign({
   params
@@ -50,17 +50,6 @@ export default async function Campaign({
 
             <div className="flex flex-col md:flex-row gap-4">
               <div className="bg-navy-700 w-full md:w-64 p-3 rounded-lg">
-                <div className="flex flex-row items-center gap-2 mb-3">
-                  <ClockIcon
-                    width={16}
-                    height={16}
-                    className="text-amber-400"
-                  />
-                  <p className="text-white text-xs font-semibold">
-                    Campaign Ends In
-                  </p>
-                </div>
-
                 <TimeLeftBar
                   start_date={campaign.start_date}
                   end_date={campaign.end_date}
