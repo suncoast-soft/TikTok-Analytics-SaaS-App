@@ -133,8 +133,9 @@ export default function PublicLayout({
             <Header />
           </div>
 
-          <div className="bg-navy-900 h-[calc(100vh-72px)] scrollbar-hidden overflow-y-scroll rounded-ss-xl"></div>
-          {children}
+          <div className="bg-navy-950 h-[calc(100vh-72px)] scrollbar-hidden overflow-y-scroll rounded-ss-xl">
+            {children}
+          </div>
         </main>
       </SidebarProvider>
     </main>

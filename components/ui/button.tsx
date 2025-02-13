@@ -11,7 +11,7 @@ const buttonVariants = cva(
       variant: {
         default: 'bg-navy-700 text-white shadow-md hover:bg-navy-600',
         secondary:
-          'bg-custom-yellow shadow-custom-box hover:shadow-custom-box-sink hover:text-navy-200',
+          'bg-custom-yellow shadow-custom-box hover:shadow-custom-box-sink text-white hover:text-navy-200',
         destructive:
           'bg-red-600 text-white shadow-md hover:bg-red-700 hover:shadow-lg',
         outline:
@@ -22,7 +22,7 @@ const buttonVariants = cva(
       },
       size: {
         default: 'h-9 px-4 py-2',
-        sm: 'h-8 rounded-md px-3 text-xs',
+        sm: 'h-7 rounded-md px-3 text-xs font-base',
         lg: 'h-10 rounded-md px-8',
         icon: 'h-9 w-9'
       }

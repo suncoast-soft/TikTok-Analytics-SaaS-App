@@ -1,4 +1,5 @@
 import Logo from '@/components/icons/Logo';
+import DarkShadow from '@/components/modules/DarkShadow';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -11,7 +12,7 @@ export default function Header() {
         </Link>
 
         <div>
-          <div className="flex gap-2 bg-navy-900 p-1 rounded-2xl">
+          <DarkShadow className="gap-2">
             <Button asChild>
               <Link href="/login" className="no-underline">
                 Login
@@ -23,7 +24,7 @@ export default function Header() {
                 Register
               </Link>
             </Button>
-          </div>
+          </DarkShadow>
         </div>
       </div>
     </header>
