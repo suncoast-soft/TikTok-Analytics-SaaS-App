@@ -1,4 +1,5 @@
 import Logo from '@/components/icons/Logo';
+import Footer from '@/components/sections/Footer';
 import Header from '@/components/sections/Header';
 import Sidenav from '@/components/sections/Sidenav';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
@@ -135,6 +136,8 @@ export default function PublicLayout({
 
           <div className="bg-navy-950 h-[calc(100vh-72px)] scrollbar-hidden overflow-y-scroll rounded-ss-xl">
             {children}
+
+            <Footer />
           </div>
         </main>
       </SidebarProvider>

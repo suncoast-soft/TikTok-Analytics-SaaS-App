@@ -11,7 +11,7 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <div className="container max-w-7xl py-8">
-      <div className="bg-navy-800 rounded-xl overflow-hidden mb-8">
+      <div className="bg-navy-800 rounded-xl overflow-hidden mb-12">
         <div className="flex flex-col md:flex-row">
           <div className="w-full md:w-1/2 lg:w-2/3 h-80 bg-navy-950">
             <Image
@@ -48,7 +48,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="bg-navy-800 rounded-xl overflow-hidden mb-8">
+      <div className="bg-navy-800 rounded-xl overflow-hidden mb-12">
         <div className="flex flex-col md:flex-row">
           <div className="w-full md:w-1/2 h-40 px-8 py-6">
             <h3 className="text-amber-400 text-lg font-bold">LockedShop</h3>

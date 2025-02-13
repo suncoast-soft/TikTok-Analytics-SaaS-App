@@ -1,10 +1,13 @@
+import { cn } from '@/utils/cn';
+
 interface SeparatorProps {
   text?: string;
+  className?: string;
 }
 
-export default function Separator({ text }: SeparatorProps) {
+export default function Separator({ text, className }: SeparatorProps) {
   return (
-    <div className="relative">
+    <div className={cn('relative', className)}>
       <div className="relative flex items-center py-1">
         <div className="grow border-t border-navy-200/60"></div>
 

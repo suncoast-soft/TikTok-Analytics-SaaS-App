@@ -6,7 +6,7 @@ export const stripe = new Stripe(
     // @ts-expect-error unknown-version
     apiVersion: null,
     appInfo: {
-      name: 'Pup Erase App',
+      name: 'Flicker App',
       version: '1.0.0',
       url: 'https://github.com/puperase/pup-erase-app'
     }
