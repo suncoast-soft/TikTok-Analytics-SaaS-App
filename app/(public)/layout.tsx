@@ -19,6 +19,7 @@ import {
   VideoIcon
 } from 'lucide-react';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 export default function PublicLayout({
   children
@@ -116,7 +117,9 @@ export default function PublicLayout({
   return (
     <main className="flex min-h-screen w-full flex-row">
       <SidebarProvider>
-        <Sidenav navs={navs} settings={settings} />
+        <Suspense>
+          <Sidenav navs={navs} settings={settings} />
+        </Suspense>
 
         <main className="w-full overflow-auto">
           <div className="flex md:hidden w-full justify-between p-4 shadow">
