@@ -40,16 +40,14 @@ export default function FormTextarea({
 
           <FormControl>
             <div className="relative">
-              <div className="absolute left-4 top-7 transform -translate-y-1/2">
+              <div className="absolute left-4 top-6 transform -translate-y-1/2">
                 <Pencil className="w-5 text-primary" />
               </div>
 
               <Textarea
                 placeholder={placeholder || label}
                 {...field}
-                className={cn(
-                  'bg-transparent text-white [&::placeholder]:text-white/60 px-10 py-3'
-                )}
+                className="bg-transparent py-3 border border-navy-300 focus:border-navy-500 text-navy-200 [&::placeholder]:text-navy-200/60 pl-10"
               />
             </div>
           </FormControl>

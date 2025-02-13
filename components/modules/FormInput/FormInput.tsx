@@ -64,7 +64,8 @@ export default function FormInput({
                   'bg-transparent py-3 border border-navy-300 focus:border-navy-500',
                   theme === 'white'
                     ? 'text-navy-200 [&::placeholder]:text-navy-200/60'
-                    : 'text-navy-800 [&::placeholder]:text-navy-800/60 navy-800/60 bg-navy-300'
+                    : 'text-navy-800 [&::placeholder]:text-navy-800/60 navy-800/60 bg-navy-300',
+                  icon && 'pl-10'
                 )}
               />
             </div>
