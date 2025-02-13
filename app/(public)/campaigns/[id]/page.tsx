@@ -27,7 +27,7 @@ export default async function Campaign({
 
   return (
     <div className="container max-w-7xl py-12">
-      <div className="bg-navy-800 p-8 rounded-2xl mb-12">
+      <div className="bg-navy-800 p-4 md:p-8 rounded-2xl mb-12">
         <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
           <div className="w-full md:w-80 md:h-60 flex-shrink-0 rounded-xl overflow-hidden">
             <Image
@@ -40,16 +40,16 @@ export default async function Campaign({
           </div>
 
           <div className="w-full">
-            <h2 className="text-amber-400 text-2xl font-bold mb-2">
+            <h2 className="text-amber-400 text-lg md:text-2xl font-bold mb-2">
               {campaign.brand}
             </h2>
 
-            <h1 className="text-white text-4xl font-bold mb-8">
+            <h1 className="text-white text-2xl md:text-4xl font-bold mb-8">
               {campaign.name}
             </h1>
 
-            <div className="flex flex-row gap-4">
-              <div className="bg-navy-700 w-64 p-3 rounded-lg">
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="bg-navy-700 w-full md:w-64 p-3 rounded-lg">
                 <div className="flex flex-row items-center gap-2 mb-3">
                   <ClockIcon
                     width={16}
@@ -67,7 +67,7 @@ export default async function Campaign({
                 />
               </div>
 
-              <div className="bg-navy-700 w-64 p-3 rounded-lg">
+              <div className="bg-navy-700 w-full md:w-64 p-3 rounded-lg">
                 <div className="flex flex-row items-center gap-2 mb-3">
                   <TrophyIcon
                     width={16}
@@ -86,19 +86,23 @@ export default async function Campaign({
         </div>
 
         <div className="mb-12">
-          <h2 className="text-white text-3xl font-bold mb-4">
+          <h2 className="text-white text-xl md:text-3xl font-bold mb-4">
             About the Campaign
           </h2>
 
-          <p className="text-navy-200 tracking-wide">{campaign.description}</p>
+          <p className="text-navy-200 text-sm md:text-base tracking-wide">
+            {campaign.description}
+          </p>
         </div>
 
         <div className="mb-12">
-          <h2 className="text-white text-3xl font-bold mb-4">How to Start</h2>
+          <h2 className="text-white text-xl md:text-3xl font-bold mb-4">
+            How to Start
+          </h2>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             <div className="bg-navy-700 rounded-2xl p-6">
-              <div className="flex flex-row gap-4 items-center">
+              <div className="flex flex-col-reverse md:flex-row gap-4 md:items-center">
                 <div>
                   <h4 className="text-white text-lg font-bold mb-3">
                     Join the Campaign
@@ -110,7 +114,7 @@ export default async function Campaign({
                   </p>
                 </div>
 
-                <div className="w-24 h-24 flex-shrink-0">
+                <div className="w-12 md:w-24 h-12 md:h-24 flex-shrink-0">
                   <Image
                     src="/icons/register.png"
                     width={512}
@@ -123,7 +127,7 @@ export default async function Campaign({
             </div>
 
             <div className="bg-navy-700 rounded-2xl p-6">
-              <div className="flex flex-row gap-4 items-center">
+              <div className="flex flex-col-reverse md:flex-row gap-4 md:items-center">
                 <div>
                   <h4 className="text-white text-lg font-bold mb-3">
                     Request Your Sample
@@ -135,7 +139,7 @@ export default async function Campaign({
                   </p>
                 </div>
 
-                <div className="w-24 h-24 flex-shrink-0">
+                <div className="w-12 md:w-24 h-12 md:h-24 flex-shrink-0">
                   <Image
                     src="/icons/sample.png"
                     width={512}
@@ -150,11 +154,11 @@ export default async function Campaign({
         </div>
 
         <div className="mb-12">
-          <h2 className="text-white text-3xl font-bold mb-4">
+          <h2 className="text-white text-xl md:text-3xl font-bold mb-4">
             Campaign Rewards
           </h2>
 
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {campaign.milestones.map((milestone, index) => (
               <div
                 key={index}
@@ -188,9 +192,11 @@ export default async function Campaign({
         </div>
 
         <div className="mb-4">
-          <h2 className="text-white text-3xl font-bold mb-4">Other Terms</h2>
+          <h2 className="text-white text-xl md:text-3xl font-bold mb-4">
+            Other Terms
+          </h2>
 
-          <ol className="list-disc pl-6">
+          <ol className="list-disc text-sm md:text-base leading-relaxed pl-6">
             {campaign.terms.map((term, index) => (
               <li key={index}>{term}</li>
             ))}
@@ -198,20 +204,20 @@ export default async function Campaign({
         </div>
       </div>
 
-      <h2 className="text-white text-3xl font-bold mb-4">
+      <h2 className="text-white text-xl md:text-3xl font-bold mb-4">
         Campaign product details
       </h2>
 
       <Table className="border-none">
         <TableHeader className="bg-navy-700">
           <TableRow className="border-navy-950 shadow-lg">
-            <TableHead className="w-60">Image</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Retail Price</TableHead>
-            <TableHead>Commission rate</TableHead>
-            <TableHead>Stock</TableHead>
-            <TableHead>Variants</TableHead>
-            <TableHead className="text-right">Sample Status</TableHead>
+            <TableHead className="min-w-60">Image</TableHead>
+            <TableHead className="min-w-60">Name</TableHead>
+            <TableHead className="min-w-24">Retail Price</TableHead>
+            <TableHead className="min-w-36">Commission rate</TableHead>
+            <TableHead className="min-w-24">Stock</TableHead>
+            <TableHead className="min-w-40">Variants</TableHead>
+            <TableHead className="min-w-40 text-right">Sample Status</TableHead>
           </TableRow>
         </TableHeader>
 
