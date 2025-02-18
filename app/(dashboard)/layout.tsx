@@ -3,6 +3,8 @@ import Footer from '@/components/sections/Footer';
 import Header from '@/components/sections/Header';
 import Sidenav from '@/components/sections/Sidenav';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { getUser } from '@/utils/supabase/queries';
+import { createClient } from '@/utils/supabase/server';
 import {
   ActivityIcon,
   BoxesIcon,
@@ -22,11 +24,14 @@ import {
 import Link from 'next/link';
 import { Suspense } from 'react';
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = await createClient();
+  const user = await getUser(supabase);
+
   const navs = [
     {
       icon: <HandshakeIcon width={20} height={20} />,
@@ -104,22 +109,11 @@ export default function DashboardLayout({
     }
   ];
 
-  const settings = [
-    {
-      name: 'Connect TikTok Seller',
-      link: '/seller/admin/link-tiktok-seller'
-    },
-    {
-      name: 'Manange Account',
-      link: '/seller/admin/account'
-    }
-  ];
-
   return (
     <main className="flex min-h-screen w-full flex-row">
       <SidebarProvider>
         <Suspense>
-          <Sidenav navs={navs} settings={settings} />
+          <Sidenav navs={navs} />
         </Suspense>
 
         <main className="w-full overflow-auto">
@@ -131,7 +125,7 @@ export default function DashboardLayout({
           </div>
 
           <div className="hidden md:block">
-            <Header />
+            <Header user={user} />
           </div>
 
           <div className="bg-navy-950 h-[calc(100vh-72px)] scrollbar-hidden overflow-y-scroll rounded-ss-xl">

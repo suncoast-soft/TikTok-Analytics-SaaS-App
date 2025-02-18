@@ -7,10 +7,8 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -18,13 +16,8 @@ import {
   SidebarMenuSub,
   SidebarMenuSubItem
 } from '@/components/ui/sidebar';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import { ChevronDown, ChevronUpIcon, SettingsIcon } from 'lucide-react';
+
+import { ChevronDown } from 'lucide-react';
 import {
   Collapsible,
   CollapsibleContent,
@@ -45,11 +38,9 @@ type NavItem = {
 
 interface NavProps {
   navs: NavItem[];
-  settings: NavItem[];
-  label?: string;
 }
 
-export default function Sidenav({ navs, settings, label }: NavProps) {
+export default function Sidenav({ navs }: NavProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -61,14 +52,6 @@ export default function Sidenav({ navs, settings, label }: NavProps) {
 
       <SidebarContent>
         <SidebarGroup>
-          {label && (
-            <SidebarGroupLabel>
-              <span className="bg-primary text-white px-1.5 py-0.5 rounded">
-                {label}
-              </span>
-            </SidebarGroupLabel>
-          )}
-
           <SidebarGroupContent>
             <SidebarMenu className="gap-3">
               {navs.map((nav) =>
@@ -191,40 +174,6 @@ export default function Sidenav({ navs, settings, label }: NavProps) {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu modal={false}>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton size="lg" className="sm:text-base">
-                  <span className="w-5 h-5 mr-2">
-                    <SettingsIcon />
-                  </span>
-                  <span>Settings</span>
-                  <ChevronUpIcon className="ml-auto" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                side="top"
-                className="w-[--radix-popper-anchor-width]"
-              >
-                {settings.map((nav) => (
-                  <DropdownMenuItem
-                    key={nav.name}
-                    className="cursor-pointer"
-                    asChild
-                  >
-                    <Link href={nav.link ?? ''} className="no-underline">
-                      {nav.name}
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
     </Sidebar>
   );
 }
