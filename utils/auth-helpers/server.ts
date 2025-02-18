@@ -27,7 +27,7 @@ export async function SignOut(formData: FormData) {
     );
   }
 
-  return '/signin';
+  return '/login';
 }
 
 export async function signInWithOtp(formData: FormData) {
@@ -42,11 +42,11 @@ export async function signInWithOtp(formData: FormData) {
     });
 
     if (error)
-      return getErrorRedirect('/signin', 'Sign up failed.', error.message);
+      return getErrorRedirect('/login', 'Sign up failed.', error.message);
 
     return data.user
       ? getStatusRedirect(
-          '/signin',
+          '/login',
           'Success!',
           'Please check your email for a confirmation link. You may now close this tab.'
         )
@@ -57,12 +57,12 @@ export async function signInWithOtp(formData: FormData) {
     });
 
     if (error) {
-      return getErrorRedirect('/signin', 'Sign in failed.', error.message);
+      return getErrorRedirect('/login', 'Sign in failed.', error.message);
     }
 
     return data.user
       ? getStatusRedirect(
-          '/signin',
+          '/login',
           'Success!',
           'Please check your email for a confirmation link. You may now close this tab.'
         )

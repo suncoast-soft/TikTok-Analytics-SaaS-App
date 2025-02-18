@@ -129,8 +129,7 @@ export default async function DashboardLayout({
           </div>
 
           <div className="bg-navy-950 h-[calc(100vh-72px)] scrollbar-hidden overflow-y-scroll rounded-ss-xl">
-            {children}
-
+            <div className="min-h-[calc(100vh-470px)]">{children}</div>
             <Footer />
           </div>
         </main>

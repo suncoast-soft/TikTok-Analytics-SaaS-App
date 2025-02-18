@@ -1,5 +1,7 @@
+import Listing from '@/components/sections/Listing';
 import { getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
+import { Suspense } from 'react';
 
 export default async function MyCampaigns() {
   const supabase = await createClient();
@@ -13,5 +15,11 @@ export default async function MyCampaigns() {
     );
   }
 
-  return <></>;
+  return (
+    <div className="container max-w-7xl py-8">
+      <Suspense>
+        <Listing />
+      </Suspense>
+    </div>
+  );
 }
