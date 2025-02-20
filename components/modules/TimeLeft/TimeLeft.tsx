@@ -1,5 +1,6 @@
 import { ClockIcon, TimerIcon } from 'lucide-react';
 import DarkShadow from '../DarkShadow';
+import { format } from 'date-fns';
 
 const getTimeComponents = (milliseconds: number) => {
   const totalSeconds = Math.floor(milliseconds / 1000);
@@ -29,9 +30,11 @@ export function TimeLeftBox({
   const { days, hours } = getTimeComponents(timeLeft);
 
   const text =
-    startDate > now
-      ? `Starts In ${days}d ${hours}h`
-      : `Ends In ${days}d ${hours}h`;
+    now > endDate
+      ? 'Ended'
+      : startDate > now
+        ? `Starts In ${days}d ${hours}h`
+        : `Ends In ${days}d ${hours}h`;
 
   return (
     <DarkShadow className="rounded-lg">
@@ -66,7 +69,25 @@ export function TimeLeftBar({
       ? 0
       : (Math.max(0, totalDuration - timeLeft) / totalDuration) * 100;
 
-  const text = startDate > now ? `Campaign Starts In` : `Campaign Ends in`;
+  const text =
+    now > endDate
+      ? 'Campaign ended at'
+      : startDate > now
+        ? `Campaign starts in`
+        : `Campaign ends in`;
+
+  if (now > endDate) {
+    return (
+      <div className="w-full">
+        <div className="flex flex-row items-center gap-2 mb-3">
+          <ClockIcon width={16} height={16} className="text-amber-400" />
+          <p className="text-white text-xs font-semibold">
+            Campaign ended on {format(endDate, 'PPP')}
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">

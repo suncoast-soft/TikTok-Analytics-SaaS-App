@@ -1,3 +1,251 @@
+export const active_campaigns = [
+  {
+    id: '0',
+    category: 'Fashion and Beauty',
+    brand: 'LockedShop',
+    name: "Presidents' Week Campaign",
+    description:
+      "Exclusive fashion deals for Presidents' Week. Enjoy massive discounts on premium fashion items, including designer wear, accessories, and more. This campaign is designed for fashion lovers who want to upgrade their wardrobe without breaking the bank. Limited-time offers and exclusive bundles available. Don't miss out on these special deals curated for style enthusiasts.",
+    brand_logo: 'https://picsum.photos/1200/600?random=101',
+    products: [
+      {
+        id: '101',
+        name: 'Premium Leather Jacket',
+        price: 129.99,
+        commission_rate: 10,
+        images: [
+          'https://picsum.photos/800/800?random=2001',
+          'https://picsum.photos/800/800?random=2002',
+          'https://picsum.photos/800/800?random=2003'
+        ],
+        stock: 150,
+        sample_status: 'Available',
+        variant: {
+          name: 'Size',
+          options: ['S', 'M', 'L', 'XL']
+        }
+      },
+      {
+        id: '102',
+        name: 'Designer Sunglasses',
+        price: 79.99,
+        commission_rate: 8,
+        images: [
+          'https://picsum.photos/800/800?random=2011',
+          'https://picsum.photos/800/800?random=2012',
+          'https://picsum.photos/800/800?random=2013'
+        ],
+        stock: 200,
+        sample_status: 'Not Available',
+        variant: {
+          name: 'Lens Color',
+          options: ['Black', 'Brown', 'Blue']
+        }
+      }
+    ],
+    terms: [
+      'Affiliates must adhere to promotional guidelines.',
+      'Commission is only applicable to completed purchases.',
+      'Campaign is valid until the end date specified.',
+      'Discounts cannot be combined with other promotions.',
+      'Stock availability is subject to change.'
+    ],
+    milestones: [
+      { target_gmv: 5000, reward: 300 },
+      { target_gmv: 10000, reward: 700 },
+      { target_gmv: 20000, reward: 1500 },
+      { target_gmv: 30000, reward: 3000 }
+    ],
+    start_date: '2025-02-01',
+    end_date: '2025-03-01',
+    progress: {
+      videos: 7,
+      orders: 124,
+      gmv: 12000
+    }
+  },
+  {
+    id: '1',
+    category: 'Travel and Experiences',
+    brand: 'NomadLife',
+    name: 'NomadLife Exclusive Travel and Experiences Deals',
+    description:
+      'Shop high-quality travel and experiences products from NomadLife at unbeatable prices. Limited-time discounts available!',
+    brand_logo: 'https://picsum.photos/1200/600?random=1001',
+    products: [
+      {
+        id: '11',
+        name: 'Luxury Cruise Package',
+        price: 225.4,
+        commission_rate: 5,
+        images: [
+          'https://picsum.photos/800/800?random=3001',
+          'https://picsum.photos/800/800?random=3101'
+        ],
+        stock: 73,
+        sample_status: 'Not Available',
+        variant: {
+          name: 'Color',
+          options: ['Black', 'White', 'Red', 'Blue']
+        }
+      },
+      {
+        id: '12',
+        name: 'Luxury Cruise Package',
+        price: 89.25,
+        commission_rate: 14,
+        images: [
+          'https://picsum.photos/800/800?random=3002',
+          'https://picsum.photos/800/800?random=3102'
+        ],
+        stock: 132,
+        sample_status: 'Not Available',
+        variant: {
+          name: 'Color',
+          options: ['Black', 'White', 'Red', 'Blue']
+        }
+      }
+    ],
+    terms: [
+      'Affiliates must adhere to promotional guidelines.',
+      'Commission is only applicable to completed purchases.',
+      'Campaign is valid until the end date specified.',
+      'Discounts cannot be combined with other promotions.',
+      'Stock availability is subject to change.'
+    ],
+    milestones: [
+      {
+        target_gmv: 5000,
+        reward: 300
+      },
+      {
+        target_gmv: 10000,
+        reward: 700
+      },
+      {
+        target_gmv: 20000,
+        reward: 1500
+      },
+      {
+        target_gmv: 30000,
+        reward: 3000
+      }
+    ],
+    start_date: '2025-02-7',
+    end_date: '2025-03-31',
+    progress: {
+      videos: 3,
+      orders: 36,
+      gmv: 4000
+    }
+  }
+];
+
+export const completed_campaigns = [
+  {
+    id: '2',
+    category: 'Food and Beverage',
+    brand: 'FreshBites',
+    name: 'FreshBites Exclusive Food and Beverage Deals',
+    description:
+      'Discover incredible food and beverage deals from FreshBites. Find premium products that fit your style and budget.',
+    brand_logo: 'https://picsum.photos/1200/600?random=1002',
+    products: [
+      {
+        id: '21',
+        name: 'Organic Coffee Beans',
+        price: 103.04,
+        commission_rate: 12,
+        images: [
+          'https://picsum.photos/800/800?random=3002',
+          'https://picsum.photos/800/800?random=3102'
+        ],
+        stock: 182,
+        sample_status: 'Available',
+        variant: {
+          name: 'Color',
+          options: ['Black', 'White', 'Red', 'Blue']
+        }
+      },
+      {
+        id: '22',
+        name: 'Gourmet Chocolate Box',
+        price: 92.74,
+        commission_rate: 8,
+        images: [
+          'https://picsum.photos/800/800?random=3004',
+          'https://picsum.photos/800/800?random=3104'
+        ],
+        stock: 332,
+        sample_status: 'Available',
+        variant: {
+          name: 'Color',
+          options: ['Black', 'White', 'Red', 'Blue']
+        }
+      },
+      {
+        id: '23',
+        name: 'Wine Selection',
+        price: 150.13,
+        commission_rate: 11,
+        images: [
+          'https://picsum.photos/800/800?random=3006',
+          'https://picsum.photos/800/800?random=3106'
+        ],
+        stock: 364,
+        sample_status: 'Available',
+        variant: {
+          name: 'Color',
+          options: ['Black', 'White', 'Red', 'Blue']
+        }
+      },
+      {
+        id: '24',
+        name: 'Premium Olive Oil',
+        price: 275.79,
+        commission_rate: 11,
+        images: [
+          'https://picsum.photos/800/800?random=3008',
+          'https://picsum.photos/800/800?random=3108'
+        ],
+        stock: 382,
+        sample_status: 'Available',
+        variant: {
+          name: 'Color',
+          options: ['Black', 'White', 'Red', 'Blue']
+        }
+      }
+    ],
+    terms: [
+      'Affiliates must adhere to promotional guidelines.',
+      'Commission is only applicable to completed purchases.',
+      'Campaign is valid until the end date specified.',
+      'Discounts cannot be combined with other promotions.',
+      'Stock availability is subject to change.'
+    ],
+    milestones: [
+      {
+        target_gmv: 5000,
+        reward: 300
+      },
+      {
+        target_gmv: 10000,
+        reward: 700
+      },
+      {
+        target_gmv: 20000,
+        reward: 1500
+      },
+      {
+        target_gmv: 30000,
+        reward: 3000
+      }
+    ],
+    start_date: '2025-01-20',
+    end_date: '2025-02-13'
+  }
+];
+
 export const all_campaigns = [
   {
     id: '0',
