@@ -79,7 +79,7 @@ export function TimeLeftBar({
   if (now > endDate) {
     return (
       <div className="w-full">
-        <div className="flex flex-row items-center gap-2 mb-3">
+        <div className="flex flex-row items-center gap-2">
           <ClockIcon width={16} height={16} className="text-amber-400" />
           <p className="text-white text-xs font-semibold">
             Campaign ended on {format(endDate, 'PPP')}

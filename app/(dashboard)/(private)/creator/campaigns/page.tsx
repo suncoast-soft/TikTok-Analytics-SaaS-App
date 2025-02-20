@@ -28,8 +28,8 @@ export default async function MyCampaigns() {
             key={campaign.id}
             className="bg-navy-800 rounded-xl overflow-hidden"
           >
-            <div className="flex flex-row items-center h-full">
-              <div className="relative w-1/3 h-72 flex-shrink-0">
+            <div className="flex flex-col lg:flex-row items-center h-full">
+              <div className="relative w-full lg:w-1/3 h-72 flex-shrink-0">
                 <Image
                   src={campaign.brand_logo}
                   width={1000}
@@ -46,7 +46,7 @@ export default async function MyCampaigns() {
                 </div>
               </div>
 
-              <div className="w-5/12 px-8 py-4">
+              <div className="w-full lg:w-5/12 px-3 lg:px-8 py-4">
                 <div className="w-fit bg-amber-500 px-2  mt-2 mb-2">
                   <h2 className="text-white font-bold">{campaign.brand}</h2>
                 </div>
@@ -74,7 +74,7 @@ export default async function MyCampaigns() {
                 </DarkShadow>
               </div>
 
-              <div className="w-1/4 px-8 py-4">
+              <div className="w-full lg:w-1/4 px-3 lg:px-8 py-4">
                 <div className="bg-navy-700 w-full md:w-64 p-3 rounded-lg mb-3">
                   <div className="flex flex-row items-center gap-2">
                     <ShoppingBagIcon

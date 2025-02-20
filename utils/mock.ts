@@ -242,7 +242,13 @@ export const completed_campaigns = [
       }
     ],
     start_date: '2025-01-20',
-    end_date: '2025-02-13'
+    end_date: '2025-02-13',
+    progress: {
+      videos: 3,
+      orders: 36,
+      gmv: 4000,
+      commission: 480
+    }
   }
 ];
 
