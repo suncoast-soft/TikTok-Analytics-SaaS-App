@@ -20,6 +20,14 @@ export default async function Home({
     <div className="container max-w-7xl py-8">
       {!category && (
         <>
+          <h1 className="text-white text-xl lg:text-3xl font-bold text-center my-4">
+            Connecting Affiliates with exclusive TikTok Shop Brand deals
+          </h1>
+
+          <h2 className="text-amber-400 lg:text-xl font-semibold text-center mb-12">
+            Earn higher commissions and cash rewards
+          </h2>
+
           {!user && <Welcome />}
 
           <PublicLargeCampaignCard campaign={all_campaigns[0]} />

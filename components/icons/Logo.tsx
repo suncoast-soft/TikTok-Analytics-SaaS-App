@@ -2,10 +2,10 @@ import { cn } from '@/utils/cn';
 import Image from 'next/image';
 
 const LOGO_MAP = {
-  white: '/logo-white.png',
-  blue: '/logo-blue.png',
-  icon: '/logo-icon.png',
-  black: '/logo-black.png'
+  white: '/flicker-logo-white.png',
+  blue: '/flicker-logo-blue.png',
+  black: '/flicker-logo-black.png',
+  icon: '/flicker-logo-icon-blue.png'
 };
 
 const Logo = ({
