@@ -21,6 +21,7 @@ import { TimeLeftBar } from '@/components/modules/TimeLeft';
 import DarkShadow from '@/components/modules/DarkShadow';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import Card from '@/components/modules/Card';
 
 export default async function Campaign({
   params
@@ -36,19 +37,17 @@ export default async function Campaign({
 
   return (
     <div className="container max-w-7xl py-12">
-      <div className="bg-navy-800 p-4 md:p-8 rounded-2xl mb-12">
+      <Card vertical={true} className="p-4 lg:p-8">
         <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
-          <div className="w-full md:w-80 md:h-60 flex-shrink-0 rounded-xl overflow-hidden">
-            <Image
-              src={campaign.brand_logo}
-              width={1000}
-              height={1000}
-              alt={campaign.brand}
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <Image
+            src={campaign.brand_logo}
+            width={320}
+            height={240}
+            alt={campaign.brand}
+            className="w-80 h-60 object-cover rounded-lg"
+          />
 
-          <div className="w-full">
+          <div>
             <h2 className="text-amber-400 text-lg md:text-2xl font-bold mb-2">
               {campaign.brand}
             </h2>
@@ -92,7 +91,7 @@ export default async function Campaign({
             {campaign.description}
           </p>
 
-          <div className="flex flex-row gap-5 mb-12">
+          <div className="flex flex-col lg:flex-row gap-5 mb-12">
             <div className="bg-navy-700 w-full md:w-64 p-3 rounded-lg">
               <div className="flex flex-row items-center gap-2 mb-4">
                 <ShoppingBagIcon
@@ -298,7 +297,7 @@ export default async function Campaign({
             </div>
           </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

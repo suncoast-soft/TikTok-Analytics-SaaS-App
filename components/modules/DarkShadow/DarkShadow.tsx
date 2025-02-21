@@ -2,11 +2,11 @@ import { cn } from '@/utils/cn';
 import { ReactNode } from 'react';
 
 export default function DarkShadow({
-  className,
-  children
+  children,
+  className
 }: {
-  className?: string;
   children: ReactNode;
+  className?: string;
 }) {
   return (
     <div
