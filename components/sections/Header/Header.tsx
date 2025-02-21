@@ -48,7 +48,7 @@ export default function Header({ user }: { user: User | null }) {
                       <div>
                         <Button type="submit" className="shadow-none" asChild>
                           <Link
-                            href="/settings"
+                            href="/creator/account"
                             className="text-sm no-underline flex items-center gap-1"
                           >
                             <SettingsIcon width={20} height={20} />
