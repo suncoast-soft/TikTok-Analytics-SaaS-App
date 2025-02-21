@@ -3,18 +3,20 @@ interface ModuleProps {
   title: string;
   subtitle?: string;
   description?: string;
+  className?: string;
 }
 
 export default function Title({
   tag = 'h1',
   title,
   subtitle,
-  description
+  description,
+  className
 }: ModuleProps) {
   switch (tag) {
     case 'h1':
       return (
-        <>
+        <div className={className}>
           {subtitle && (
             <h2 className="text-amber-400 text-lg lg:text-2xl font-bold mb-2">
               {subtitle}
@@ -30,12 +32,12 @@ export default function Title({
               {description}
             </p>
           )}
-        </>
+        </div>
       );
 
     case 'h2':
       return (
-        <>
+        <div className={className}>
           {subtitle && (
             <h3 className="text-amber-400 lg:text-xl font-bold mb-1">
               {subtitle}
@@ -51,12 +53,12 @@ export default function Title({
               {description}
             </p>
           )}
-        </>
+        </div>
       );
 
     case 'h3':
       return (
-        <>
+        <div className={className}>
           {subtitle && (
             <h4 className="text-amber-400 text-sm lg:text-lg font-bold">
               {subtitle}
@@ -72,7 +74,7 @@ export default function Title({
               {description}
             </p>
           )}
-        </>
+        </div>
       );
 
     default:

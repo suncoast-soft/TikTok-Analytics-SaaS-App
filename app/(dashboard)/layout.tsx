@@ -104,7 +104,7 @@ export default async function DashboardLayout({
     },
     {
       icon: <HeadsetIcon width={20} height={20} />,
-      name: 'Live Support',
+      name: 'Support',
       link: '/support'
     }
   ];
