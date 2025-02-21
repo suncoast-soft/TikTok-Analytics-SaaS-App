@@ -1,3 +1,4 @@
+import Title from '@/components/modules/Title';
 import { ActiveLargeCampaignCard } from '@/components/sections/CampaignCard';
 import { active_campaigns } from '@/utils/mock';
 import { getUser } from '@/utils/supabase/queries';
@@ -8,11 +9,7 @@ export default async function MyCampaigns() {
   const user = await getUser(supabase);
 
   if (!user) {
-    return (
-      <h1 className="text-2xl md:text-4xl text-white font-bold text-center mt-4 mb-8">
-        Active Campaigns
-      </h1>
-    );
+    return <Title title="Active Campaigns" />;
   }
 
   return (

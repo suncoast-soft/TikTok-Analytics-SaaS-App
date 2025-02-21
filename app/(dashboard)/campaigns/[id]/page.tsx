@@ -1,17 +1,15 @@
-import { cn } from '@/utils/cn';
 import { all_campaigns } from '@/utils/mock';
-import { TrophyIcon } from 'lucide-react';
+import { TimerIcon, TrophyIcon } from 'lucide-react';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table';
-import { TimeLeftBar } from '@/components/modules/TimeLeft';
+import Card from '@/components/modules/Card';
+import Title from '@/components/modules/Title';
+import Box from '@/components/modules/Box';
+import ProgressBar from '@/components/modules/ProgressBar';
+import { getTimeDiff } from '@/utils/helpers';
+import ImageBox from '@/components/modules/ImageBox';
+import Reward from '@/components/modules/Reward';
+import ProductInfoTable from '@/components/sections/ProductInfoTable';
 
 export default async function Campaign({
   params
@@ -27,219 +25,93 @@ export default async function Campaign({
 
   return (
     <div className="container max-w-7xl py-12">
-      <div className="bg-navy-800 p-4 md:p-8 rounded-2xl mb-12">
+      <Card vertical={true} className="p-4 lg:p-8 mb-12">
         <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
-          <div className="w-full md:w-80 md:h-60 flex-shrink-0 rounded-xl overflow-hidden">
-            <Image
-              src={campaign.brand_logo}
-              width={1000}
-              height={1000}
-              alt={campaign.brand}
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <Image
+            src={campaign.brand_logo}
+            width={320}
+            height={240}
+            alt={campaign.brand}
+            className="w-80 h-60 object-cover rounded-lg"
+          />
 
-          <div className="w-full">
-            <h2 className="text-amber-400 text-lg md:text-2xl font-bold mb-2">
-              {campaign.brand}
-            </h2>
-
-            <h1 className="text-white text-2xl md:text-4xl font-bold mb-8">
-              {campaign.name}
-            </h1>
+          <div>
+            <Title title={campaign.name} subtitle={campaign.brand} />
 
             <div className="flex flex-col md:flex-row gap-4">
-              <div className="bg-navy-700 w-full md:w-64 p-3 rounded-lg">
-                <TimeLeftBar
-                  start_date={campaign.start_date}
-                  end_date={campaign.end_date}
-                />
-              </div>
-
-              <div className="bg-navy-700 w-full md:w-64 p-3 rounded-lg">
-                <div className="flex flex-row items-center gap-2 mb-3">
-                  <TrophyIcon
-                    width={16}
-                    height={16}
-                    className="text-amber-400"
-                  />
-                  <p className="text-white text-xs font-semibold">
-                    Campaign Winners
-                  </p>
-                </div>
-
-                <p className="text-white text-2xl font-bold">32</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mb-12">
-          <h2 className="text-white text-xl md:text-3xl font-bold mb-4">
-            About the Campaign
-          </h2>
-
-          <p className="text-navy-200 text-sm md:text-base tracking-wide">
-            {campaign.description}
-          </p>
-        </div>
-
-        <div className="mb-12">
-          <h2 className="text-white text-xl md:text-3xl font-bold mb-4">
-            How to Start
-          </h2>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-navy-700 rounded-2xl p-6">
-              <div className="flex flex-col-reverse md:flex-row gap-4 md:items-center">
-                <div>
-                  <h4 className="text-white text-lg font-bold mb-3">
-                    Join the Campaign
-                  </h4>
-                  <p className="text-sm">
-                    Sign up to be part of our exclusive campaign and gain access
-                    to special offers. Simply fill out the required details and
-                    confirm your participation.
-                  </p>
-                </div>
-
-                <div className="w-12 md:w-24 h-12 md:h-24 flex-shrink-0">
-                  <Image
-                    src="/icons/register.png"
-                    width={512}
-                    height={512}
-                    className="w-full h-full object-contain"
-                    alt="Register"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-navy-700 rounded-2xl p-6">
-              <div className="flex flex-col-reverse md:flex-row gap-4 md:items-center">
-                <div>
-                  <h4 className="text-white text-lg font-bold mb-3">
-                    Request Your Sample
-                  </h4>
-                  <p className="text-sm">
-                    Once you’ve joined, submit your request to receive a free
-                    sample. Follow the provided instructions to ensure quick and
-                    easy delivery.
-                  </p>
-                </div>
-
-                <div className="w-12 md:w-24 h-12 md:h-24 flex-shrink-0">
-                  <Image
-                    src="/icons/sample.png"
-                    width={512}
-                    height={512}
-                    className="w-full h-full object-contain"
-                    alt="Sample"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mb-12">
-          <h2 className="text-white text-xl md:text-3xl font-bold mb-4">
-            Campaign Rewards
-          </h2>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {campaign.milestones.map((milestone, index) => (
-              <div
-                key={index}
-                className="bg-navy-700 rounded-2xl overflow-hidden"
+              <Box
+                icon={<TimerIcon width={16} />}
+                label="Campaign progress"
+                className="w-60"
               >
-                <div className="p-5">
-                  <h4 className="text-white text-2xl font-bold text-center">
-                    ${milestone.target_gmv.toLocaleString()} GMV
-                  </h4>
-                </div>
+                <ProgressBar
+                  progress={
+                    getTimeDiff(campaign.start_date, campaign.end_date).progress
+                  }
+                  label={
+                    getTimeDiff(campaign.start_date, campaign.end_date).text
+                  }
+                />
+              </Box>
 
-                <div
-                  className={cn(
-                    'p-2 text-navy-900',
-                    index === 0
-                      ? 'bg-navy-400/70'
-                      : index === 1
-                        ? 'bg-yellow-700/70'
-                        : index === 2
-                          ? 'bg-slate-200/70'
-                          : 'bg-amber-400/70'
-                  )}
-                >
-                  <h5 className="font-semibold text-center">
-                    ${milestone.reward.toLocaleString()} Cash Rewards
-                  </h5>
-                </div>
-              </div>
-            ))}
+              <Box
+                icon={<TrophyIcon width={16} />}
+                label="Total Creators"
+                className="w-60"
+              >
+                <p className="text-white text-2xl font-bold">322</p>
+              </Box>
+            </div>
           </div>
         </div>
 
-        <div className="mb-4">
-          <h2 className="text-white text-xl md:text-3xl font-bold mb-4">
-            Other Terms
-          </h2>
+        <Title
+          title="About the Campaign"
+          description={campaign.description}
+          tag="h2"
+        />
 
-          <ol className="list-disc text-sm md:text-base leading-relaxed pl-6">
-            {campaign.terms.map((term, index) => (
-              <li key={index}>{term}</li>
-            ))}
-          </ol>
+        <Title title="How to Start" tag="h2" />
+
+        <div className="grid md:grid-cols-2 gap-4 mb-12">
+          <ImageBox
+            title="Join the Campaign"
+            description="Sign up to be part of our exclusive campaign and gain access to special offers. Simply fill out the required details and confirm your participation."
+            image="/icons/register.png"
+          />
+
+          <ImageBox
+            title="Request Your Sample"
+            description="Once you’ve joined, submit your request to receive a free sample. Follow the provided instructions to ensure quick and easy delivery."
+            image="/icons/sample.png"
+          />
         </div>
-      </div>
 
-      <h2 className="text-white text-xl md:text-3xl font-bold mb-4">
-        Campaign product details
-      </h2>
+        <Title title="Campaign Rewards" tag="h2" />
 
-      <Table className="border-none">
-        <TableHeader className="bg-navy-700">
-          <TableRow className="border-navy-950 shadow-lg">
-            <TableHead className="min-w-60">Image</TableHead>
-            <TableHead className="min-w-60">Name</TableHead>
-            <TableHead className="min-w-24">Retail Price</TableHead>
-            <TableHead className="min-w-36">Commission rate</TableHead>
-            <TableHead className="min-w-24">Stock</TableHead>
-            <TableHead className="min-w-40">Variants</TableHead>
-            <TableHead className="min-w-40 text-right">Sample Status</TableHead>
-          </TableRow>
-        </TableHeader>
-
-        <TableBody className="bg-navy-800">
-          {campaign.products.map((product) => (
-            <TableRow key={product.id} className="border-navy-300">
-              <TableCell className="font-medium">
-                <div className="flex gap-2">
-                  {product.images.map((image) => (
-                    <Image
-                      key={image}
-                      src={image}
-                      width={60}
-                      height={60}
-                      alt={image}
-                    />
-                  ))}
-                </div>
-              </TableCell>
-              <TableCell>{product.name}</TableCell>
-              <TableCell>{product.price}</TableCell>
-              <TableCell>{product.commission_rate}</TableCell>
-              <TableCell>{product.stock}</TableCell>
-              <TableCell>
-                {product.variant.name}: {product.variant.options.join(', ')}
-              </TableCell>
-              <TableCell className="text-right">
-                {product.sample_status ? 'Auto Approve' : 'Manual'}
-              </TableCell>
-            </TableRow>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+          {campaign.milestones.map((milestone, index) => (
+            <Reward
+              key={index}
+              tier={index + 1}
+              target={milestone.target_gmv}
+              reward={milestone.reward}
+            />
           ))}
-        </TableBody>
-      </Table>
+        </div>
+
+        <Title title="Other Terms" tag="h2" />
+
+        <ol className="list-disc text-sm md:text-base leading-relaxed pl-6">
+          {campaign.terms.map((term, index) => (
+            <li key={index}>{term}</li>
+          ))}
+        </ol>
+      </Card>
+
+      <Title title="Campaign product details" tag="h2" />
+
+      <ProductInfoTable products={campaign.products} />
     </div>
   );
 }
