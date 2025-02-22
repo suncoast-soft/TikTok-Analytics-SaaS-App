@@ -1,4 +1,3 @@
-import { getRedirectMethod } from '@/utils/auth-helpers/settings';
 import EmailAuthForm from '@/components/sections/Forms/EmailAuthForm';
 import OauthSignIn from '@/components/sections/Forms/OauthSignIn';
 import Image from 'next/image';
@@ -11,8 +10,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 
 export default async function Login() {
-  const redirectMethod = getRedirectMethod();
-
   return (
     <div className="relative w-full h-full">
       <div className="w-full h-full flex flex-col md:flex-row">
@@ -34,7 +31,7 @@ export default async function Login() {
               </Link>
             </p>
 
-            <EmailAuthForm redirectMethod={redirectMethod} register={true} />
+            <EmailAuthForm register={true} />
 
             <div className="w-full mt-4">
               <Separator />

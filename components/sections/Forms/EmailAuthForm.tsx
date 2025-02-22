@@ -12,7 +12,6 @@ import { signInWithOtp } from '@/utils/auth-helpers/server';
 import FormInput from '@/components/modules/FormInput';
 
 interface EmailSignInProps {
-  redirectMethod: string;
   register: boolean;
 }
 
@@ -21,12 +20,8 @@ const FormSchema = z.object({
   name: z.string().optional()
 });
 
-export default function EmailSignIn({
-  redirectMethod,
-  register
-}: EmailSignInProps) {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const router = redirectMethod === 'client' ? useRouter() : null;
+export default function EmailSignIn({ register }: EmailSignInProps) {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({

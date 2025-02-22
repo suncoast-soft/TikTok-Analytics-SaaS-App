@@ -1,4 +1,3 @@
-import { getRedirectMethod } from '@/utils/auth-helpers/settings';
 import EmailAuthForm from '@/components/sections/Forms/EmailAuthForm';
 import OauthSignIn from '@/components/sections/Forms/OauthSignIn';
 import Image from 'next/image';
@@ -9,8 +8,6 @@ import { Button } from '@/components/ui/button';
 import { XIcon } from 'lucide-react';
 
 export default async function Login() {
-  const redirectMethod = getRedirectMethod();
-
   return (
     <div className="relative w-full h-full">
       <div className="w-full h-full flex flex-col md:flex-row">
@@ -32,7 +29,7 @@ export default async function Login() {
               </Link>
             </p>
 
-            <EmailAuthForm redirectMethod={redirectMethod} register={false} />
+            <EmailAuthForm register={false} />
 
             <div className="w-full mt-4">
               <Separator text="Or continue with" />

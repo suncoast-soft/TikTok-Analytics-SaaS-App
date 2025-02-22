@@ -3,7 +3,6 @@
 import { SignOut } from '@/utils/auth-helpers/server';
 import { handleRequest } from '@/utils/auth-helpers/client';
 import { usePathname, useRouter } from 'next/navigation';
-import { getRedirectMethod } from '@/utils/auth-helpers/settings';
 import { Input } from '@/components/ui/input';
 import { LogOutIcon } from 'lucide-react';
 import { Form } from '@/components/ui/form';
@@ -18,8 +17,7 @@ const FormSchema = z.object({
 });
 
 export default function SignoutForm() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const router = getRedirectMethod() === 'client' ? useRouter() : null;
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
