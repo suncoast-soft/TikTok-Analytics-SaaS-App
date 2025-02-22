@@ -1,52 +1,44 @@
 'use server';
 
-import { PostgrestError, SupabaseClient } from '@supabase/supabase-js';
+import { SupabaseClient } from '@supabase/supabase-js';
 import { cache } from 'react';
-import { getUser } from './queries';
+import { Tables } from '@/types_db';
 
-interface RowData {
-  [key: string]: string | number | boolean;
-}
+type Seller = Partial<Tables<'sellers'>>;
 
-export const createProfile = cache(
-  async (supabase: SupabaseClient, row: RowData) => {
-    const user = await getUser(supabase);
-    if (!user) {
-      return {
-        data: null,
-        error: { message: 'Authentication failed' } as PostgrestError
-      };
+export const saveSeller = cache(
+  async (supabase: SupabaseClient, auth_data: Seller) => {
+    if (auth_data.seller_name) {
+      const { data: seller, error: error } = await supabase
+        .from('sellers')
+        .update({ ...auth_data })
+        .eq('seller_name', auth_data.seller_name)
+        .select('*')
+        .single();
+
+      if (error) {
+        console.error('Failed to update seller auth:', error);
+        return null;
+      }
+
+      return seller;
+    } else if (auth_data.user_id) {
+      const { data: seller, error } = await supabase
+        .from('sellers')
+        .insert({
+          ...auth_data
+        })
+        .select('*')
+        .single();
+
+      if (error) {
+        console.error('Failed to upsert seller auth:', error);
+        return null;
+      }
+
+      return seller;
+    } else {
+      return null;
     }
-
-    // Fetch existing profiles and check if the given profile exists
-    const { data: profiles, error: profileError } = await supabase
-      .from('profiles')
-      .select()
-      .eq('user_id', user.id);
-
-    if (profileError) return { data: null, error: profileError };
-
-    const is_primary = profiles.length === 0;
-
-    const existingProfile = profiles.find(
-      (p) =>
-        p.first_name === row.first_name &&
-        p.last_name === row.last_name &&
-        p.city === row.city &&
-        p.state === row.state
-    );
-
-    if (existingProfile) {
-      return { data: existingProfile, error: null };
-    }
-
-    // Insert new profile
-    const { data: profile, error } = await supabase
-      .from('profiles')
-      .insert({ ...row, user_id: user.id, is_primary })
-      .select()
-      .single();
-
-    return { data: profile, error };
   }
 );

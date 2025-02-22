@@ -5,55 +5,18 @@ export const getUser = cache(async (supabase: SupabaseClient) => {
   const {
     data: { user }
   } = await supabase.auth.getUser();
-  return user;
-});
 
-export const getBrokers = cache(async (supabase: SupabaseClient) => {
-  const { data: brokers } = await supabase.from('brokers').select('*');
-  return brokers;
-});
-
-export const getBroker = cache(async (supabase: SupabaseClient, id: string) => {
-  const { data: broker } = await supabase
-    .from('brokers')
-    .select('*')
-    .eq('id', id)
-    .single();
-  return broker;
-});
-
-export const getProfiles = cache(async (supabase: SupabaseClient) => {
-  const user = await getUser(supabase);
-  if (!user) return null;
-
-  const { data: profiles } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('user_id', user.id);
-  return profiles;
-});
-
-export const getProfile = cache(
-  async (supabase: SupabaseClient, id: string) => {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', id)
-      .single();
-    return profile;
+  if (!user) {
+    return null;
   }
-);
 
-export const getPrimaryProfile = cache(async (supabase: SupabaseClient) => {
-  const user = await getUser(supabase);
-  if (!user) return null;
-
-  const { data: profile } = await supabase
-    .from('profiles')
+  const { data } = await supabase
+    .from('users')
     .select('*')
-    .match({ user_id: user.id, is_primary: true })
+    .eq('id', user.id)
     .single();
-  return profile;
+
+  return { ...data, auth: user };
 });
 
 export const getUserSettings = cache(async (supabase: SupabaseClient) => {
@@ -68,34 +31,78 @@ export const getUserSettings = cache(async (supabase: SupabaseClient) => {
   return settings;
 });
 
-export const getGoogleSearches = cache(
-  async (supabase: SupabaseClient, id: string) => {
-    const { data: google_searches } = await supabase
-      .from('google_searches')
-      .select('*')
-      .eq('profile_id', id);
-    return google_searches;
-  }
-);
-
-export const getBrokerSearches = cache(
-  async (supabase: SupabaseClient, id: string) => {
-    const { data: broker_searches } = await supabase
-      .from('broker_searches')
-      .select('*, broker:brokers(*)')
-      .eq('profile_id', id);
-    return broker_searches;
-  }
-);
-
-export const getPricingPlan = cache(async (supabase: SupabaseClient) => {
+export const getSellers = cache(async (supabase: SupabaseClient) => {
   const user = await getUser(supabase);
-  if (!user) return null;
 
-  const { data: pricing } = await supabase
-    .from('pricing')
+  if (!user) {
+    return [];
+  }
+
+  const { data: sellers, error } = await supabase.from('sellers').select('*');
+
+  if (error) {
+    console.error('Failed to fetch sellers', error);
+    return [];
+  }
+
+  return sellers;
+});
+
+export const getSeller = cache(
+  async (supabase: SupabaseClient, sellerName?: string) => {
+    if (sellerName) {
+      const { data: seller, error } = await supabase
+        .from('sellers')
+        .select('*')
+        .eq('seller_name', sellerName)
+        .single();
+
+      if (error) {
+        console.error('Failed to fetch seller auth:', error);
+        return null;
+      }
+
+      return seller;
+    } else {
+      const user = await getUser(supabase);
+
+      if (!user || user.type !== 'seller') {
+        return null;
+      }
+
+      const { data: seller, error } = await supabase
+        .from('sellers')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (error) {
+        console.error('Failed to fetch seller auth:', error);
+        return null;
+      }
+
+      return seller;
+    }
+  }
+);
+
+export const getCreator = cache(async (supabase: SupabaseClient) => {
+  const user = await getUser(supabase);
+
+  if (!user) {
+    return null;
+  }
+
+  const { data: creator, error } = await supabase
+    .from('creators')
     .select('*')
     .eq('user_id', user.id)
     .single();
-  return pricing;
+
+  if (error) {
+    console.error('Failed to fetch creator auth:', error);
+    return null;
+  }
+
+  return creator;
 });
