@@ -1,13 +1,14 @@
-import EmailAuthForm from '@/components/sections/Forms/EmailAuthForm';
-import OauthSignIn from '@/components/sections/Forms/OauthSignIn';
 import Image from 'next/image';
-import Separator from '@/components/modules/Separator';
 import Logo from '@/components/icons/Logo';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { XIcon } from 'lucide-react';
 
-export default async function Login() {
+export default async function AuthLayout({
+  children
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <div className="relative w-full h-full">
       <div className="w-full h-full flex flex-col md:flex-row">
@@ -18,24 +19,7 @@ export default async function Login() {
             </Link>
           </div>
 
-          <div className="container max-w-sm py-12">
-            <h1 className="text-white text-2xl font-bold mb-1">
-              Login to your account
-            </h1>
-            <p className="text-white text-sm font-medium mb-8">
-              Don&apos;t have an account?
-              <Link href="/register" className="text-navy-300 font-bold ml-2">
-                Register
-              </Link>
-            </p>
-
-            <EmailAuthForm register={false} />
-
-            <div className="w-full mt-4">
-              <Separator text="Or continue with" />
-              <OauthSignIn />
-            </div>
-          </div>
+          {children}
 
           <div className="bg-navy-900 flex flex-row justify-center gap-4 px-8 py-6">
             <Link

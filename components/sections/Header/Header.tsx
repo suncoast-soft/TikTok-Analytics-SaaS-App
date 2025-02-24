@@ -69,7 +69,7 @@ export default function Header({ user }: { user: User | null }) {
               <Badge
                 button={
                   <Button asChild>
-                    <Link href="/login" className="no-underline">
+                    <Link href="/auth/login" className="no-underline">
                       Login
                     </Link>
                   </Button>
@@ -80,7 +80,7 @@ export default function Header({ user }: { user: User | null }) {
               <Badge
                 button={
                   <Button variant="secondary" asChild>
-                    <Link href="/register" className="no-underline">
+                    <Link href="/auth/register" className="no-underline">
                       Register
                     </Link>
                   </Button>

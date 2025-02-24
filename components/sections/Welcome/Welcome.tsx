@@ -24,20 +24,20 @@ export default function Welcome() {
           </h1>
 
           <Button variant="link" className="my-2" asChild>
-            <Link href="/login" className="no-underline">
+            <Link href="/auth/login" className="no-underline">
               Login
             </Link>
           </Button>
 
           <Button variant="secondary" className="w-full" asChild>
-            <Link href="/register" className="no-underline">
+            <Link href="/auth/register" className="no-underline">
               Register
             </Link>
           </Button>
 
           <div className="w-full">
             <Separator text="Or continue with" />
-            <OauthSignIn />
+            <OauthSignIn type="creator" />
           </div>
         </div>
       </div>

@@ -4,7 +4,6 @@ import { createClient } from '@/utils/supabase/client';
 import { type Provider } from '@supabase/supabase-js';
 import { redirectToPath } from './server';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { getUser } from '../supabase/queries';
 import { getURL } from '../helpers';
 
 interface FormData {
@@ -31,23 +30,14 @@ export async function signInWithOAuth(e: React.FormEvent<HTMLFormElement>) {
   e.preventDefault();
   const formData = new FormData(e.currentTarget);
   const provider = String(formData.get('provider')).trim() as Provider;
+  const type = String(formData.get('type')).trim() as Provider;
 
   const supabase = createClient();
-  const user = await getUser(supabase);
 
-  if (user) {
-    await supabase.auth.linkIdentity({
-      provider: provider,
-      options: {
-        redirectTo: getURL('/auth/callback')
-      }
-    });
-  } else {
-    await supabase.auth.signInWithOAuth({
-      provider: provider,
-      options: {
-        redirectTo: getURL('/auth/callback')
-      }
-    });
-  }
+  await supabase.auth.signInWithOAuth({
+    provider: provider,
+    options: {
+      redirectTo: getURL(`/auth/callback/supabase?type=${type}`)
+    }
+  });
 }

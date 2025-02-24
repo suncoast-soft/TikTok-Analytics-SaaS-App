@@ -13,6 +13,7 @@ import FormInput from '@/components/modules/FormInput';
 
 interface EmailSignInProps {
   register: boolean;
+  type: 'seller' | 'creator';
 }
 
 const FormSchema = z.object({
@@ -20,7 +21,7 @@ const FormSchema = z.object({
   name: z.string().optional()
 });
 
-export default function EmailSignIn({ register }: EmailSignInProps) {
+export default function EmailSignIn({ register, type }: EmailSignInProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -34,7 +35,7 @@ export default function EmailSignIn({ register }: EmailSignInProps) {
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setIsSubmitting(true);
-    await handleRequest(data, signInWithOtp, router);
+    await handleRequest({ ...data, type }, signInWithOtp, router);
     setIsSubmitting(false);
   };
 

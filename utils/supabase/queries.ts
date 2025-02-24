@@ -10,25 +10,25 @@ export const getUser = cache(async (supabase: SupabaseClient) => {
     return null;
   }
 
-  const { data } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', user.id)
-    .single();
-
-  return { ...data, auth: user };
+  return user;
 });
 
-export const getUserSettings = cache(async (supabase: SupabaseClient) => {
+export const getUserData = cache(async (supabase: SupabaseClient) => {
   const user = await getUser(supabase);
   if (!user) return null;
 
-  const { data: settings } = await supabase
+  const { data, error } = await supabase
     .from('users')
     .select('*')
     .eq('id', user.id)
     .single();
-  return settings;
+
+  if (error) {
+    console.error('Failed to fetch user data', error);
+    return null;
+  }
+
+  return data;
 });
 
 export const getSellers = cache(async (supabase: SupabaseClient) => {
@@ -66,9 +66,13 @@ export const getSeller = cache(
     } else {
       const user = await getUser(supabase);
 
-      if (!user || user.type !== 'seller') {
+      if (!user) {
         return null;
       }
+
+      // if (!user || user.type !== 'seller') {
+      //   return null;
+      // }
 
       const { data: seller, error } = await supabase
         .from('sellers')
@@ -100,7 +104,7 @@ export const getCreator = cache(async (supabase: SupabaseClient) => {
     .single();
 
   if (error) {
-    console.error('Failed to fetch creator auth:', error);
+    console.log('Failed to fetch creator auth:', error);
     return null;
   }
 

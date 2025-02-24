@@ -12,7 +12,11 @@ type OAuthProviders = {
   icon: JSX.Element;
 };
 
-export default function OauthSignIn() {
+interface SectionProps {
+  type: 'seller' | 'creator';
+}
+
+export default function OauthSignIn({ type }: SectionProps) {
   const oAuthProviders: OAuthProviders[] = [
     {
       name: 'google',
@@ -39,6 +43,7 @@ export default function OauthSignIn() {
           onSubmit={(e) => handleSubmit(e)}
         >
           <input type="hidden" name="provider" value={provider.name} />
+          <input type="hidden" name="type" value={type} />
           <Button
             variant="default"
             type="submit"

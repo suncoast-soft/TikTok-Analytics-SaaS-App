@@ -156,7 +156,7 @@ export default function Sidenav({ navs }: NavProps) {
               </Button>
 
               <Button asChild className="mt-8 flex md:hidden">
-                <Link href="/login" className="no-underline">
+                <Link href="/auth/login" className="no-underline">
                   Login
                 </Link>
               </Button>
@@ -166,7 +166,7 @@ export default function Sidenav({ navs }: NavProps) {
                 className="mt-2 flex md:hidden"
                 asChild
               >
-                <Link href="/register" className="no-underline">
+                <Link href="/auth/register" className="no-underline">
                   Register
                 </Link>
               </Button>

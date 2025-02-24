@@ -16,8 +16,6 @@ export type Database = {
           created_at: string
           refresh_token: string | null
           refresh_token_expire_at: number | null
-          seller_name: string | null
-          shop_cipher: string | null
           user_id: string
         }
         Insert: {
@@ -26,8 +24,6 @@ export type Database = {
           created_at?: string
           refresh_token?: string | null
           refresh_token_expire_at?: number | null
-          seller_name?: string | null
-          shop_cipher?: string | null
           user_id: string
         }
         Update: {
@@ -36,8 +32,6 @@ export type Database = {
           created_at?: string
           refresh_token?: string | null
           refresh_token_expire_at?: number | null
-          seller_name?: string | null
-          shop_cipher?: string | null
           user_id?: string
         }
         Relationships: [
@@ -91,46 +85,17 @@ export type Database = {
           },
         ]
       }
-      subscriptions: {
-        Row: {
-          created_at: string
-          subscription_id: string | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          subscription_id?: string | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          subscription_id?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "subscriptions_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       users: {
         Row: {
           id: string
-          stripe_customer_id: string | null
           type: string | null
         }
         Insert: {
           id: string
-          stripe_customer_id?: string | null
           type?: string | null
         }
         Update: {
           id?: string
-          stripe_customer_id?: string | null
           type?: string | null
         }
         Relationships: []

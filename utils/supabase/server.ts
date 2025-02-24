@@ -2,6 +2,8 @@
 
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { deleteCreatorAuth } from './mutations';
+import { getErrorRedirect, getStatusRedirect, getURL } from '../helpers';
 
 export async function createClient() {
   const cookieStore = await cookies();
@@ -24,4 +26,24 @@ export async function createClient() {
       }
     }
   );
+}
+
+export async function deleteCreatorAuthMutation() {
+  const supabase = await createClient();
+
+  const deleted = await deleteCreatorAuth(supabase);
+
+  if (deleted) {
+    return getStatusRedirect(
+      getURL('/creator/account'),
+      'Success!',
+      `Your TikTok account has been successfully disconnected.`
+    );
+  } else {
+    return getErrorRedirect(
+      getURL('/creator/account'),
+      'Error!',
+      `Failed unlinking your TikTok Account. Please try again`
+    );
+  }
 }

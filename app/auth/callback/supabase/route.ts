@@ -2,17 +2,23 @@ import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
 import { getErrorRedirect, getStatusRedirect } from '@/utils/helpers';
+import { updateUser } from '@/utils/supabase/mutations';
 
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
   const next = searchParams.get('next') ?? '/';
+  const type = searchParams.get('type');
 
   if (code) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
+      if (type) {
+        await updateUser(supabase, { type: type });
+      }
+
       const forwardedHost = request.headers.get('x-forwarded-host');
       const isLocalEnv = process.env.NODE_ENV === 'development';
 
@@ -45,7 +51,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.redirect(
       getErrorRedirect(
-        `${origin}/login`,
+        `${origin}/auth/login`,
         error.name,
         "Sorry, we weren't able to log you in. Please try again."
       )
@@ -54,7 +60,7 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.redirect(
     getErrorRedirect(
-      `${origin}/login`,
+      `${origin}/auth/login`,
       'Auth Error',
       searchParams.get('error_description') ??
         "Sorry, we weren't able to log you in. Please try again."
