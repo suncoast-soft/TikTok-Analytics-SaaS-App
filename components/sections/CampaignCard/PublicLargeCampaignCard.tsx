@@ -19,9 +19,7 @@ export function PublicLargeCampaignCard({ campaign }: { campaign: any }) {
         <Badge
           button={
             <Button variant="secondary" asChild>
-              <Link href={`/campaigns/${campaign.id}`} className="no-underline">
-                Learn More
-              </Link>
+              <Link href={`/campaigns/${campaign.id}`}>Learn More</Link>
             </Button>
           }
           icon={<TimerIcon width={16} />}

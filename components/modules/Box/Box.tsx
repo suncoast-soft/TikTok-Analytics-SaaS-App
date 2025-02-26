@@ -46,9 +46,7 @@ export default function Box({
       {buttonName && buttonLink && (
         <div className="bg-navy-950 p-1 rounded-lg w-fit mt-4">
           <Button size="sm" className="w-full" asChild>
-            <Link href={buttonLink} className="no-underline">
-              {buttonName}
-            </Link>
+            <Link href={buttonLink}>{buttonName}</Link>
           </Button>
         </div>
       )}

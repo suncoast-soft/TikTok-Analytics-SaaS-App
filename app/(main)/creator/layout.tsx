@@ -1,8 +1,10 @@
 import Box from '@/components/modules/Box';
 import Title from '@/components/modules/Title';
+import TikTokCreatorSignin from '@/components/sections/Forms/TikTokCreatorSignin';
 import Welcome from '@/components/sections/Welcome';
-import { getUser } from '@/utils/supabase/queries';
+import { getCreator, getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
+import { LinkIcon } from 'lucide-react';
 
 export default async function PrivateLayout({
   children
@@ -11,9 +13,31 @@ export default async function PrivateLayout({
 }>) {
   const supabase = await createClient();
   const user = await getUser(supabase);
+  const creator = await getCreator(supabase);
 
   if (user?.type === 'creator') {
-    return children;
+    if (creator) {
+      return children;
+    } else {
+      return (
+        <>
+          <div className="container max-w-7xl py-20">
+            <Box
+              icon={<LinkIcon size={16} />}
+              label="Tiktok Creator"
+              className="mx-auto p-5"
+            >
+              <Title
+                tag="h3"
+                title="Please Authorize Your Tiktok Account"
+                className="mb-6"
+              />
+              <TikTokCreatorSignin />
+            </Box>
+          </div>
+        </>
+      );
+    }
   } else {
     return (
       <div className="container max-w-7xl py-8">

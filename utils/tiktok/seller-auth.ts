@@ -1,17 +1,14 @@
-// Imports from Supabase and utility modules
-import { saveSeller } from '../supabase/mutations';
+import { saveSellerAuth } from '../supabase/mutations';
 import { createClient } from '../supabase/server';
 import { getSeller, getUser } from '../supabase/queries';
 import { requestTikTokShopAPI } from './utils';
 
-// Environment variables
-const { TIKTOK_AUTH_BASE, TIKTOK_APP_KEY, TIKTOK_APP_SECRET } = process.env;
+const {
+  TIKTOK_SELLER_TOKEN_BASE_URL,
+  TIKTOK_PARTNER_APP_KEY,
+  TIKTOK_PARTNER_APP_SECRET
+} = process.env;
 
-/**
- * Generate a new access token using the provided authorization code.
- * @param auth_code - The code received to authorize access.
- * @returns Updated seller authentication data or null if unsuccessful.
- */
 export const generateSellerAccessToken = async (auth_code: string) => {
   const supabase = await createClient();
 
@@ -20,22 +17,19 @@ export const generateSellerAccessToken = async (auth_code: string) => {
     return null;
   }
 
-  // Headers for the API request
   const myHeaders = new Headers({ 'content-type': 'application/json' });
 
-  // Parameters for the access token request
   const params = {
-    app_key: TIKTOK_APP_KEY!,
-    app_secret: TIKTOK_APP_SECRET!,
+    app_key: TIKTOK_PARTNER_APP_KEY!,
+    app_secret: TIKTOK_PARTNER_APP_SECRET!,
     auth_code,
     grant_type: 'authorized_code'
   };
 
   const urlSearchParams = new URLSearchParams(params);
 
-  // Fetch access token from TikTok API
   const response = await fetch(
-    `${TIKTOK_AUTH_BASE}/api/v2/token/get?${urlSearchParams}`,
+    `${TIKTOK_SELLER_TOKEN_BASE_URL}/get?${urlSearchParams}`,
     {
       method: 'GET',
       headers: myHeaders,
@@ -58,9 +52,7 @@ export const generateSellerAccessToken = async (auth_code: string) => {
   const access_token_expire_at = currentTime + access_token_expire_in - 1000;
   const refresh_token_expire_at = currentTime + refresh_token_expire_in - 1000;
 
-  // Save seller's token information in the database
-  const sellerAuth = await saveSeller(supabase, {
-    user_id: user.id,
+  const sellerAuth = await saveSellerAuth(supabase, {
     access_token,
     access_token_expire_at,
     refresh_token,
@@ -70,9 +62,7 @@ export const generateSellerAccessToken = async (auth_code: string) => {
 
   if (!sellerAuth) return null;
 
-  // Retrieve shop cipher data
   const shopCipherData = await requestTikTokShopAPI(
-    undefined,
     '/authorization/202309/shops'
   );
   const shop = shopCipherData.data.shops.find(
@@ -81,36 +71,28 @@ export const generateSellerAccessToken = async (auth_code: string) => {
   );
   const shop_cipher = shop ? shop.cipher : null;
 
-  // Update seller's information with shop cipher
-  const updatedSellerAuth = await saveSeller(supabase, {
-    shop_cipher,
-    seller_name
+  const updatedSellerAuth = await saveSellerAuth(supabase, {
+    shop_cipher
   });
 
   return updatedSellerAuth;
 };
 
-/**
- * Refresh the access token using the provided refresh token.
- * @param refresh_token - The refresh token for obtaining new access tokens.
- * @returns Refreshed seller authentication data.
- */
 export const refreshSellerAccessToken = async (refresh_token: string) => {
   const supabase = await createClient();
 
   const myHeaders = new Headers({ 'content-type': 'application/json' });
 
   const params = {
-    app_key: TIKTOK_APP_KEY!,
-    app_secret: TIKTOK_APP_SECRET!,
+    app_key: TIKTOK_PARTNER_APP_KEY!,
+    app_secret: TIKTOK_PARTNER_APP_SECRET!,
     refresh_token,
     grant_type: 'refresh_token'
   };
   const urlSearchParams = new URLSearchParams(params);
 
-  // Fetch refreshed access token from TikTok API
   const response = await fetch(
-    `${TIKTOK_AUTH_BASE}/api/v2/token/refresh?${urlSearchParams}`,
+    `${TIKTOK_SELLER_TOKEN_BASE_URL}/refresh?${urlSearchParams}`,
     {
       method: 'GET',
       headers: myHeaders,
@@ -133,8 +115,7 @@ export const refreshSellerAccessToken = async (refresh_token: string) => {
   const access_token_expire_at = currentTime + access_token_expire_in - 1000;
   const refresh_token_expire_at = currentTime + refresh_token_expire_in - 1000;
 
-  // Save the newly fetched tokens
-  const sellerAuth = await saveSeller(supabase, {
+  const sellerAuth = await saveSellerAuth(supabase, {
     access_token,
     access_token_expire_at,
     refresh_token: new_refresh_token,
@@ -145,14 +126,10 @@ export const refreshSellerAccessToken = async (refresh_token: string) => {
   return sellerAuth;
 };
 
-/**
- * Retrieve the current access token, refreshing it if necessary.
- * @returns The valid access token or null if unable to obtain one.
- */
-export const getSellerAccessToken = async (seller: string | undefined) => {
+export const getSellerAccessToken = async () => {
   const supabase = await createClient();
 
-  const authData = await getSeller(supabase, seller);
+  const authData = await getSeller(supabase);
   if (!authData) throw new Error('No token data found.');
 
   const {
@@ -164,14 +141,13 @@ export const getSellerAccessToken = async (seller: string | undefined) => {
   } = authData;
   const currentTime = Date.now();
 
-  // Check if the access token is expired and refresh if needed
   if (currentTime >= access_token_expire_at) {
     if (currentTime >= refresh_token_expire_at) return null;
 
     const refreshedToken = await refreshSellerAccessToken(refresh_token);
     if (!refreshedToken) return null;
 
-    return refreshedToken.access_token;
+    return { access_token: refreshedToken.access_token, shop_cipher };
   }
 
   return { access_token, shop_cipher };

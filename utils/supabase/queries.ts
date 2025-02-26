@@ -41,47 +41,26 @@ export const getSellers = cache(async (supabase: SupabaseClient) => {
   return sellers;
 });
 
-export const getSeller = cache(
-  async (supabase: SupabaseClient, sellerName?: string) => {
-    if (sellerName) {
-      const { data: seller, error } = await supabase
-        .from('sellers')
-        .select('*')
-        .eq('seller_name', sellerName)
-        .single();
+export const getSeller = cache(async (supabase: SupabaseClient) => {
+  const user = await getUser(supabase);
 
-      if (error) {
-        console.error('Failed to fetch seller auth:', error);
-        return null;
-      }
-
-      return seller;
-    } else {
-      const user = await getUser(supabase);
-
-      if (!user) {
-        return null;
-      }
-
-      // if (!user || user.type !== 'seller') {
-      //   return null;
-      // }
-
-      const { data: seller, error } = await supabase
-        .from('sellers')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error) {
-        console.error('Failed to fetch seller auth:', error);
-        return null;
-      }
-
-      return seller;
-    }
+  if (!user) {
+    return null;
   }
-);
+
+  const { data: seller, error } = await supabase
+    .from('sellers')
+    .select('*')
+    .eq('user_id', user.id)
+    .single();
+
+  if (error) {
+    console.log('Failed to fetch seller auth:', error);
+    return null;
+  }
+
+  return seller;
+});
 
 export const getCreator = cache(async (supabase: SupabaseClient) => {
   const user = await getUser(supabase);

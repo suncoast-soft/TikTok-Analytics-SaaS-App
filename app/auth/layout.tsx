@@ -14,7 +14,7 @@ export default async function AuthLayout({
       <div className="w-full h-full flex flex-col md:flex-row">
         <div className="w-full md:w-7/12 h-full flex-shrink-0 flex flex-col justify-between">
           <div className="px-6 py-4">
-            <Link href="/" className="no-underline">
+            <Link href="/">
               <Logo type="white" />
             </Link>
           </div>
@@ -51,7 +51,7 @@ export default async function AuthLayout({
         className="absolute top-4 right-4"
         asChild
       >
-        <Link href={'/'} className="no-underline">
+        <Link href={'/'}>
           <XIcon />
         </Link>
       </Button>

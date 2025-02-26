@@ -7,6 +7,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
@@ -38,9 +39,10 @@ type NavItem = {
 
 interface NavProps {
   navs: NavItem[];
+  isSeller: boolean;
 }
 
-export default function Sidenav({ navs }: NavProps) {
+export default function Sidenav({ navs, isSeller }: NavProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -144,21 +146,15 @@ export default function Sidenav({ navs }: NavProps) {
               )}
 
               <Button variant="link" size="sm" className="mt-3" asChild>
-                <Link href="/terms-and-conditions" className="no-underline">
-                  Terms and Conditions
-                </Link>
+                <Link href="/terms-and-conditions">Terms and Conditions</Link>
               </Button>
 
               <Button variant="link" size="sm" asChild>
-                <Link href="/privacy-policy" className="no-underline">
-                  Privacy Policy
-                </Link>
+                <Link href="/privacy-policy">Privacy Policy</Link>
               </Button>
 
               <Button asChild className="mt-8 flex md:hidden">
-                <Link href="/auth/login" className="no-underline">
-                  Login
-                </Link>
+                <Link href="/auth/login">Login</Link>
               </Button>
 
               <Button
@@ -166,14 +162,25 @@ export default function Sidenav({ navs }: NavProps) {
                 className="mt-2 flex md:hidden"
                 asChild
               >
-                <Link href="/auth/register" className="no-underline">
-                  Register
-                </Link>
+                <Link href="/auth/register">Register</Link>
               </Button>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter>
+        <SidebarMenu className="gap-3">
+          <Button variant="link" size="sm" asChild>
+            <Link
+              href={isSeller ? '/' : '/seller'}
+              className="no-underline text-red-600"
+            >
+              {isSeller ? 'TikTok Creator Home' : 'TikTok Seller Dashboard'}
+            </Link>
+          </Button>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

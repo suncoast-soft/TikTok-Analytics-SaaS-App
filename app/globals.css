@@ -41,19 +41,6 @@ a {
   @apply relative inline-block;
 }
 
-a::after {
-  content: '';
-  @apply absolute w-full h-0.5 -bottom-0.5 left-0 transition-transform duration-200 ease-out;
-  transform: scaleX(0);
-  background-color: currentColor;
-  transform-origin: bottom right;
-}
-
-a:not(.no-underline):hover::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
-}
-
 .height-screen-helper {
   min-height: calc(100vh - 80px);
 }

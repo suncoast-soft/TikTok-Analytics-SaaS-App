@@ -60,9 +60,7 @@ export function PublicCampaigns({
           className={cn('text-xs', !selectedCategory && 'bg-navy-500')}
           asChild
         >
-          <Link href="/" className="no-underline">
-            All
-          </Link>
+          <Link href="/">All</Link>
         </Button>
 
         {categories.map((category) => (
@@ -74,7 +72,7 @@ export function PublicCampaigns({
             )}
             asChild
           >
-            <Link href={`/?category=${category.name}`} className="no-underline">
+            <Link href={`/?category=${category.name}`}>
               {category.icon}
               {category.name}
             </Link>

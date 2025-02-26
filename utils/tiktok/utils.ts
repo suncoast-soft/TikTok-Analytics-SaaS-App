@@ -3,9 +3,9 @@ import { getSellerAccessToken } from './seller-auth';
 import { getCreatorAccessToken } from './creator-auth';
 
 const {
-  TIKTOK_APP_KEY,
-  TIKTOK_APP_SECRET,
-  TIKTOK_SHOP_BASE,
+  TIKTOK_PARTNER_APP_KEY,
+  TIKTOK_PARTNER_APP_SECRET,
+  TIKTOK_SELLER_API_BASE_URL,
   TIKTOK_API_BASE_URL
 } = process.env;
 
@@ -19,14 +19,6 @@ interface RequestOptions {
   body?: string;
 }
 
-/**
- * Generates a secure signature for TikTok Shop API requests.
- * @param apiPath - The endpoint path of the API.
- * @param params - Query parameters to be signed.
- * @param options - HTTP request options including headers and body.
- * @param app_secret - Application secret used for HMAC hashing.
- * @returns The generated signature in hexadecimal format.
- */
 export const generateSign = (
   apiPath: string,
   params: APIParams,
@@ -58,20 +50,13 @@ export const generateSign = (
   return hmac.digest('hex');
 };
 
-/**
- * Makes a request to the TikTok Shop API with authentication handling.
- * @param api_path - The endpoint path of the API.
- * @param params - Optional query parameters for the request.
- * @returns The response data from the API or null if the request fails.
- */
 export async function requestTikTokShopAPI(
-  seller: string | undefined,
   api_path: string,
   params: APIParams = {},
   method: string = 'GET',
   body: string = ''
 ) {
-  const authData = await getSellerAccessToken(seller);
+  const authData = await getSellerAccessToken();
 
   if (!authData) {
     return null;
@@ -93,7 +78,7 @@ export async function requestTikTokShopAPI(
     timestamp: string;
     shop_cipher?: string;
   } = {
-    app_key: TIKTOK_APP_KEY!,
+    app_key: TIKTOK_PARTNER_APP_KEY!,
     timestamp: ((Date.now() / 1000) | 0).toString()
   };
   if (api_path !== '/authorization/202309/shops') {
@@ -112,11 +97,11 @@ export async function requestTikTokShopAPI(
       ...params
     },
     requestOptions,
-    TIKTOK_APP_SECRET!
+    TIKTOK_PARTNER_APP_SECRET!
   );
   urlSearchParams.append('sign', signature);
 
-  const fetchURL = `${TIKTOK_SHOP_BASE}/${api_path}?${urlSearchParams.toString()}`;
+  const fetchURL = `${TIKTOK_SELLER_API_BASE_URL}/${api_path}?${urlSearchParams.toString()}`;
 
   try {
     const response = await fetch(fetchURL, requestOptions);
@@ -132,12 +117,6 @@ export async function requestTikTokShopAPI(
   }
 }
 
-/**
- * Makes a request to the TikTok Shop API with authentication handling.
- * @param api_path - The endpoint path of the API.
- * @param params - Optional query parameters for the request.
- * @returns The response data from the API or null if the request fails.
- */
 export async function requestTikTokAPI(
   api_path: string,
   params: APIParams = {}

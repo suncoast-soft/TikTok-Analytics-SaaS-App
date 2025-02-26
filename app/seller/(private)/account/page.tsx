@@ -1,29 +1,27 @@
-import { requestTikTokAPIClient } from '@/app/actions';
+import { requestTikTokShopAPIClient } from '@/app/actions';
 import Box from '@/components/modules/Box';
 import Card from '@/components/modules/Card';
-import TikTokCreatorSignin from '@/components/sections/Forms/TikTokCreatorSignin';
-import TikTokCreatorSignout from '@/components/sections/Forms/TikTokCreatorSignout';
+import TikTokSellerSignin from '@/components/sections/Forms/TikTokSellerSignin';
 import { Button } from '@/components/ui/button';
-import { getUser } from '@/utils/supabase/queries';
+import { getSeller, getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
-import {
-  CaptionsIcon,
-  ThumbsUpIcon,
-  UserRoundCheckIcon,
-  VideoIcon
-} from 'lucide-react';
-import Image from 'next/image';
+import { CaptionsIcon } from 'lucide-react';
 import Link from 'next/link';
 
 export default async function Account() {
   const supabase = await createClient();
   const user = await getUser(supabase);
+  const seller = await getSeller(supabase);
 
-  const tiktokUserData = await requestTikTokAPIClient('user/info', {
-    fields:
-      'avatar_url,display_name,bio_description,profile_deep_link,username,follower_count,likes_count,video_count'
-  });
-  const { user: tiktokUser } = tiktokUserData ?? {};
+  const tiktokSellerData = await requestTikTokShopAPIClient(
+    '/authorization/202309/shops',
+    {},
+    'GET',
+    ''
+  );
+  const shop = tiktokSellerData.data.shops.find(
+    (s: { name: string }) => s.name === seller.seller_name
+  );
 
   return (
     <div className="container max-w-7xl py-8">
@@ -37,7 +35,9 @@ export default async function Account() {
 
           <div className="max-w-xs grid grid-cols-2 gap-y-2">
             <span className="text-sm mr-2">Account Type:</span>
-            <span className="text-white font-semibold capitalize">Creator</span>
+            <span className="text-white font-semibold capitalize">
+              Shop Seller
+            </span>
 
             <span className="text-sm mr-2">Email:</span>
             <span className="text-white font-semibold">
@@ -64,48 +64,34 @@ export default async function Account() {
         <Card className="p-8" vertical={true}>
           <Box
             icon={<CaptionsIcon size={16} />}
-            label={'My Tiktok Account'}
+            label={'Tiktok Seller Account'}
             className="mb-3"
           />
 
-          {tiktokUser ? (
-            <div>
-              <div className="w-fit flex items-center gap-2 mb-4">
-                <Image
-                  src={tiktokUser.avatar_url}
-                  width={32}
-                  height={32}
-                  alt={tiktokUser.display_name}
-                  className="rounded-full"
-                />
+          {shop ? (
+            <div className="max-w-xs grid grid-cols-2 gap-y-2">
+              <span className="text-sm mr-2">Code:</span>
+              <span className="text-white font-semibold capitalize">
+                {shop.code}
+              </span>
 
-                <Link href={tiktokUser.profile_deep_link} target="_blank">
-                  <span>@{tiktokUser.username}</span>
-                </Link>
-              </div>
+              <span className="text-sm mr-2">Shop Name:</span>
+              <span className="text-white font-semibold capitalize">
+                {shop.name}
+              </span>
 
-              <div className="flex flex-col xl:flex-row xl:items-center gap-2 mb-4">
-                <Box
-                  icon={<VideoIcon size={16} />}
-                  value={`${tiktokUser.video_count.toLocaleString()}`}
-                  label="Videos"
-                />
-                <Box
-                  icon={<UserRoundCheckIcon size={16} />}
-                  value={`${tiktokUser.follower_count.toLocaleString()}`}
-                  label="Followers"
-                />
-                <Box
-                  icon={<ThumbsUpIcon size={16} />}
-                  value={`${tiktokUser.likes_count.toLocaleString()}`}
-                  label="Likes"
-                />
-              </div>
+              <span className="text-sm mr-2">Region:</span>
+              <span className="text-white font-semibold capitalize">
+                {shop.region}
+              </span>
 
-              <TikTokCreatorSignout />
+              <span className="text-sm mr-2">Seller Type:</span>
+              <span className="text-white font-semibold capitalize">
+                {shop.seller_type}
+              </span>
             </div>
           ) : (
-            <TikTokCreatorSignin />
+            <TikTokSellerSignin />
           )}
         </Card>
       </div>
@@ -120,11 +106,11 @@ export default async function Account() {
 
       <div className="flex flex-col lg:flex-row justify-center gap-8">
         <Button asChild>
-          <Link href={'/'}>Browse More Campaigns</Link>
+          <Link href={'/seller'}>My Campaigns</Link>
         </Button>
 
         <Button variant="secondary" asChild>
-          <Link href={'/creator/campaigns'}>My Campaigns</Link>
+          <Link href={'/seller/orders'}>View Affiliate Orders</Link>
         </Button>
       </div>
     </div>

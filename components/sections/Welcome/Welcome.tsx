@@ -24,15 +24,11 @@ export default function Welcome() {
           </h1>
 
           <Button variant="link" className="my-2" asChild>
-            <Link href="/auth/login" className="no-underline">
-              Login
-            </Link>
+            <Link href="/auth/login">Login</Link>
           </Button>
 
           <Button variant="secondary" className="w-full" asChild>
-            <Link href="/auth/register" className="no-underline">
-              Register
-            </Link>
+            <Link href="/auth/register">Register</Link>
           </Button>
 
           <div className="w-full">

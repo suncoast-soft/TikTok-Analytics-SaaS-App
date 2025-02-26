@@ -27,9 +27,7 @@ export function PublicSmallCampaignCard({ campaign }: { campaign: any }) {
         <Badge
           button={
             <Button size="sm" asChild>
-              <Link href={`/campaigns/${campaign.id}`} className="no-underline">
-                Learn More
-              </Link>
+              <Link href={`/campaigns/${campaign.id}`}>Learn More</Link>
             </Button>
           }
         />

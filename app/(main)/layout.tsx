@@ -113,12 +113,12 @@ export default async function DashboardLayout({
     <main className="flex min-h-screen w-full flex-row">
       <SidebarProvider>
         <Suspense>
-          <Sidenav navs={navs} />
+          <Sidenav navs={navs} isSeller={false} />
         </Suspense>
 
         <main className="w-full overflow-auto">
           <div className="flex md:hidden w-full justify-between p-4 shadow">
-            <Link href="/" className="no-underline">
+            <Link href="/">
               <Logo type="white" />
             </Link>
             <SidebarTrigger />

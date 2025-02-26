@@ -14,7 +14,6 @@ export default function TikTokCreatorSignin() {
     <Button variant="white" asChild>
       <Link
         href={`${TIKTOK_AUTH_URL}?client_key=${TIKTOK_AUTH_CLIENT_KEY}&response_type=code&scope=${scope}&redirect_uri=${TIKTOK_AUTH_REDIRECT_URL}&state=${state}`}
-        className="no-underline"
       >
         <Image
           src="/icons/tiktok-brands-solid.svg"

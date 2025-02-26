@@ -23,11 +23,8 @@ export default function Header({ user }: { user: UserType }) {
   return (
     <header>
       <div className="h-[72px] container max-w-7xl flex justify-between items-center">
-        <Link
-          href={user.type === 'seller' ? '/seller' : '/'}
-          className="no-underline"
-        >
-          <Logo type={user.type === 'seller' ? 'blue' : 'white'} />
+        <Link href={user?.type === 'seller' ? '/seller' : '/'}>
+          <Logo type={user?.type === 'seller' ? 'blue' : 'white'} />
         </Link>
 
         <div>
@@ -56,7 +53,7 @@ export default function Header({ user }: { user: UserType }) {
                         <Button type="submit" className="shadow-none" asChild>
                           <Link
                             href={
-                              user.type === 'seller'
+                              user?.type === 'seller'
                                 ? '/seller/account'
                                 : '/creator/account'
                             }
@@ -80,9 +77,7 @@ export default function Header({ user }: { user: UserType }) {
               <Badge
                 button={
                   <Button asChild>
-                    <Link href="/auth/login" className="no-underline">
-                      Login
-                    </Link>
+                    <Link href="/auth/login">Login</Link>
                   </Button>
                 }
                 className="rounded-2xl"
@@ -91,9 +86,7 @@ export default function Header({ user }: { user: UserType }) {
               <Badge
                 button={
                   <Button variant="secondary" asChild>
-                    <Link href="/auth/register" className="no-underline">
-                      Register
-                    </Link>
+                    <Link href="/auth/register">Register</Link>
                   </Button>
                 }
                 className="rounded-2xl"

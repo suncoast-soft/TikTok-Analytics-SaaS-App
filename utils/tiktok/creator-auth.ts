@@ -1,9 +1,7 @@
-// Imports from Supabase and utility modules
 import { saveCreatorAuth } from '../supabase/mutations';
 import { createClient } from '../supabase/server';
 import { getCreator } from '../supabase/queries';
 
-// Environment variables
 const {
   TIKTOK_API_BASE_URL,
   TIKTOK_AUTH_REDIRECT_URL,
@@ -11,15 +9,9 @@ const {
   TIKTOK_AUTH_CLIENT_SECRET
 } = process.env;
 
-/**
- * Generate a new access token using the provided authorization code.
- * @param code - The code received to authorize access.
- * @returns Updated creator authentication data or null if unsuccessful.
- */
 export const generateCreatorAccessToken = async (code: string) => {
   const supabase = await createClient();
 
-  // Fetch access token from TikTok API
   const headers = new Headers();
   headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -54,7 +46,6 @@ export const generateCreatorAccessToken = async (code: string) => {
   const access_token_expire_at = currentTime + access_token_expire_in - 1000;
   const refresh_token_expire_at = currentTime + refresh_expires_in - 1000;
 
-  // Save creator's token information in the database
   const creatorAuth = await saveCreatorAuth(supabase, {
     access_token,
     access_token_expire_at,
@@ -67,10 +58,6 @@ export const generateCreatorAccessToken = async (code: string) => {
   return creatorAuth;
 };
 
-/**
- * Refresh the access token using the provided refresh token.
- * @returns Refreshed creator authentication data.
- */
 export const refreshCreatorAccessToken = async () => {
   const supabase = await createClient();
 
@@ -79,7 +66,6 @@ export const refreshCreatorAccessToken = async () => {
 
   const { refresh_token } = authData;
 
-  // Fetch refreshed access token from TikTok API
   const headers = new Headers();
   headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -113,7 +99,6 @@ export const refreshCreatorAccessToken = async () => {
   const access_token_expire_at = currentTime + access_token_expire_in - 1000;
   const refresh_token_expire_at = currentTime + refresh_expires_in - 1000;
 
-  // Save the newly fetched tokens
   const creatorAuth = await saveCreatorAuth(supabase, {
     access_token,
     access_token_expire_at,
@@ -124,10 +109,6 @@ export const refreshCreatorAccessToken = async () => {
   return creatorAuth;
 };
 
-/**
- * Retrieve the current access token, refreshing it if necessary.
- * @returns The valid access token or null if unable to obtain one.
- */
 export const getCreatorAccessToken = async () => {
   const supabase = await createClient();
 
@@ -137,7 +118,6 @@ export const getCreatorAccessToken = async () => {
   const { access_token, access_token_expire_at, refresh_token_expire_at } =
     authData;
 
-  // Check if the access token is expired and refresh if needed
   const currentTime = Date.now();
 
   if (currentTime >= access_token_expire_at) {

@@ -55,10 +55,7 @@ export function ActiveLargeCampaignCard({ campaign }: { campaign: any }) {
         <Badge
           button={
             <Button size="sm" asChild>
-              <Link
-                href={`/creator/campaigns/${campaign.id}`}
-                className="no-underline"
-              >
+              <Link href={`/creator/campaigns/${campaign.id}`}>
                 View Details
               </Link>
             </Button>
