@@ -68,7 +68,7 @@ export default function EmailSignIn({ register, type }: EmailSignInProps) {
           className="w-full"
           disabled={isSubmitting}
         >
-          Register
+          {register ? 'Register' : 'Login'}
         </Button>
       </form>
     </Form>

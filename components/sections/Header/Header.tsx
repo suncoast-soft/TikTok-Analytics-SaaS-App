@@ -13,14 +13,21 @@ import { SettingsIcon } from 'lucide-react';
 import SignoutForm from '../Forms/SignoutForm';
 import Badge from '@/components/modules/Badge';
 
-export default function Header({ user }: { user: User | null }) {
+type UserType = User & {
+  type: string;
+};
+
+export default function Header({ user }: { user: UserType }) {
   const { email, name, avatar_url } = user?.user_metadata ?? {};
 
   return (
     <header>
       <div className="h-[72px] container max-w-7xl flex justify-between items-center">
-        <Link href="/" className="no-underline">
-          <Logo type="white" />
+        <Link
+          href={user.type === 'seller' ? '/seller' : '/'}
+          className="no-underline"
+        >
+          <Logo type={user.type === 'seller' ? 'blue' : 'white'} />
         </Link>
 
         <div>
@@ -48,7 +55,11 @@ export default function Header({ user }: { user: User | null }) {
                       <div>
                         <Button type="submit" className="shadow-none" asChild>
                           <Link
-                            href="/creator/account"
+                            href={
+                              user.type === 'seller'
+                                ? '/seller/account'
+                                : '/creator/account'
+                            }
                             className="text-sm no-underline flex items-center gap-1"
                           >
                             <SettingsIcon width={20} height={20} />

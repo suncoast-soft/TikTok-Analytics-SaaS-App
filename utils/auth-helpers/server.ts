@@ -46,10 +46,12 @@ export async function signInWithOtp(formData: FormData) {
   });
 
   if (error) {
-    return getErrorRedirect('/auth/login', 'Sign in failed.', error.message);
+    return getErrorRedirect(
+      type === 'seller' ? '/auth/login?type=seller' : '/auth/login',
+      'Sign in failed.',
+      error.message
+    );
   }
-
-  console.log(data);
 
   return data.user
     ? getStatusRedirect(
@@ -57,5 +59,9 @@ export async function signInWithOtp(formData: FormData) {
         'Success!',
         'Please check your email for a confirmation link. You may now close this tab.'
       )
-    : getStatusRedirect('/', 'Success!', 'You are now signed in.');
+    : getStatusRedirect(
+        type === 'seller' ? '/seller' : '/',
+        'Success!',
+        'You are now signed in.'
+      );
 }

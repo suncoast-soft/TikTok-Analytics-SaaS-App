@@ -10,25 +10,18 @@ export const getUser = cache(async (supabase: SupabaseClient) => {
     return null;
   }
 
-  return user;
-});
-
-export const getUserData = cache(async (supabase: SupabaseClient) => {
-  const user = await getUser(supabase);
-  if (!user) return null;
-
-  const { data, error } = await supabase
+  const { data: userData, error: userError } = await supabase
     .from('users')
     .select('*')
     .eq('id', user.id)
     .single();
 
-  if (error) {
-    console.error('Failed to fetch user data', error);
+  if (userError) {
+    console.error('Failed to fetch user data', userError);
     return null;
   }
 
-  return data;
+  return { ...user, ...userData };
 });
 
 export const getSellers = cache(async (supabase: SupabaseClient) => {

@@ -25,8 +25,13 @@ export default async function DashboardLayout({
   const navs = [
     {
       icon: <HandshakeIcon width={20} height={20} />,
-      name: 'Campaigns',
+      name: 'My Campaigns',
       link: '/seller'
+    },
+    {
+      icon: <ShoppingBagIcon width={20} height={20} />,
+      name: 'Affiliate Creators',
+      link: '/seller/creators'
     },
     {
       icon: <ShoppingBagIcon width={20} height={20} />,

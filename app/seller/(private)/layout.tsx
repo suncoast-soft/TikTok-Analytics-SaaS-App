@@ -1,5 +1,7 @@
+import Box from '@/components/modules/Box';
+import Title from '@/components/modules/Title';
 import { Button } from '@/components/ui/button';
-import { getUser, getUserData } from '@/utils/supabase/queries';
+import { getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 
@@ -9,29 +11,28 @@ export default async function PrivateLayout({
   children: React.ReactNode;
 }>) {
   const supabase = await createClient();
-  const [user, userData] = await Promise.all([
-    getUser(supabase),
-    getUserData(supabase)
-  ]);
+  const user = await getUser(supabase);
 
-  if (user && userData.type === 'seller') {
+  if (user?.type === 'seller') {
     return children;
   } else {
     return (
       <div className="container max-w-7xl py-8">
-        {children}
+        <Box className="mx-auto my-12 text-center">
+          <Title
+            tag="h2"
+            title="Private Seller Page"
+            subtitle="Please log in to access"
+          />
+        </Box>
 
-        <div className="mx-auto bg-navy-600 w-fit px-5 py-2 rounded-lg mt-0 mb-12">
-          <p className="text-white font-medium text-lg text-center">
-            Please log in to access this page.
-          </p>
+        <div className="text-center">
+          <Button variant="default" asChild>
+            <Link href="/auth/login?type=seller" className="no-underline">
+              Seller Login
+            </Link>
+          </Button>
         </div>
-
-        <Button variant="link" className="mx-auto my-2" asChild>
-          <Link href="/auth/login?type=seller" className="no-underline">
-            Seller Login
-          </Link>
-        </Button>
       </div>
     );
   }

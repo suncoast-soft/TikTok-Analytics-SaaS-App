@@ -1,7 +1,7 @@
 import Box from '@/components/modules/Box';
 import Title from '@/components/modules/Title';
 import Welcome from '@/components/sections/Welcome';
-import { getUser, getUserData } from '@/utils/supabase/queries';
+import { getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 
 export default async function PrivateLayout({
@@ -10,12 +10,9 @@ export default async function PrivateLayout({
   children: React.ReactNode;
 }>) {
   const supabase = await createClient();
-  const [user, userData] = await Promise.all([
-    getUser(supabase),
-    getUserData(supabase)
-  ]);
+  const user = await getUser(supabase);
 
-  if (user && userData.type === 'creator') {
+  if (user?.type === 'creator') {
     return children;
   } else {
     return (
