@@ -97,8 +97,8 @@ export default async function DashboardLayout({
         },
         {
           icon: <ActivityIcon width={20} height={20} />,
-          name: 'Affiliate Analytics',
-          link: '/creator/analytics/affiliate'
+          name: 'Affiliate Orders',
+          link: '/creator/analytics/orders'
         }
       ]
     },

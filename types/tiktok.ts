@@ -27,6 +27,14 @@ type SKU = {
 
 type OrderStatus = 'COMPLETED' | string;
 
+export type Order = {
+  create_time: number;
+  delivery_time: number;
+  id: string;
+  skus: SKU[];
+  status: OrderStatus;
+};
+
 type GMVRange = {
   currency: string;
   maximum_amount: string;
@@ -52,14 +60,6 @@ type Avatar = {
   url: string;
 };
 
-export type Order = {
-  create_time: number;
-  delivery_time: number;
-  id: string;
-  skus: SKU[];
-  status: OrderStatus;
-};
-
 export type Creator = {
   avatar: Avatar;
   avg_ec_live_uv: number;
@@ -75,4 +75,22 @@ export type Creator = {
   units_sold_range: UnitsSoldRange;
   username: string;
   video_gmv: CurrencyAmount;
+};
+
+type VideoProduct = {
+  id: string;
+  name: string;
+};
+
+export type Video = {
+  click_through_rate: string;
+  gmv: CurrencyAmount;
+  id: string;
+  products: VideoProduct[];
+  sku_orders: number;
+  title: string;
+  units_sold: number;
+  username: string;
+  video_post_time: string;
+  views: number;
 };

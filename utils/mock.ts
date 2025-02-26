@@ -1,3 +1,66 @@
+export const videos = [
+  {
+    click_through_rate: '1.2',
+    gmv: {
+      amount: '125.50',
+      currency: 'USD'
+    },
+    id: '7408659785152761131',
+    products: [
+      {
+        id: '105xxxxxxxxxxxxx101',
+        name: 'Wireless Earbuds'
+      }
+    ],
+    sku_orders: 12,
+    title: 'Best Budget Wireless Earbuds!',
+    units_sold: 15,
+    username: 'dolphindot',
+    video_post_time: '2025-02-15 14:30:00',
+    views: 3200
+  },
+  {
+    click_through_rate: '2.5',
+    gmv: {
+      amount: '378.90',
+      currency: 'USD'
+    },
+    id: '7382649631752113451',
+    products: [
+      {
+        id: '105xxxxxxxxxxxxx202',
+        name: 'Skincare Set'
+      }
+    ],
+    sku_orders: 45,
+    title: 'My Skincare Routine & Best Products!',
+    units_sold: 50,
+    username: 'dolphindot',
+    video_post_time: '2025-02-18 10:15:00',
+    views: 8700
+  },
+  {
+    click_through_rate: '0.8',
+    gmv: {
+      amount: '72.30',
+      currency: 'USD'
+    },
+    id: '7393795718332321066',
+    products: [
+      {
+        id: '105xxxxxxxxxxxxx303',
+        name: 'LED Desk Lamp'
+      }
+    ],
+    sku_orders: 8,
+    title: 'Top 5 Desk Accessories for Productivity!',
+    units_sold: 10,
+    username: 'dolphindot',
+    video_post_time: '2025-02-20 19:45:00',
+    views: 2100
+  }
+];
+
 export const affiliate_creators = [
   {
     avatar: {
