@@ -15,8 +15,14 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function ActiveLargeCampaignCard({ campaign }: { campaign: any }) {
+export function ActiveLargeCampaignCard({
+  campaign,
+  isSeller = false
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  campaign: any;
+  isSeller?: boolean;
+}) {
   return (
     <Card>
       <div className="relative w-full lg:w-1/3 h-72 flex-shrink-0">
@@ -55,7 +61,9 @@ export function ActiveLargeCampaignCard({ campaign }: { campaign: any }) {
         <Badge
           button={
             <Button size="sm" asChild>
-              <Link href={`/creator/campaigns/${campaign.id}`}>
+              <Link
+                href={`/${isSeller ? 'seller' : 'creator'}/campaigns/${campaign.id}`}
+              >
                 View Details
               </Link>
             </Button>

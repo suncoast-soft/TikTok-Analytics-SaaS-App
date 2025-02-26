@@ -8,4 +8,4 @@ node_modules/
 target/
 compiled/
 
-types_db.ts
+types/db.ts

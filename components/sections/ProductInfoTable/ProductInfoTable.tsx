@@ -15,7 +15,7 @@ interface SectionProps {
 
 export default function ProductInfoTable({ products }: SectionProps) {
   return (
-    <Table className="border-none">
+    <Table className="border-none mb-12">
       <TableHeader className="bg-navy-700">
         <TableRow className="border-navy-950 shadow-lg">
           <TableHead className="min-w-60">Image</TableHead>

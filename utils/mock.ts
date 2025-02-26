@@ -1,3 +1,216 @@
+export const affiliate_creators = [
+  {
+    avatar: {
+      url: 'https://p19-pu-sign-useast8.tiktokcdn-us.com/tos-useast8-avt-0068-tx2/728c178406ab4eb79a29d1f42381c115~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=9640&nonce=20017&refresh_token=77ba450f2466d83986746324b4b45f2e&x-expires=1740776400&x-signature=tJHj5NKSRvhpZ9qwjojh1B1IjX4%3D&idc=useast8&ps=13740610&shcp=81f88b70&shp=a5d48078&t=4d5b0474'
+    },
+    avg_ec_live_uv: 2050,
+    avg_ec_video_view_count: 340,
+    category_ids: ['60002'],
+    follower_count: 45231,
+    gmv: {
+      amount: '5345.75',
+      currency: 'USD'
+    },
+    gmv_range: {
+      currency: 'USD',
+      maximum_amount: '250.00',
+      minimum_amount: '10.00'
+    },
+    live_gmv: {
+      amount: '112.50',
+      currency: 'USD'
+    },
+    nickname: 'FashionistaJ',
+    selection_region: 'US',
+    top_follower_demographics: {
+      age_ranges: ['AGE_RANGE_18_24', 'AGE_RANGE_25_34'],
+      major_gender: {
+        gender: 'FEMALE',
+        percentage: 7213
+      }
+    },
+    units_sold_range: {
+      maximum_amount: 5000,
+      minimum_amount: 500
+    },
+    username: 'fashion_jay',
+    video_gmv: {
+      amount: '452.30',
+      currency: 'USD'
+    }
+  },
+  {
+    avatar: {
+      url: 'https://p19-pu-sign-useast8.tiktokcdn-us.com/tos-useast8-avt-0068-tx2/728c178406ab4eb79a29d1f42381c115~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=9640&nonce=20017&refresh_token=77ba450f2466d83986746324b4b45f2e&x-expires=1740776400&x-signature=tJHj5NKSRvhpZ9qwjojh1B1IjX4%3D&idc=useast8&ps=13740610&shcp=81f88b70&shp=a5d48078&t=4d5b0474'
+    },
+    avg_ec_live_uv: 1780,
+    avg_ec_video_view_count: 210,
+    category_ids: ['60003'],
+    follower_count: 38921,
+    gmv: {
+      amount: '2987.40',
+      currency: 'USD'
+    },
+    gmv_range: {
+      currency: 'USD',
+      maximum_amount: '175.00',
+      minimum_amount: '5.00'
+    },
+    live_gmv: {
+      amount: '87.90',
+      currency: 'USD'
+    },
+    nickname: 'TechGuru',
+    selection_region: 'US',
+    top_follower_demographics: {
+      age_ranges: ['AGE_RANGE_25_34', 'AGE_RANGE_35_44'],
+      major_gender: {
+        gender: 'MALE',
+        percentage: 6210
+      }
+    },
+    units_sold_range: {
+      maximum_amount: 3000,
+      minimum_amount: 300
+    },
+    username: 'techy_mike',
+    video_gmv: {
+      amount: '348.75',
+      currency: 'USD'
+    }
+  },
+  {
+    avatar: {
+      url: 'https://p19-pu-sign-useast8.tiktokcdn-us.com/tos-useast8-avt-0068-tx2/728c178406ab4eb79a29d1f42381c115~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=9640&nonce=20017&refresh_token=77ba450f2466d83986746324b4b45f2e&x-expires=1740776400&x-signature=tJHj5NKSRvhpZ9qwjojh1B1IjX4%3D&idc=useast8&ps=13740610&shcp=81f88b70&shp=a5d48078&t=4d5b0474'
+    },
+    avg_ec_live_uv: 1250,
+    avg_ec_video_view_count: 180,
+    category_ids: ['60004'],
+    follower_count: 27458,
+    gmv: {
+      amount: '1678.20',
+      currency: 'USD'
+    },
+    gmv_range: {
+      currency: 'USD',
+      maximum_amount: '120.00',
+      minimum_amount: '3.00'
+    },
+    live_gmv: {
+      amount: '45.60',
+      currency: 'USD'
+    },
+    nickname: 'HomeDecoQueen',
+    selection_region: 'US',
+    top_follower_demographics: {
+      age_ranges: ['AGE_RANGE_18_24', 'AGE_RANGE_25_34'],
+      major_gender: {
+        gender: 'FEMALE',
+        percentage: 5904
+      }
+    },
+    units_sold_range: {
+      maximum_amount: 2000,
+      minimum_amount: 250
+    },
+    username: 'decor_queen',
+    video_gmv: {
+      amount: '278.40',
+      currency: 'USD'
+    }
+  }
+];
+
+export const seller_orders = [
+  {
+    create_time: 1722420186,
+    delivery_time: 1723748656,
+    id: '579125529499110203',
+    skus: [
+      {
+        actual_commission_base: { amount: '50000', currency: 'VND' },
+        actual_paid_commission: { amount: '10000', currency: 'VND' },
+        actual_paid_shop_ads_commission: { amount: '20000', currency: 'VND' },
+        campaign_id: '73661290629',
+        commission_rate: '1000',
+        content_id: '7493990579714164574',
+        content_type: 'LIVE',
+        creator_username: 'exampleTikTokCreatorUsername',
+        estimated_commission_base: { amount: '1000', currency: 'VND' },
+        estimated_paid_commission: { amount: '20000', currency: 'VND' },
+        estimated_paid_shop_ads_commission: { amount: '1000', currency: 'VND' },
+        open_collaboration_id: '73661290629',
+        price: { amount: '1000', currency: 'VND' },
+        product_id: '1729503179457070324',
+        quantity: 1,
+        refunded_quantity: 1,
+        returned_quantity: 1,
+        shop_ads_commission_rate: '5000',
+        target_collaboration_id: '73661290629'
+      }
+    ],
+    status: 'COMPLETED'
+  },
+  {
+    create_time: 1729420286,
+    delivery_time: 1730748756,
+    id: '579125529499110204',
+    skus: [
+      {
+        actual_commission_base: { amount: '40000', currency: 'USD' },
+        actual_paid_commission: { amount: '5000', currency: 'USD' },
+        actual_paid_shop_ads_commission: { amount: '15000', currency: 'USD' },
+        campaign_id: '83661290630',
+        commission_rate: '800',
+        content_id: '8493990579714164575',
+        content_type: 'VIDEO',
+        creator_username: 'secondCreator',
+        estimated_commission_base: { amount: '2000', currency: 'USD' },
+        estimated_paid_commission: { amount: '15000', currency: 'USD' },
+        estimated_paid_shop_ads_commission: { amount: '800', currency: 'USD' },
+        open_collaboration_id: '83661290630',
+        price: { amount: '1500', currency: 'USD' },
+        product_id: '2729503179457070325',
+        quantity: 2,
+        refunded_quantity: 0,
+        returned_quantity: 1,
+        shop_ads_commission_rate: '4500',
+        target_collaboration_id: '83661290630'
+      }
+    ],
+    status: 'PROCESSING'
+  },
+  {
+    create_time: 1725420386,
+    delivery_time: 1733728856,
+    id: '579125529499110205',
+    skus: [
+      {
+        actual_commission_base: { amount: '60000', currency: 'EUR' },
+        actual_paid_commission: { amount: '12000', currency: 'EUR' },
+        actual_paid_shop_ads_commission: { amount: '18000', currency: 'EUR' },
+        campaign_id: '93661290631',
+        commission_rate: '1200',
+        content_id: '9493990579714164576',
+        content_type: 'LIVE',
+        creator_username: 'thirdCreator',
+        estimated_commission_base: { amount: '3000', currency: 'EUR' },
+        estimated_paid_commission: { amount: '25000', currency: 'EUR' },
+        estimated_paid_shop_ads_commission: { amount: '1200', currency: 'EUR' },
+        open_collaboration_id: '93661290631',
+        price: { amount: '2000', currency: 'EUR' },
+        product_id: '3729503179457070326',
+        quantity: 3,
+        refunded_quantity: 1,
+        returned_quantity: 0,
+        shop_ads_commission_rate: '6000',
+        target_collaboration_id: '93661290631'
+      }
+    ],
+    status: 'SHIPPED'
+  }
+];
+
 export const active_campaigns = [
   {
     id: '0',

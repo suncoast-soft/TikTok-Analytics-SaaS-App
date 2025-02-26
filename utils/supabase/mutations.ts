@@ -2,7 +2,7 @@
 
 import { SupabaseClient } from '@supabase/supabase-js';
 import { cache } from 'react';
-import { Tables } from '@/types_db';
+import { Tables } from '@/types/db';
 import { getUser } from './queries';
 
 type User = Partial<Tables<'users'>>;
