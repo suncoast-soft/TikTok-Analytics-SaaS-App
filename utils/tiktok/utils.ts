@@ -16,7 +16,7 @@ interface APIParams {
 interface RequestOptions {
   method?: string;
   headers?: Record<string, string>;
-  body?: string;
+  body?: BodyInit | null | undefined;
 }
 
 export const generateSign = (
@@ -26,8 +26,7 @@ export const generateSign = (
   app_secret: string
 ) => {
   const sortedParams = Object.keys(params)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .filter((key) => !['access_token', 'sign'].includes(key as any))
+    .filter((key) => !['access_token', 'sign'].includes(key as string))
     .sort()
     .map((key) => `${key}${params[key]}`)
     .join('');
@@ -36,11 +35,9 @@ export const generateSign = (
 
   if (
     options.headers?.['content-type'] !== 'multipart/form-data' &&
-    options.body &&
-    Object.keys(options.body).length > 0
+    options.body
   ) {
-    const body = JSON.stringify(options.body);
-    signString += body;
+    signString += options.body;
   }
 
   signString = `${app_secret}${signString}${app_secret}`;
@@ -54,7 +51,7 @@ export async function requestTikTokShopAPI(
   api_path: string,
   params: APIParams = {},
   method: string = 'GET',
-  body: string = ''
+  body: BodyInit | null | undefined
 ) {
   const authData = await getSellerAccessToken();
 
@@ -105,14 +102,17 @@ export async function requestTikTokShopAPI(
 
   try {
     const response = await fetch(fetchURL, requestOptions);
+    const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      console.log(`HTTP error! Status: ${response.status}`);
+      console.log(data);
+      return null;
     }
 
-    return await response.json();
+    return data;
   } catch (error) {
-    console.error('Request failed:', error);
+    console.log('Request failed:', error);
     return null;
   }
 }

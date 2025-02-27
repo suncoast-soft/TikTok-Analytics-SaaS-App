@@ -1,45 +1,75 @@
-import { active_campaigns } from '@/utils/mock';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  CircleDollarSignIcon,
   ShoppingBagIcon,
   TimerIcon,
   TrophyIcon,
   VideoIcon
 } from 'lucide-react';
 import Image from 'next/image';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import Card from '@/components/modules/Card';
 import Box from '@/components/modules/Box';
 import ProductInfoTable from '@/components/sections/ProductInfoTable';
 import ProgressBar from '@/components/modules/ProgressBar';
 import { getTimeDiff } from '@/utils/helpers';
 import Title from '@/components/modules/Title';
+import { requestTikTokShopAPIClient } from '@/app/actions';
+import { SellerCampaignDetail } from '@/types/tiktok';
+import { getCampaign, getSeller } from '@/utils/supabase/queries';
+import { createClient } from '@/utils/supabase/server';
+import { Tables } from '@/types/db';
+import RewardForm from '@/components/sections/Forms/RewardForm';
 
-export default async function Campaign({
+type Seller = Tables<'sellers'>;
+type Campaign = Tables<'campaigns'>;
+
+export default async function CampaignPage({
   params
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const campaign_id = (await params).id;
-  const campaign = active_campaigns.filter((c) => c.id === campaign_id)[0];
+  // Get Campaign API Data
+  const real_campaign_id = (await params).id;
+  console.log(real_campaign_id);
 
-  if (!campaign) {
-    return notFound();
+  const campaign_id = '7470079187999688490'; // Temporary
+
+  const sellerTargetCollaborationData = await requestTikTokShopAPIClient(
+    `/affiliate_seller/202412/target_collaborations/${campaign_id}`,
+    {},
+    'GET',
+    ''
+  );
+
+  const campaignAPIData = sellerTargetCollaborationData.data
+    .target_collaboration as SellerCampaignDetail;
+
+  if (!campaignAPIData) {
+    redirect('/seller');
   }
+
+  // Get Configured Campaign data from database
+  const supabase = await createClient();
+  const seller = (await getSeller(supabase)) as Seller;
+  const campaignData = (await getCampaign(supabase, campaign_id)) as Campaign;
+
+  const campaign = { ...campaignAPIData, ...campaignData };
 
   return (
     <div className="container max-w-7xl py-12">
       <Card vertical={true} className="p-4 lg:p-8">
         <div className="flex flex-col lg:flex-row items-center gap-8 mb-12">
           <Image
-            src={campaign.brand_logo}
-            width={320}
-            height={240}
-            alt={campaign.brand}
-            className="w-80 h-60 object-cover rounded-lg"
+            src={'/flicker-logo-white.png'}
+            width={1000}
+            height={200}
+            alt={seller.seller_name ?? 'Seller Logo'}
+            className="w-80 h-60 object-contain rounded-lg"
           />
 
           <div>
-            <Title title={campaign.name} subtitle={campaign.brand} />
+            <Title title={campaign.name} subtitle={seller.seller_name!} />
 
             <div className="flex flex-col lg:flex-row gap-4">
               <Box
@@ -49,10 +79,10 @@ export default async function Campaign({
               >
                 <ProgressBar
                   progress={
-                    getTimeDiff(campaign.start_date, campaign.end_date).progress
+                    getTimeDiff(campaign.start_time, campaign.end_time).progress
                   }
                   label={
-                    getTimeDiff(campaign.start_date, campaign.end_date).text
+                    getTimeDiff(campaign.start_time, campaign.end_time).text
                   }
                 />
               </Box>
@@ -70,42 +100,37 @@ export default async function Campaign({
 
         <Title
           title="About the Campaign"
-          description={campaign.description}
+          description={campaign.message}
           tag="h2"
         />
 
-        <div className="flex flex-col lg:flex-row gap-5 mb-12">
-          <Box
-            icon={<ShoppingBagIcon width={16} />}
-            value={campaign.progress.orders}
-            label="Orders"
-            buttonName="View orders"
-            buttonLink={`/seller/campaigns/${campaign.id}`}
-            className="w-60"
-          />
+        <div className="flex lg:flex-row gap-4 mb-12">
+          <Box icon={<ShoppingBagIcon size={16} />} label="Products">
+            <span className="text-2xl font-bold text-white">{`${campaign.product_count}`}</span>
+          </Box>
 
           <Box
-            icon={<VideoIcon width={16} />}
-            value={campaign.progress.videos}
-            label="Videos"
-            buttonName="Video Analytics"
-            buttonLink={`/seller/campaigns/${campaign.id}`}
-            className="w-60"
-          />
+            icon={<CircleDollarSignIcon size={16} />}
+            label="Invited Creators"
+          >
+            <span className="text-2xl font-bold text-white">{`${campaign.creator_invited_count}`}</span>
+          </Box>
 
-          <Box
-            icon={<VideoIcon width={16} />}
-            value={`$${campaign.progress.gmv.toLocaleString()}`}
-            label="GMV"
-            buttonName="Daily GMV Report"
-            buttonLink={`/seller/campaigns/${campaign.id}`}
-            className="w-60"
-          />
+          <Box icon={<VideoIcon size={16} />} label="Showcase Creators">
+            <span className="text-2xl font-bold text-white">{`${campaign.showcase_creator_count}`}</span>
+          </Box>
         </div>
 
         <Title title="Product Details" tag="h2" />
 
         <ProductInfoTable products={campaign.products} />
+
+        <Title title="Configure Rewards" tag="h2" />
+
+        <RewardForm
+          campaignId={campaign_id}
+          rewards={campaign.rewards as any}
+        />
       </Card>
     </div>
   );

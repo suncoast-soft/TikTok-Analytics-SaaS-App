@@ -2,8 +2,11 @@
 
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
-import { deleteCreatorAuth } from './mutations';
+import { deleteCreatorAuth, saveCampaign } from './mutations';
 import { getErrorRedirect, getStatusRedirect, getURL } from '../helpers';
+import { Tables } from '@/types/db';
+
+type Campaign = Partial<Tables<'campaigns'>>;
 
 export async function createClient() {
   const cookieStore = await cookies();
@@ -44,6 +47,26 @@ export async function deleteCreatorAuthMutation() {
       getURL('/creator/account'),
       'Error!',
       `Failed unlinking your TikTok Account. Please try again`
+    );
+  }
+}
+
+export async function saveCampaignMutation(campaignData: Campaign) {
+  const supabase = await createClient();
+
+  const campaign = await saveCampaign(supabase, campaignData);
+
+  if (campaign) {
+    return getStatusRedirect(
+      getURL(`/seller/campaigns/${campaignData.id}`),
+      'Success!',
+      `Your Campaign has been updated successfully.`
+    );
+  } else {
+    return getErrorRedirect(
+      getURL(`/seller/campaigns/${campaignData.id}`),
+      'Error!',
+      `Failed updating your Campaign. Please try again`
     );
   }
 }

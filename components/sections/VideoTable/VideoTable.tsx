@@ -10,7 +10,7 @@ import {
   TableRow
 } from '@/components/ui/table';
 import { Video } from '@/types/tiktok';
-import { format, subDays } from 'date-fns';
+import { subDays } from 'date-fns';
 import { ExternalLinkIcon, VideoIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -40,7 +40,6 @@ export default function VideoTable({ videos }: SectionProps) {
             <TableHead className="min-w-16">Orders</TableHead>
             <TableHead className="min-w-16">Units Sold</TableHead>
             <TableHead className="min-w-32">Products</TableHead>
-            <TableHead className="min-w-24">Posted</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -54,7 +53,9 @@ export default function VideoTable({ videos }: SectionProps) {
                   className="flex gap-3"
                 >
                   <VideoIcon size={32} />
-                  <span className="max-w-48">{video.title}</span>
+                  <span className="max-w-48">
+                    {video.title || 'Video Removed'}
+                  </span>
                   <ExternalLinkIcon size={15} />
                 </Link>
               </TableCell>
@@ -68,7 +69,6 @@ export default function VideoTable({ videos }: SectionProps) {
               <TableCell>
                 {video.products.map((product) => product.name).join(', ')}
               </TableCell>
-              <TableCell>{format(video.video_post_time, 'PPP')}</TableCell>
             </TableRow>
           ))}
         </TableBody>

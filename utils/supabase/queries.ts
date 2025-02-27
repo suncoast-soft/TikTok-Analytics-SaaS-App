@@ -82,3 +82,33 @@ export const getCreator = cache(async (supabase: SupabaseClient) => {
 
   return creator;
 });
+
+export const getCampaigns = cache(async (supabase: SupabaseClient) => {
+  const { data: campaigns, error } = await supabase
+    .from('campaigns')
+    .select('*');
+
+  if (error) {
+    console.error('Failed to fetch campaigns', error);
+    return [];
+  }
+
+  return campaigns;
+});
+
+export const getCampaign = cache(
+  async (supabase: SupabaseClient, campaignId: string) => {
+    const { data: campaign, error } = await supabase
+      .from('campaigns')
+      .select('*')
+      .eq('id', campaignId)
+      .single();
+
+    if (error) {
+      console.log('Failed to fetch campaign', error);
+      return null;
+    }
+
+    return campaign;
+  }
+);

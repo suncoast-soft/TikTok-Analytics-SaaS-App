@@ -7,10 +7,10 @@ import {
   TableRow
 } from '@/components/ui/table';
 import Image from 'next/image';
+import { Product } from '@/types/tiktok';
 
 interface SectionProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  products: any[];
+  products: Product[];
 }
 
 export default function ProductInfoTable({ products }: SectionProps) {
@@ -18,13 +18,12 @@ export default function ProductInfoTable({ products }: SectionProps) {
     <Table className="border-none mb-12">
       <TableHeader className="bg-navy-700">
         <TableRow className="border-navy-950 shadow-lg">
-          <TableHead className="min-w-60">Image</TableHead>
+          <TableHead className="min-w-24">Image</TableHead>
           <TableHead className="min-w-60">Name</TableHead>
           <TableHead className="min-w-24">Retail Price</TableHead>
           <TableHead className="min-w-36">Commission rate</TableHead>
-          <TableHead className="min-w-24">Stock</TableHead>
-          <TableHead className="min-w-40">Variants</TableHead>
-          <TableHead className="min-w-40 text-right">Sample Status</TableHead>
+          <TableHead className="min-w-24">Status</TableHead>
+          <TableHead className="min-w-48">Collaboration Status</TableHead>
         </TableRow>
       </TableHeader>
 
@@ -32,28 +31,21 @@ export default function ProductInfoTable({ products }: SectionProps) {
         {products.map((product) => (
           <TableRow key={product.id} className="border-navy-300">
             <TableCell className="font-medium">
-              <div className="flex gap-2">
-                {product.images.map((image: string) => (
-                  <Image
-                    key={image}
-                    src={image}
-                    width={60}
-                    height={60}
-                    alt={image}
-                  />
-                ))}
-              </div>
+              <Image
+                src={product.main_image_url}
+                width={80}
+                height={80}
+                alt={product.title}
+              />
             </TableCell>
-            <TableCell>{product.name}</TableCell>
-            <TableCell>{product.price}</TableCell>
-            <TableCell>{product.commission_rate}</TableCell>
-            <TableCell>{product.stock}</TableCell>
+            <TableCell>{product.title}</TableCell>
             <TableCell>
-              {product.variant.name}: {product.variant.options.join(', ')}
+              ${product.original_price.minimum_amount}{' '}
+              {product.original_price.currency}
             </TableCell>
-            <TableCell className="text-right">
-              {product.sample_status ? 'Auto Approve' : 'Manual'}
-            </TableCell>
+            <TableCell>{product.commission.rate / 100}%</TableCell>
+            <TableCell>{product.status}</TableCell>
+            <TableCell>{product.collaboration_status}</TableCell>
           </TableRow>
         ))}
       </TableBody>

@@ -8,6 +8,7 @@ import { getUser } from './queries';
 type User = Partial<Tables<'users'>>;
 type Seller = Partial<Tables<'sellers'>>;
 type Creator = Partial<Tables<'creators'>>;
+type Campaign = Partial<Tables<'campaigns'>>;
 
 export const updateUser = cache(
   async (supabase: SupabaseClient, user_data: User) => {
@@ -87,3 +88,21 @@ export const deleteCreatorAuth = cache(async (supabase: SupabaseClient) => {
 
   return true;
 });
+
+export const saveCampaign = cache(
+  async (supabase: SupabaseClient, campaign_data: Campaign) => {
+    const { data: campaign, error: error } = await supabase
+      .from('campaigns')
+      .upsert(campaign_data)
+      .eq('id', campaign_data.id)
+      .select('*')
+      .single();
+
+    if (error) {
+      console.error('Failed to upsert campaign data:', error);
+      return null;
+    }
+
+    return campaign;
+  }
+);

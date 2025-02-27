@@ -30,11 +30,6 @@ export default async function DashboardLayout({
     },
     {
       icon: <ShoppingBagIcon width={20} height={20} />,
-      name: 'Affiliate Creators',
-      link: '/seller/creators'
-    },
-    {
-      icon: <ShoppingBagIcon width={20} height={20} />,
       name: 'Affiliate Orders',
       link: '/seller/orders'
     },

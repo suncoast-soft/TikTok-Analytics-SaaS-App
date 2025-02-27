@@ -5,17 +5,18 @@ import { type Provider } from '@supabase/supabase-js';
 import { redirectToPath } from './server';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { getURL } from '../helpers';
+import { Json } from '@/types/db';
 
 interface FormData {
-  [key: string]: string | number | boolean;
+  [key: string]: string | number | boolean | Json;
 }
 
 export async function handleRequest(
-  data: FormData,
-  requestFunc: (data: FormData) => Promise<string | void>,
+  formData: FormData,
+  requestFunc: (formData: FormData) => Promise<string | void>,
   router: AppRouterInstance | null = null
 ): Promise<boolean | void> {
-  const redirectUrl: string | void = await requestFunc(data);
+  const redirectUrl: string | void = await requestFunc(formData);
 
   if (router && redirectUrl) {
     return router.push(redirectUrl, { scroll: false });

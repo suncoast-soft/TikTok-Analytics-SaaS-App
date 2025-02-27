@@ -3,9 +3,10 @@
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { getErrorRedirect, getStatusRedirect, getURL } from '../helpers';
+import { Json } from '@/types/db';
 
 interface FormData {
-  [key: string]: string | number | boolean;
+  [key: string]: string | number | boolean | Json;
 }
 
 export async function redirectToPath(path: string) {
@@ -29,7 +30,9 @@ export async function SignOut(formData: FormData) {
   return '/';
 }
 
-export async function signInWithOtp(formData: FormData) {
+export async function signInWithOtp(
+  formData: FormData
+): Promise<string | void> {
   const email = String(formData['email']).trim();
   const type = String(formData['type']).trim();
 

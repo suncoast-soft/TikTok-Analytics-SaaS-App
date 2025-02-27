@@ -16,7 +16,7 @@ export async function requestTikTokShopAPIClient(
   api_path: string,
   params: APIParams = {},
   method: string = 'GET',
-  body: string = ''
+  body: BodyInit | null | undefined
 ) {
   return requestTikTokShopAPI(api_path, params, method, body);
 }

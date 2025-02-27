@@ -102,7 +102,7 @@ export const getInitials = (nameOrEmail: string): string => {
   return initials;
 };
 
-export const getTimeDiff = (start_date: string, end_date: string) => {
+export const getTimeDiff = (start_time: number, end_time: number) => {
   const getTimeComponents = (milliseconds: number) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
     const days = Math.floor(totalSeconds / (24 * 60 * 60));
@@ -111,9 +111,8 @@ export const getTimeDiff = (start_date: string, end_date: string) => {
     return { days, hours };
   };
 
-  const startDate = new Date(start_date);
-
-  const endDate = new Date(end_date);
+  const startDate = new Date(start_time * 1000);
+  const endDate = new Date(end_time * 1000);
   const now = new Date();
 
   const totalDuration = endDate.getTime() - startDate.getTime();
