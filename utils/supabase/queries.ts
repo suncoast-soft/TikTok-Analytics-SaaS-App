@@ -48,6 +48,12 @@ export const getSeller = cache(async (supabase: SupabaseClient) => {
     return null;
   }
 
+  // Temporary
+  if (user.type === 'creator') {
+    const { data: sellers } = await supabase.from('sellers').select('*');
+    return sellers?.[0];
+  }
+
   const { data: seller, error } = await supabase
     .from('sellers')
     .select('*')

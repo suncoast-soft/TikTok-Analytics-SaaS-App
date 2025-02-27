@@ -132,25 +132,29 @@ export default async function Campaign({
 
         <Title title="Your Reward Status" tag="h2" />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
-          {rewards?.map((reward, index) => (
-            <Reward
-              key={index}
-              tier={index + 1}
-              target={reward.target}
-              reward={reward.reward}
-              progress={12400}
-            />
-          ))}
-        </div>
+        {rewards?.length > 0 && (
+          <>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+              {rewards?.map((reward, index) => (
+                <Reward
+                  key={index}
+                  tier={index + 1}
+                  target={reward.target}
+                  reward={reward.reward}
+                  progress={12400}
+                />
+              ))}
+            </div>
 
-        <div className="w-full relative">
-          <ProgressBar
-            progress={(12400 / rewards[rewards.length - 1].target) * 100}
-            label={`$12,400`}
-            labelPosition="percentage"
-          />
-        </div>
+            <div className="w-full relative">
+              <ProgressBar
+                progress={(12400 / rewards[rewards.length - 1].target) * 100}
+                label={`$12,400`}
+                labelPosition="percentage"
+              />
+            </div>
+          </>
+        )}
       </Card>
     </div>
   );
