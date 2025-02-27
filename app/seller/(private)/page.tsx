@@ -18,12 +18,12 @@ export default async function SellerCampaigns() {
       collaboration_status: 'VALID'
     })
   );
-  const { target_collaborations } = sellerTargetCollaborationsData.data;
+  const campaigns = sellerTargetCollaborationsData.data.target_collaborations;
 
   return (
     <div className="container max-w-7xl py-8">
       <div className="mb-12 space-y-8">
-        {target_collaborations.map((campaign: SellerCampaignOverview) => (
+        {campaigns.map((campaign: SellerCampaignOverview) => (
           <SellerCampaignCard
             key={campaign.id}
             campaign={campaign}

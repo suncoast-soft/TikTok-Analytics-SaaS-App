@@ -10,6 +10,15 @@ import { getTimeDiff } from '@/utils/helpers';
 import ImageBox from '@/components/modules/ImageBox';
 import Reward from '@/components/modules/Reward';
 import ProductInfoTable from '@/components/sections/ProductInfoTable';
+import { Tables } from '@/types/db';
+import { createClient } from '@/utils/supabase/server';
+import { getCampaign } from '@/utils/supabase/queries';
+
+type Campaign = Tables<'campaigns'>;
+interface Reward {
+  target: number;
+  reward: number;
+}
 
 export default async function Campaign({
   params
@@ -17,26 +26,37 @@ export default async function Campaign({
   params: Promise<{ id: string }>;
 }) {
   const campaign_id = (await params).id;
-  const campaign = all_campaigns.filter((c) => c.id === campaign_id)[0];
+  const campaignMockData = all_campaigns.filter((c) => c.id === campaign_id)[0];
 
-  if (!campaign) {
+  if (!campaignMockData) {
     return notFound();
   }
+
+  const supabase = await createClient();
+  const campaignData = (await getCampaign(
+    supabase,
+    '7470079187999688490'
+  )) as Campaign;
+
+  const campaign = { ...campaignMockData, ...campaignData };
+  const rewards = Array.isArray(campaign.rewards)
+    ? (campaign.rewards as unknown as Reward[])
+    : [];
 
   return (
     <div className="container max-w-7xl py-12">
       <Card vertical={true} className="p-4 lg:p-8 mb-12">
         <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
           <Image
-            src={campaign.brand_logo}
+            src={campaign.products[0].main_image_url}
             width={320}
             height={240}
-            alt={campaign.brand}
+            alt={campaign.name}
             className="w-80 h-60 object-cover rounded-lg"
           />
 
           <div>
-            <Title title={campaign.name} subtitle={campaign.brand} />
+            <Title title={campaign.name} subtitle={'Locked'} />
 
             <div className="flex flex-col md:flex-row gap-4">
               <Box
@@ -46,10 +66,10 @@ export default async function Campaign({
               >
                 <ProgressBar
                   progress={
-                    getTimeDiff(campaign.start_date, campaign.end_date).progress
+                    getTimeDiff(campaign.start_time, campaign.end_time).progress
                   }
                   label={
-                    getTimeDiff(campaign.start_date, campaign.end_date).text
+                    getTimeDiff(campaign.start_time, campaign.end_time).text
                   }
                 />
               </Box>
@@ -67,7 +87,7 @@ export default async function Campaign({
 
         <Title
           title="About the Campaign"
-          description={campaign.description}
+          description={campaign.message}
           tag="h2"
         />
 
@@ -90,23 +110,23 @@ export default async function Campaign({
         <Title title="Campaign Rewards" tag="h2" />
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-          {campaign.milestones.map((milestone, index) => (
+          {rewards?.map((reward, index) => (
             <Reward
               key={index}
               tier={index + 1}
-              target={milestone.target_gmv}
-              reward={milestone.reward}
+              target={reward.target}
+              reward={reward.reward}
             />
           ))}
         </div>
 
-        <Title title="Other Terms" tag="h2" />
+        {/* <Title title="Other Terms" tag="h2" />
 
         <ol className="list-disc text-sm md:text-base leading-relaxed pl-6">
           {campaign.terms.map((term, index) => (
             <li key={index}>{term}</li>
           ))}
-        </ol>
+        </ol> */}
       </Card>
 
       <Title title="Campaign product details" tag="h2" />

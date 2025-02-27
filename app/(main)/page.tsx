@@ -35,7 +35,10 @@ export default async function Home({
       )}
 
       <Suspense>
-        <PublicCampaigns selectedCategory={category} />
+        <PublicCampaigns
+          selectedCategory={category}
+          campaigns={all_campaigns}
+        />
       </Suspense>
     </div>
   );

@@ -63,7 +63,10 @@ export const generateSellerAccessToken = async (auth_code: string) => {
   if (!sellerAuth) return null;
 
   const shopCipherData = await requestTikTokShopAPI(
-    '/authorization/202309/shops'
+    '/authorization/202309/shops',
+    {},
+    'GET',
+    ''
   );
   const shop = shopCipherData.data.shops.find(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

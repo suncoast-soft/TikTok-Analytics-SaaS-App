@@ -1,19 +1,23 @@
 import Badge from '@/components/modules/Badge';
 import Card from '@/components/modules/Card';
 import { Button } from '@/components/ui/button';
+import { SellerCampaignDetail } from '@/types/tiktok';
 import { getTimeDiff } from '@/utils/helpers';
 import { TimerIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function PublicSmallCampaignCard({ campaign }: { campaign: any }) {
+export function PublicSmallCampaignCard({
+  campaign
+}: {
+  campaign: SellerCampaignDetail;
+}) {
   return (
     <Card className="p-3">
       <div className="w-full">
         <Badge
           icon={<TimerIcon width={16} />}
-          value={getTimeDiff(campaign.start_date, campaign.end_date).text}
+          value={getTimeDiff(campaign.start_time, campaign.end_time).text}
         />
 
         <h2 className="text-white text-sm font-bold mt-2 mb-1">
@@ -21,7 +25,7 @@ export function PublicSmallCampaignCard({ campaign }: { campaign: any }) {
         </h2>
 
         <p className="text-navy-300 text-xs tracking-wide mb-3 line-clamp-2">
-          {campaign.description}
+          {campaign.message}
         </p>
 
         <Badge
@@ -35,10 +39,10 @@ export function PublicSmallCampaignCard({ campaign }: { campaign: any }) {
 
       <div className="w-32 h-32 rounded-xl overflow-hidden flex-shrink-0">
         <Image
-          src={campaign.brand_logo}
+          src={campaign.products[0].main_image_url}
           width={1000}
           height={1000}
-          alt={campaign.brand}
+          alt={campaign.name}
           className="w-full h-full object-cover"
         />
       </div>

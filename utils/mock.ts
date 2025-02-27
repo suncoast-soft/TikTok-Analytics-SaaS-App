@@ -139,7 +139,49 @@ export const active_campaigns = [
       gmv: 4000
     }
   }
-];
+].map((campaign) => ({
+  content_creator_count: 0, // Placeholder value, as the provided data lacks this information
+  creator_invited_count: 0, // Placeholder value
+  creators: [], // Placeholder value
+  end_time: new Date(campaign.end_date).getTime() / 1000,
+  free_sample_rule: {
+    has_free_sample: campaign.products.some(
+      (product) => product.sample_status === 'Available'
+    ),
+    is_sample_approval_exempt: false // Placeholder value
+  },
+  id: campaign.id,
+  message: campaign.description,
+  name: campaign.name,
+  product_count: campaign.products.length,
+  products: campaign.products.map((product) => ({
+    collaboration_status: 'Pending', // Placeholder value
+    commission: {
+      currency: 'USD', // Assuming USD as currency
+      effective_time: new Date(campaign.start_date).toISOString(),
+      maximum_amount: product.price.toString(),
+      minimum_amount: product.price.toString(),
+      rate: product.commission_rate
+    },
+    commission_effective_status: 'Active', // Placeholder value
+    id: product.id,
+    main_image_url: product.images[0],
+    original_price: {
+      currency: 'USD', // Assuming USD as currency
+      maximum_amount: product.price.toString(),
+      minimum_amount: product.price.toString()
+    },
+    status: 'Active', // Placeholder value
+    title: product.name
+  })),
+  seller_contact_info: {
+    email: 'contact@example.com' // Placeholder email
+  },
+  showcase_creator_count: 0, // Placeholder value
+  start_time: new Date(campaign.start_date).getTime() / 1000,
+  type: 'Campaign', // Placeholder value
+  update_time: Date.now()
+}));
 
 export const completed_campaigns = [
   {
@@ -250,7 +292,49 @@ export const completed_campaigns = [
       commission: 480
     }
   }
-];
+].map((campaign) => ({
+  content_creator_count: 0, // Placeholder value, as the provided data lacks this information
+  creator_invited_count: 0, // Placeholder value
+  creators: [], // Placeholder value
+  end_time: new Date(campaign.end_date).getTime() / 1000,
+  free_sample_rule: {
+    has_free_sample: campaign.products.some(
+      (product) => product.sample_status === 'Available'
+    ),
+    is_sample_approval_exempt: false // Placeholder value
+  },
+  id: campaign.id,
+  message: campaign.description,
+  name: campaign.name,
+  product_count: campaign.products.length,
+  products: campaign.products.map((product) => ({
+    collaboration_status: 'Pending', // Placeholder value
+    commission: {
+      currency: 'USD', // Assuming USD as currency
+      effective_time: new Date(campaign.start_date).toISOString(),
+      maximum_amount: product.price.toString(),
+      minimum_amount: product.price.toString(),
+      rate: product.commission_rate
+    },
+    commission_effective_status: 'Active', // Placeholder value
+    id: product.id,
+    main_image_url: product.images[0],
+    original_price: {
+      currency: 'USD', // Assuming USD as currency
+      maximum_amount: product.price.toString(),
+      minimum_amount: product.price.toString()
+    },
+    status: 'Active', // Placeholder value
+    title: product.name
+  })),
+  seller_contact_info: {
+    email: 'contact@example.com' // Placeholder email
+  },
+  showcase_creator_count: 0, // Placeholder value
+  start_time: new Date(campaign.start_date).getTime() / 1000,
+  type: 'Campaign', // Placeholder value
+  update_time: Date.now()
+}));
 
 export const all_campaigns = [
   {
@@ -3369,4 +3453,46 @@ export const all_campaigns = [
     start_date: '2025-02-4',
     end_date: '2025-03-28'
   }
-];
+].map((campaign) => ({
+  content_creator_count: 0, // Placeholder value, as the provided data lacks this information
+  creator_invited_count: 0, // Placeholder value
+  creators: [], // Placeholder value
+  end_time: new Date(campaign.end_date).getTime() / 1000,
+  free_sample_rule: {
+    has_free_sample: campaign.products.some(
+      (product) => product.sample_status === 'Available'
+    ),
+    is_sample_approval_exempt: false // Placeholder value
+  },
+  id: campaign.id,
+  message: campaign.description,
+  name: campaign.name,
+  product_count: campaign.products.length,
+  products: campaign.products.map((product) => ({
+    collaboration_status: 'Pending', // Placeholder value
+    commission: {
+      currency: 'USD', // Assuming USD as currency
+      effective_time: new Date(campaign.start_date).toISOString(),
+      maximum_amount: product.price.toString(),
+      minimum_amount: product.price.toString(),
+      rate: product.commission_rate
+    },
+    commission_effective_status: 'Active', // Placeholder value
+    id: product.id,
+    main_image_url: product.images[0],
+    original_price: {
+      currency: 'USD', // Assuming USD as currency
+      maximum_amount: product.price.toString(),
+      minimum_amount: product.price.toString()
+    },
+    status: 'Active', // Placeholder value
+    title: product.name
+  })),
+  seller_contact_info: {
+    email: 'contact@example.com' // Placeholder email
+  },
+  showcase_creator_count: 0, // Placeholder value
+  start_time: new Date(campaign.start_date).getTime() / 1000,
+  type: 'Campaign', // Placeholder value
+  update_time: Date.now()
+}));

@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { all_campaigns } from '@/utils/mock';
 import Link from 'next/link';
 import {
   BoxesIcon,
@@ -12,11 +11,14 @@ import {
 } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import { PublicSmallCampaignCard } from '../CampaignCard';
+import { SellerCampaignDetail } from '@/types/tiktok';
 
 export function PublicCampaigns({
-  selectedCategory
+  selectedCategory,
+  campaigns
 }: {
   selectedCategory?: string;
+  campaigns: SellerCampaignDetail[];
 }) {
   const categories = [
     {
@@ -49,10 +51,6 @@ export function PublicCampaigns({
     }
   ];
 
-  const filteredCampaigns = selectedCategory
-    ? all_campaigns.filter((campaign) => campaign.category === selectedCategory)
-    : all_campaigns;
-
   return (
     <>
       <div className="flex flex-wrap gap-2 mb-4 max-w-5xl">
@@ -81,7 +79,7 @@ export function PublicCampaigns({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-12">
-        {filteredCampaigns.map((campaign) => (
+        {campaigns.map((campaign) => (
           <PublicSmallCampaignCard key={campaign.id} campaign={campaign} />
         ))}
       </div>
