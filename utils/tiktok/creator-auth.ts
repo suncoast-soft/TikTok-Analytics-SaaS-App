@@ -62,7 +62,10 @@ export const refreshCreatorAccessToken = async () => {
   const supabase = await createClient();
 
   const authData = await getCreator(supabase);
-  if (!authData) throw new Error('No token data found.');
+  if (!authData) {
+    console.log('No token data found.');
+    return null;
+  }
 
   const { refresh_token } = authData;
 

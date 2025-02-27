@@ -133,7 +133,10 @@ export const getSellerAccessToken = async () => {
   const supabase = await createClient();
 
   const authData = await getSeller(supabase);
-  if (!authData) throw new Error('No token data found.');
+  if (!authData) {
+    console.log('No token data found.');
+    return null;
+  }
 
   const {
     access_token,

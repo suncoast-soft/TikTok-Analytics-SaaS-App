@@ -1,4 +1,4 @@
-import EmailAuthForm from '@/components/sections/Forms/EmailAuthForm';
+import PasswordAuthForm from '@/components/sections/Forms/PasswordAuthForm';
 import OauthSignIn from '@/components/sections/Forms/OauthSignIn';
 import Separator from '@/components/modules/Separator';
 import Link from 'next/link';
@@ -31,7 +31,10 @@ export default async function Register({
         </Link>
       </p>
 
-      <EmailAuthForm register={true} type={isSeller ? 'seller' : 'creator'} />
+      <PasswordAuthForm
+        register={true}
+        type={isSeller ? 'seller' : 'creator'}
+      />
 
       <div className="w-full mt-4">
         <Separator />

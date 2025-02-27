@@ -12,7 +12,7 @@ import { ReactNode } from 'react';
 interface ModuleProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: any;
-  type?: 'text' | 'email' | 'number';
+  type?: 'text' | 'email' | 'number' | 'password';
   name: string;
   label: string;
   placeholder?: string;

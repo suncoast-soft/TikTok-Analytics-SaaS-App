@@ -78,6 +78,7 @@ export type Database = {
           access_token: string | null
           access_token_expire_at: number | null
           created_at: string
+          logo: string | null
           refresh_token: string | null
           refresh_token_expire_at: number | null
           seller_name: string | null
@@ -88,6 +89,7 @@ export type Database = {
           access_token?: string | null
           access_token_expire_at?: number | null
           created_at?: string
+          logo?: string | null
           refresh_token?: string | null
           refresh_token_expire_at?: number | null
           seller_name?: string | null
@@ -98,6 +100,7 @@ export type Database = {
           access_token?: string | null
           access_token_expire_at?: number | null
           created_at?: string
+          logo?: string | null
           refresh_token?: string | null
           refresh_token_expire_at?: number | null
           seller_name?: string | null

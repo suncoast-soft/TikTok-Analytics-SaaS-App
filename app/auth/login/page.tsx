@@ -1,8 +1,8 @@
-import EmailAuthForm from '@/components/sections/Forms/EmailAuthForm';
 import OauthSignIn from '@/components/sections/Forms/OauthSignIn';
 import Separator from '@/components/modules/Separator';
 import Link from 'next/link';
 import Title from '@/components/modules/Title';
+import PasswordAuthForm from '@/components/sections/Forms/PasswordAuthForm';
 
 export default async function Login({
   searchParams
@@ -29,7 +29,10 @@ export default async function Login({
         </Link>
       </p>
 
-      <EmailAuthForm register={false} type={isSeller ? 'seller' : 'creator'} />
+      <PasswordAuthForm
+        register={false}
+        type={isSeller ? 'seller' : 'creator'}
+      />
 
       <div className="w-full mt-4">
         <Separator text="Or continue with" />
