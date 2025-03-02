@@ -1,4 +1,5 @@
 import Separator from '@/components/modules/Separator';
+import { cn } from '@/utils/cn';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -24,43 +25,59 @@ const socialLinks = [
 
 const footerLinks = [
   {
-    title: 'Product',
+    title: 'Marketplace',
     links: [
-      { label: 'Features', href: '/' },
-      { label: 'Pricing', href: '/' },
-      { label: 'Case studies', href: '/' },
-      { label: 'Reviews', href: '/' },
-      { label: 'Updates', href: '/' }
+      {
+        label: 'Fashion and Beauty',
+        href: '/?category=Fashion+and+Beauty'
+      },
+      {
+        label: 'Fitness and Wellness',
+        href: '/?category=Fitness+and+Wellness'
+      },
+      {
+        label: 'Technology and Gadgets',
+        href: '/?category=Technology+and+Gadgets'
+      },
+      {
+        label: 'Lifestyle and Home',
+        href: '/?category=Lifestyle+and+Home'
+      }
     ]
   },
   {
-    title: 'Company',
+    title: '',
     links: [
-      { label: 'About', href: '/' },
-      { label: 'Contact us', href: '/support' },
-      { label: 'Careers', href: '/' },
-      { label: 'Culture', href: '/' },
-      { label: 'Blog', href: '/' }
+      {
+        label: 'Food and Beverage',
+        href: '/?category=Food+and+Beverage'
+      },
+      {
+        label: 'Travel and Experiences',
+        href: '/?category=Travel+and+Experiences'
+      },
+      {
+        label: 'Others',
+        href: '/?category=Others'
+      }
+    ]
+  },
+  {
+    title: 'Creator',
+    links: [
+      { label: 'My Campaigns', href: '/creator/campaigns' },
+      { label: 'My Earnings', href: '/creator/earning' },
+      { label: 'My Top Videos', href: '/analytics/videos' },
+      { label: 'Affiliate Orders', href: '/analytics/orders' }
     ]
   },
   {
     title: 'Support',
     links: [
-      { label: 'Getting started', href: '/' },
-      { label: 'Help center', href: '/' },
-      { label: 'Server status', href: '/' },
-      { label: 'Report a bug', href: '/' },
-      { label: 'Chat support', href: '/' }
-    ]
-  },
-  {
-    title: 'Downloads',
-    links: [
-      { label: 'iOS', href: '/' },
-      { label: 'Android', href: '/' },
-      { label: 'Mac', href: '/' },
-      { label: 'Windows', href: '/' },
-      { label: 'Chrome', href: '/' }
+      { label: 'About', href: '/' },
+      { label: 'Contact us', href: '/support' },
+      { label: 'Terms and Conditions', href: '/terms and conditions' },
+      { label: 'Privacy Policy', href: '/privacy-policy' }
     ]
   }
 ];
@@ -74,7 +91,12 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-x-4 gap-y-10">
           {footerLinks.map((column) => (
             <ul key={column.title} className="space-y-4">
-              <li className="text-white text-sm font-semibold">
+              <li
+                className={cn(
+                  'text-white text-sm font-semibold',
+                  column.title === '' && 'mb-8'
+                )}
+              >
                 {column.title}
               </li>
 
