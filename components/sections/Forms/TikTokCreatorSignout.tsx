@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { deleteCreatorAuthMutation } from '@/utils/supabase/server';
+import { deleteAuthMutation } from '@/utils/supabase/server';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -10,7 +10,7 @@ export default function TikTokCreatorSignout() {
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
-    await deleteCreatorAuthMutation();
+    await deleteAuthMutation();
     setIsSubmitting(false);
   };
 

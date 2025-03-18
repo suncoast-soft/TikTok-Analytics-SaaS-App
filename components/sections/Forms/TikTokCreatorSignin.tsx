@@ -5,16 +5,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function TikTokCreatorSignin() {
-  const { TIKTOK_AUTH_URL, TIKTOK_AUTH_REDIRECT_URL, TIKTOK_AUTH_CLIENT_KEY } =
-    process.env;
-  const scope = 'user.info.basic,user.info.profile,user.info.stats,video.list';
+  const { TIKTOK_CREATOR_AUTH_URL } = process.env;
   const state = crypto.randomBytes(32).toString('hex');
 
   return (
     <Button variant="white" asChild>
-      <Link
-        href={`${TIKTOK_AUTH_URL}?client_key=${TIKTOK_AUTH_CLIENT_KEY}&response_type=code&scope=${scope}&redirect_uri=${TIKTOK_AUTH_REDIRECT_URL}&state=${state}`}
-      >
+      <Link href={`${TIKTOK_CREATOR_AUTH_URL}&state=${state}`}>
         <Image
           src="/icons/tiktok-brands-solid.svg"
           width={20}

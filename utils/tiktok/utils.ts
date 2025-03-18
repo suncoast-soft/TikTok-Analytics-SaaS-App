@@ -1,11 +1,9 @@
 import * as crypto from 'crypto';
-import { getSellerAccessToken } from './seller-auth';
-import { getCreatorAccessToken } from './creator-auth';
+import { getAccessToken } from './auth';
 
 const {
   TIKTOK_PARTNER_APP_KEY,
   TIKTOK_PARTNER_APP_SECRET,
-  TIKTOK_SELLER_API_BASE_URL,
   TIKTOK_API_BASE_URL
 } = process.env;
 
@@ -53,7 +51,7 @@ export async function requestTikTokShopAPI(
   method: string = 'GET',
   body: BodyInit | null | undefined
 ) {
-  const authData = await getSellerAccessToken();
+  const authData = await getAccessToken();
 
   if (!authData) {
     return null;
@@ -98,7 +96,7 @@ export async function requestTikTokShopAPI(
   );
   urlSearchParams.append('sign', signature);
 
-  const fetchURL = `${TIKTOK_SELLER_API_BASE_URL}/${api_path}?${urlSearchParams.toString()}`;
+  const fetchURL = `${TIKTOK_API_BASE_URL}/${api_path}?${urlSearchParams.toString()}`;
 
   try {
     const response = await fetch(fetchURL, requestOptions);
@@ -115,36 +113,4 @@ export async function requestTikTokShopAPI(
     console.log('Request failed:', error);
     return null;
   }
-}
-
-export async function requestTikTokAPI(
-  api_path: string,
-  params: APIParams = {}
-) {
-  const accessToken = await getCreatorAccessToken();
-
-  if (!accessToken) {
-    return null;
-  }
-
-  const headers = new Headers();
-  headers.append('Authorization', `Bearer ${accessToken}`);
-
-  const urlSearchParams = new URLSearchParams(params as Record<string, string>);
-
-  const response = await fetch(
-    `${TIKTOK_API_BASE_URL}/${api_path}/?${urlSearchParams}`,
-    {
-      method: 'GET',
-      headers,
-      redirect: 'follow'
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! Status: ${response.status}`);
-  }
-
-  const data = await response.json();
-  return data.data;
 }

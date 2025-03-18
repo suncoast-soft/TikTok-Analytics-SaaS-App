@@ -1,6 +1,6 @@
 'use server';
 
-import { requestTikTokAPI, requestTikTokShopAPI } from '@/utils/tiktok/utils';
+import { requestTikTokShopAPI } from '@/utils/tiktok/utils';
 import { cookies } from 'next/headers';
 
 interface APIParams {
@@ -19,11 +19,4 @@ export async function requestTikTokShopAPIClient(
   body: BodyInit | null | undefined
 ) {
   return requestTikTokShopAPI(api_path, params, method, body);
-}
-
-export async function requestTikTokAPIClient(
-  api_path: string,
-  params: APIParams = {}
-) {
-  return requestTikTokAPI(api_path, params);
 }

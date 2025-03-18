@@ -2,7 +2,7 @@ import Box from '@/components/modules/Box';
 import Title from '@/components/modules/Title';
 import TikTokSellerSignin from '@/components/sections/Forms/TikTokSellerSignin';
 import { Button } from '@/components/ui/button';
-import { getSeller, getUser } from '@/utils/supabase/queries';
+import { getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 import { LinkIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -14,10 +14,9 @@ export default async function PrivateLayout({
 }>) {
   const supabase = await createClient();
   const user = await getUser(supabase);
-  const seller = await getSeller(supabase);
 
   if (user?.type === 'seller') {
-    if (seller) {
+    if (user.access_token) {
       return children;
     } else {
       return (

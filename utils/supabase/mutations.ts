@@ -6,8 +6,6 @@ import { Tables } from '@/types/db';
 import { getUser } from './queries';
 
 type User = Partial<Tables<'users'>>;
-type Seller = Partial<Tables<'sellers'>>;
-type Creator = Partial<Tables<'creators'>>;
 type Campaign = Partial<Tables<'campaigns'>>;
 
 export const updateUser = cache(
@@ -30,63 +28,44 @@ export const updateUser = cache(
   }
 );
 
-export const saveSellerAuth = cache(
-  async (supabase: SupabaseClient, auth_data: Seller) => {
+export const saveTikTokAuth = cache(
+  async (supabase: SupabaseClient, auth_data: User) => {
     const user = await getUser(supabase);
     if (!user) return null;
 
-    const { data: seller, error } = await supabase
-      .from('sellers')
-      .upsert({ ...auth_data, user_id: user.id })
+    const { data: auth, error } = await supabase
+      .from('users')
+      .update(auth_data)
       .eq('user_id', user.id)
       .select('*')
       .single();
 
     if (error) {
-      console.error('Failed to upsert seller auth:', error);
+      console.error('Failed to update auth data:', error);
       return null;
     }
 
-    return seller;
+    return auth;
   }
 );
 
-export const saveCreatorAuth = cache(
-  async (supabase: SupabaseClient, auth_data: Creator) => {
-    const user = await getUser(supabase);
-    if (!user) return null;
-
-    const { data: creator, error: error } = await supabase
-      .from('creators')
-      .upsert({ ...auth_data, user_id: user.id })
-      .eq('user_id', user.id)
-      .select('*')
-      .single();
-
-    if (error) {
-      console.error('Failed to upsert creator auth:', error);
-      return null;
-    }
-
-    return creator;
-  }
-);
-
-export const deleteCreatorAuth = cache(async (supabase: SupabaseClient) => {
+export const deleteTikTokAuth = cache(async (supabase: SupabaseClient) => {
   const user = await getUser(supabase);
   if (!user) return null;
 
-  const { error: error } = await supabase
-    .from('creators')
-    .delete()
-    .eq('user_id', user.id);
+  const { data: auth, error: error } = await supabase
+    .from('users')
+    .update({ access_token: null, refresh_token: null })
+    .eq('user_id', user.id)
+    .select('*')
+    .single();
 
   if (error) {
-    console.error('Failed to upsert creator auth:', error);
+    console.error('Failed to erase auth data:', error);
     return false;
   }
 
-  return true;
+  return auth;
 });
 
 export const saveCampaign = cache(

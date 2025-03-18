@@ -3,7 +3,7 @@ import Box from '@/components/modules/Box';
 import Card from '@/components/modules/Card';
 import TikTokSellerSignin from '@/components/sections/Forms/TikTokSellerSignin';
 import { Button } from '@/components/ui/button';
-import { getSeller, getUser } from '@/utils/supabase/queries';
+import { getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 import { CaptionsIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -11,7 +11,6 @@ import Link from 'next/link';
 export default async function Account() {
   const supabase = await createClient();
   const user = await getUser(supabase);
-  const seller = await getSeller(supabase);
 
   const tiktokSellerData = await requestTikTokShopAPIClient(
     '/authorization/202309/shops',
@@ -20,7 +19,7 @@ export default async function Account() {
     ''
   );
   const shop = tiktokSellerData.data.shops.find(
-    (s: { name: string }) => s.name === seller.seller_name
+    (s: { name: string }) => s.name === user.seller_name
   );
 
   return (

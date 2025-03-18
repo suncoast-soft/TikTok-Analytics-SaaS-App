@@ -33,102 +33,44 @@ export type Database = {
             foreignKeyName: "campaigns_seller_fkey"
             columns: ["seller"]
             isOneToOne: false
-            referencedRelation: "sellers"
-            referencedColumns: ["seller_name"]
-          },
-        ]
-      }
-      creators: {
-        Row: {
-          access_token: string | null
-          access_token_expire_at: number | null
-          created_at: string
-          refresh_token: string | null
-          refresh_token_expire_at: number | null
-          user_id: string
-        }
-        Insert: {
-          access_token?: string | null
-          access_token_expire_at?: number | null
-          created_at?: string
-          refresh_token?: string | null
-          refresh_token_expire_at?: number | null
-          user_id: string
-        }
-        Update: {
-          access_token?: string | null
-          access_token_expire_at?: number | null
-          created_at?: string
-          refresh_token?: string | null
-          refresh_token_expire_at?: number | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "creators_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
             referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      sellers: {
-        Row: {
-          access_token: string | null
-          access_token_expire_at: number | null
-          created_at: string
-          logo: string | null
-          refresh_token: string | null
-          refresh_token_expire_at: number | null
-          seller_name: string | null
-          shop_cipher: string | null
-          user_id: string
-        }
-        Insert: {
-          access_token?: string | null
-          access_token_expire_at?: number | null
-          created_at?: string
-          logo?: string | null
-          refresh_token?: string | null
-          refresh_token_expire_at?: number | null
-          seller_name?: string | null
-          shop_cipher?: string | null
-          user_id: string
-        }
-        Update: {
-          access_token?: string | null
-          access_token_expire_at?: number | null
-          created_at?: string
-          logo?: string | null
-          refresh_token?: string | null
-          refresh_token_expire_at?: number | null
-          seller_name?: string | null
-          shop_cipher?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "sellers_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedColumns: ["seller_id"]
           },
         ]
       }
       users: {
         Row: {
+          access_token: string | null
+          access_token_expire_at: number | null
           id: string
-          type: string | null
+          refresh_token: string | null
+          refresh_token_expire_at: number | null
+          seller_id: string | null
+          seller_name: string | null
+          shop_cipher: string | null
+          type: Database["public"]["Enums"]["user_type"] | null
         }
         Insert: {
+          access_token?: string | null
+          access_token_expire_at?: number | null
           id: string
-          type?: string | null
+          refresh_token?: string | null
+          refresh_token_expire_at?: number | null
+          seller_id?: string | null
+          seller_name?: string | null
+          shop_cipher?: string | null
+          type?: Database["public"]["Enums"]["user_type"] | null
         }
         Update: {
+          access_token?: string | null
+          access_token_expire_at?: number | null
           id?: string
-          type?: string | null
+          refresh_token?: string | null
+          refresh_token_expire_at?: number | null
+          seller_id?: string | null
+          seller_name?: string | null
+          shop_cipher?: string | null
+          type?: Database["public"]["Enums"]["user_type"] | null
         }
         Relationships: []
       }

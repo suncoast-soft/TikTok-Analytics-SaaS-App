@@ -3,9 +3,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function TikTokSellerSignin() {
+  const { TIKTOK_SELLER_AUTH_URL } = process.env;
+
   return (
     <Button variant="white" asChild>
-      <Link href={`${process.env.TIKTOK_SELLER_AUTH_URL}`}>
+      <Link href={`${TIKTOK_SELLER_AUTH_URL}`}>
         <Image
           src="/icons/tiktok-brands-solid.svg"
           width={20}

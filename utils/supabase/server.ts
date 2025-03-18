@@ -2,7 +2,7 @@
 
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
-import { deleteCreatorAuth, saveCampaign } from './mutations';
+import { deleteTikTokAuth, saveCampaign } from './mutations';
 import { getErrorRedirect, getStatusRedirect, getURL } from '../helpers';
 import { Tables } from '@/types/db';
 
@@ -31,10 +31,10 @@ export async function createClient() {
   );
 }
 
-export async function deleteCreatorAuthMutation() {
+export async function deleteAuthMutation() {
   const supabase = await createClient();
 
-  const deleted = await deleteCreatorAuth(supabase);
+  const deleted = await deleteTikTokAuth(supabase);
 
   if (deleted) {
     return getStatusRedirect(

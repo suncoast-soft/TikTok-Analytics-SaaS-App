@@ -1,4 +1,4 @@
-import { requestTikTokAPIClient } from '@/app/actions';
+import { requestTikTokShopAPIClient } from '@/app/actions';
 import Box from '@/components/modules/Box';
 import Card from '@/components/modules/Card';
 import TikTokCreatorSignin from '@/components/sections/Forms/TikTokCreatorSignin';
@@ -19,7 +19,7 @@ export default async function Account() {
   const supabase = await createClient();
   const user = await getUser(supabase);
 
-  const tiktokUserData = await requestTikTokAPIClient('user/info', {
+  const tiktokUserData = await requestTikTokShopAPIClient('user/info', {
     fields:
       'avatar_url,display_name,bio_description,profile_deep_link,username,follower_count,likes_count,video_count'
   });

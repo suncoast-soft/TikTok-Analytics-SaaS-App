@@ -15,14 +15,14 @@ import {
 import Link from 'next/link';
 import { Tables } from '@/types/db';
 
-type Seller = Tables<'sellers'>;
+type User = Tables<'users'>;
 
 export function SellerCampaignCard({
   campaign,
   seller
 }: {
   campaign: SellerCampaignOverview;
-  seller: Seller;
+  seller: User;
 }) {
   return (
     <Card>

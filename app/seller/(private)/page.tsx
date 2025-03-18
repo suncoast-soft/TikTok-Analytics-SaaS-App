@@ -1,12 +1,12 @@
 import { requestTikTokShopAPIClient } from '@/app/actions';
 import { SellerCampaignCard } from '@/components/sections/CampaignCard/SellerCampaignCard';
 import { SellerCampaignOverview } from '@/types/tiktok';
-import { getSeller } from '@/utils/supabase/queries';
+import { getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 
 export default async function SellerCampaigns() {
   const supabase = await createClient();
-  const seller = await getSeller(supabase);
+  const user = await getUser(supabase);
 
   const sellerTargetCollaborationsData = await requestTikTokShopAPIClient(
     '/affiliate_seller/202409/target_collaborations/search',
@@ -27,7 +27,7 @@ export default async function SellerCampaigns() {
           <SellerCampaignCard
             key={campaign.id}
             campaign={campaign}
-            seller={seller}
+            seller={user}
           />
         ))}
       </div>

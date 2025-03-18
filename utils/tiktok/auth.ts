@@ -1,15 +1,15 @@
-import { saveSellerAuth } from '../supabase/mutations';
+import { saveTikTokAuth } from '../supabase/mutations';
 import { createClient } from '../supabase/server';
-import { getSeller, getUser } from '../supabase/queries';
+import { getUser } from '../supabase/queries';
 import { requestTikTokShopAPI } from './utils';
 
 const {
-  TIKTOK_SELLER_TOKEN_BASE_URL,
   TIKTOK_PARTNER_APP_KEY,
-  TIKTOK_PARTNER_APP_SECRET
+  TIKTOK_PARTNER_APP_SECRET,
+  TIKTOK_TOKEN_BASE_URL
 } = process.env;
 
-export const generateSellerAccessToken = async (auth_code: string) => {
+export const generateAccessToken = async (auth_code: string) => {
   const supabase = await createClient();
 
   const user = await getUser(supabase);
@@ -29,7 +29,7 @@ export const generateSellerAccessToken = async (auth_code: string) => {
   const urlSearchParams = new URLSearchParams(params);
 
   const response = await fetch(
-    `${TIKTOK_SELLER_TOKEN_BASE_URL}/get?${urlSearchParams}`,
+    `${TIKTOK_TOKEN_BASE_URL}/get?${urlSearchParams}`,
     {
       method: 'GET',
       headers: myHeaders,
@@ -45,14 +45,16 @@ export const generateSellerAccessToken = async (auth_code: string) => {
     access_token_expire_in,
     refresh_token,
     refresh_token_expire_in,
-    seller_name
+    seller_name,
+    user_type
   } = data.data;
 
   const currentTime = Date.now();
   const access_token_expire_at = currentTime + access_token_expire_in - 1000;
   const refresh_token_expire_at = currentTime + refresh_token_expire_in - 1000;
 
-  const sellerAuth = await saveSellerAuth(supabase, {
+  const auth = await saveTikTokAuth(supabase, {
+    type: user_type === 0 ? 'seller' : user_type === 1 ? 'creator' : null,
     access_token,
     access_token_expire_at,
     refresh_token,
@@ -60,28 +62,32 @@ export const generateSellerAccessToken = async (auth_code: string) => {
     seller_name
   });
 
-  if (!sellerAuth) return null;
+  if (!auth) return null;
 
-  const shopCipherData = await requestTikTokShopAPI(
-    '/authorization/202309/shops',
-    {},
-    'GET',
-    ''
-  );
-  const shop = shopCipherData.data.shops.find(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (s: any) => s.name === seller_name
-  );
-  const shop_cipher = shop ? shop.cipher : null;
+  if (user_type === 0) {
+    const shopCipherData = await requestTikTokShopAPI(
+      '/authorization/202309/shops',
+      {},
+      'GET',
+      ''
+    );
+    const shop = shopCipherData.data.shops.find(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (s: any) => s.name === seller_name
+    );
+    const shop_cipher = shop ? shop.cipher : null;
 
-  const updatedSellerAuth = await saveSellerAuth(supabase, {
-    shop_cipher
-  });
+    const auth = await saveTikTokAuth(supabase, {
+      shop_cipher
+    });
 
-  return updatedSellerAuth;
+    return auth;
+  }
+
+  return auth;
 };
 
-export const refreshSellerAccessToken = async (refresh_token: string) => {
+export const refreshAccessToken = async (refresh_token: string) => {
   const supabase = await createClient();
 
   const myHeaders = new Headers({ 'content-type': 'application/json' });
@@ -95,7 +101,7 @@ export const refreshSellerAccessToken = async (refresh_token: string) => {
   const urlSearchParams = new URLSearchParams(params);
 
   const response = await fetch(
-    `${TIKTOK_SELLER_TOKEN_BASE_URL}/refresh?${urlSearchParams}`,
+    `${TIKTOK_TOKEN_BASE_URL}/refresh?${urlSearchParams}`,
     {
       method: 'GET',
       headers: myHeaders,
@@ -118,7 +124,7 @@ export const refreshSellerAccessToken = async (refresh_token: string) => {
   const access_token_expire_at = currentTime + access_token_expire_in - 1000;
   const refresh_token_expire_at = currentTime + refresh_token_expire_in - 1000;
 
-  const sellerAuth = await saveSellerAuth(supabase, {
+  const auth = await saveTikTokAuth(supabase, {
     access_token,
     access_token_expire_at,
     refresh_token: new_refresh_token,
@@ -126,13 +132,13 @@ export const refreshSellerAccessToken = async (refresh_token: string) => {
     seller_name
   });
 
-  return sellerAuth;
+  return auth;
 };
 
-export const getSellerAccessToken = async () => {
+export const getAccessToken = async () => {
   const supabase = await createClient();
 
-  const authData = await getSeller(supabase);
+  const authData = await getUser(supabase);
   if (!authData) {
     console.log('No token data found.');
     return null;
@@ -150,7 +156,7 @@ export const getSellerAccessToken = async () => {
   if (currentTime >= access_token_expire_at) {
     if (currentTime >= refresh_token_expire_at) return null;
 
-    const refreshedToken = await refreshSellerAccessToken(refresh_token);
+    const refreshedToken = await refreshAccessToken(refresh_token);
     if (!refreshedToken) return null;
 
     return { access_token: refreshedToken.access_token, shop_cipher };
