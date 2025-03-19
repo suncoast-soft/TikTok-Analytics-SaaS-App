@@ -24,7 +24,7 @@ export default async function SellerAnalyticsVideos({
     await searchParams;
 
   const start_date_ge =
-    start_date ?? format(subDays(new Date(), 7), 'yyyy-MM-dd');
+    start_date ?? format(subDays(new Date(), 30), 'yyyy-MM-dd');
   const end_date_lt = end_date ?? format(new Date(), 'yyyy-MM-dd');
 
   const query: APIParams = {
@@ -49,10 +49,14 @@ export default async function SellerAnalyticsVideos({
   return (
     <div className="container max-w-7xl py-12">
       <Card vertical={true} className="p-4 lg:p-8">
-        <Title title="Video Analytics" tag="h2" />
-        <DatePickerWithRange
-          date={{ from: new Date(start_date_ge), to: new Date(end_date_lt) }}
-        />
+        <div className="flex flex-col lg:flex-row lg:justify-between items-center">
+          <Title title="Video Analytics" tag="h2" />
+
+          <DatePickerWithRange
+            date={{ from: new Date(start_date_ge), to: new Date(end_date_lt) }}
+          />
+        </div>
+
         <VideoTable videos={videos} />
       </Card>
     </div>

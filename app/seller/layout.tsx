@@ -44,7 +44,7 @@ export default async function DashboardLayout({
         {
           icon: <ActivityIcon width={20} height={20} />,
           name: 'Shop Performance',
-          link: '/seller/analytics/products'
+          link: '/seller/analytics/shop'
         },
         {
           icon: <VideoIcon width={20} height={20} />,
