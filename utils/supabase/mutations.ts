@@ -72,9 +72,8 @@ export const saveCampaign = cache(
   async (supabase: SupabaseClient, campaign_data: Campaign) => {
     const { data: campaign, error: error } = await supabase
       .from('campaigns')
-      .upsert(campaign_data)
-      .eq('id', campaign_data.id)
-      .select('*')
+      .upsert(campaign_data, { onConflict: 'campaign_id' })
+      .select()
       .single();
 
     if (error) {

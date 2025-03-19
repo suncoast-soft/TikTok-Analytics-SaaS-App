@@ -52,7 +52,7 @@ export default function RewardForm({
     setIsSubmitting(true);
     await handleRequest(
       {
-        id: campaignId,
+        campaign_id: campaignId,
         rewards: [
           { target: data.target_1, reward: data.reward_1 },
           { target: data.target_2, reward: data.reward_2 },

@@ -58,13 +58,13 @@ export async function saveCampaignMutation(campaignData: Campaign) {
 
   if (campaign) {
     return getStatusRedirect(
-      getURL(`/seller/campaigns/${campaignData.id}`),
+      getURL(`/seller/campaigns/${campaignData.campaign_id}`),
       'Success!',
       `Your Campaign has been updated successfully.`
     );
   } else {
     return getErrorRedirect(
-      getURL(`/seller/campaigns/${campaignData.id}`),
+      getURL(`/seller/campaigns/${campaignData.campaign_id}`),
       'Error!',
       `Failed updating your Campaign. Please try again`
     );

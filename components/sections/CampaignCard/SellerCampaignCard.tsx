@@ -48,8 +48,7 @@ export function SellerCampaignCard({
       </div>
 
       <div className="relative w-full lg:w-1/3 px-3 lg:px-8 py-4">
-        <h4 className="text-white text-xl font-bold">Reward deals</h4>
-        <p className="mb-5">No reward milestones configured yet</p>
+        <h4 className="text-white text-xl font-bold mb-4">Reward deals</h4>
 
         <Badge
           button={

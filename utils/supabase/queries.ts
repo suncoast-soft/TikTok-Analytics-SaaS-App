@@ -42,7 +42,7 @@ export const getCampaign = cache(
     const { data: campaign, error } = await supabase
       .from('campaigns')
       .select('*')
-      .eq('id', campaignId)
+      .eq('campaign_id', campaignId)
       .single();
 
     if (error) {

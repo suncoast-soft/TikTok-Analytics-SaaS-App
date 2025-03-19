@@ -11,32 +11,24 @@ export type Database = {
     Tables: {
       campaigns: {
         Row: {
+          campaign_id: string | null
           created_at: string
           id: number
           rewards: Json | null
-          seller: string | null
         }
         Insert: {
+          campaign_id?: string | null
           created_at?: string
           id?: number
           rewards?: Json | null
-          seller?: string | null
         }
         Update: {
+          campaign_id?: string | null
           created_at?: string
           id?: number
           rewards?: Json | null
-          seller?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "rewards_seller_fkey"
-            columns: ["seller"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       users: {
         Row: {
