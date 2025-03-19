@@ -6,24 +6,26 @@ import TikTokCreatorSignout from '@/components/sections/Forms/TikTokCreatorSigno
 import { Button } from '@/components/ui/button';
 import { getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
-import {
-  CaptionsIcon,
-  ThumbsUpIcon,
-  UserRoundCheckIcon,
-  VideoIcon
-} from 'lucide-react';
+import { CaptionsIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+
+const getCreatorProfile = async () => {
+  const data = await requestTikTokShopAPIClient(
+    '/affiliate_creator/202405/profiles',
+    {},
+    'GET',
+    ''
+  );
+
+  return data?.data ?? {};
+};
 
 export default async function Account() {
   const supabase = await createClient();
   const user = await getUser(supabase);
 
-  const tiktokUserData = await requestTikTokShopAPIClient('user/info', {
-    fields:
-      'avatar_url,display_name,bio_description,profile_deep_link,username,follower_count,likes_count,video_count'
-  });
-  const { user: tiktokUser } = tiktokUserData ?? {};
+  const tiktokUser = await getCreatorProfile();
 
   return (
     <div className="container max-w-7xl py-8">
@@ -72,34 +74,37 @@ export default async function Account() {
             <div>
               <div className="w-fit flex items-center gap-2 mb-4">
                 <Image
-                  src={tiktokUser.avatar_url}
+                  src={tiktokUser.avatar.url}
                   width={32}
                   height={32}
-                  alt={tiktokUser.display_name}
+                  alt={tiktokUser.username}
                   className="rounded-full"
                 />
 
-                <Link href={tiktokUser.profile_deep_link} target="_blank">
+                <Link
+                  href={`https://www.tiktok.com/@${tiktokUser.username}`}
+                  target="_blank"
+                  className="underline"
+                >
                   <span>@{tiktokUser.username}</span>
                 </Link>
               </div>
 
-              <div className="flex flex-col xl:flex-row xl:items-center gap-2 mb-4">
-                <Box
-                  icon={<VideoIcon size={16} />}
-                  value={`${tiktokUser.video_count.toLocaleString()}`}
-                  label="Videos"
-                />
-                <Box
-                  icon={<UserRoundCheckIcon size={16} />}
-                  value={`${tiktokUser.follower_count.toLocaleString()}`}
-                  label="Followers"
-                />
-                <Box
-                  icon={<ThumbsUpIcon size={16} />}
-                  value={`${tiktokUser.likes_count.toLocaleString()}`}
-                  label="Likes"
-                />
+              <div className="max-w-xs grid grid-cols-2 gap-y-2">
+                <span className="text-sm mr-2">Register Region:</span>
+                <span className="text-white font-semibold capitalize">
+                  {tiktokUser.register_region}
+                </span>
+
+                <span className="text-sm mr-2">Selection Region:</span>
+                <span className="text-white font-semibold capitalize">
+                  {tiktokUser.selection_region}
+                </span>
+
+                <span className="text-sm mr-2">Permissions:</span>
+                <span className="text-white font-semibold capitalize">
+                  {tiktokUser.permissions.join(', ')}
+                </span>
               </div>
 
               <TikTokCreatorSignout />

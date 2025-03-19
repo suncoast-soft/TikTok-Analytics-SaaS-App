@@ -76,7 +76,10 @@ export async function requestTikTokShopAPI(
     app_key: TIKTOK_PARTNER_APP_KEY!,
     timestamp: ((Date.now() / 1000) | 0).toString()
   };
-  if (api_path !== '/authorization/202309/shops') {
+  if (
+    api_path !== '/authorization/202309/shops' &&
+    authData.type === 'seller'
+  ) {
     defaultParams.shop_cipher = authData.shop_cipher;
   }
 

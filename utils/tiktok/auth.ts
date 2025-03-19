@@ -147,6 +147,7 @@ export const getAccessToken = async () => {
   }
 
   const {
+    type,
     access_token,
     access_token_expire_at,
     refresh_token,
@@ -161,8 +162,8 @@ export const getAccessToken = async () => {
     const refreshedToken = await refreshAccessToken(refresh_token);
     if (!refreshedToken) return null;
 
-    return { access_token: refreshedToken.access_token, shop_cipher };
+    return { type, access_token: refreshedToken.access_token, shop_cipher };
   }
 
-  return { access_token, shop_cipher };
+  return { type, access_token, shop_cipher };
 };
