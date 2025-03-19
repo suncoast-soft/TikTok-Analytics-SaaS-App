@@ -24,6 +24,17 @@ import RewardForm from '@/components/sections/Forms/RewardForm';
 type User = Tables<'users'>;
 type Campaign = Tables<'campaigns'>;
 
+const fetchCampaign = async (campaign_id: string) => {
+  const data = await requestTikTokShopAPIClient(
+    `/affiliate_seller/202412/target_collaborations/${campaign_id}`,
+    {},
+    'GET',
+    ''
+  );
+
+  return data?.data?.target_collaboration ?? {};
+};
+
 export default async function CampaignPage({
   params
 }: {
@@ -31,14 +42,9 @@ export default async function CampaignPage({
 }) {
   const campaign_id = (await params).id;
 
-  const sellerTargetCollaborationData = await requestTikTokShopAPIClient(
-    `/affiliate_seller/202412/target_collaborations/${campaign_id}`,
-    {},
-    'GET',
-    ''
-  );
-  const campaignAPIData = sellerTargetCollaborationData.data
-    .target_collaboration as SellerCampaignDetail;
+  const campaignAPIData = (await fetchCampaign(
+    campaign_id
+  )) as SellerCampaignDetail;
 
   if (!campaignAPIData) {
     redirect('/seller');
