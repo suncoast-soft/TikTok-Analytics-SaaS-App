@@ -76,9 +76,11 @@ export const generateAccessToken = async (auth_code: string) => {
       (s: any) => s.name === seller_name
     );
     const shop_cipher = shop ? shop.cipher : null;
+    const seller_id = shop ? shop.id : null;
 
     const auth = await saveTikTokAuth(supabase, {
-      shop_cipher
+      shop_cipher,
+      seller_id
     });
 
     return auth;

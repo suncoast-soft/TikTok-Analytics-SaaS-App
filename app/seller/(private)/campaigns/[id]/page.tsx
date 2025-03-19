@@ -16,12 +16,12 @@ import { getTimeDiff } from '@/utils/helpers';
 import Title from '@/components/modules/Title';
 import { requestTikTokShopAPIClient } from '@/app/actions';
 import { SellerCampaignDetail } from '@/types/tiktok';
-import { getCampaign, getSeller } from '@/utils/supabase/queries';
+import { getCampaign, getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 import { Tables } from '@/types/db';
 import RewardForm from '@/components/sections/Forms/RewardForm';
 
-type Seller = Tables<'sellers'>;
+type User = Tables<'users'>;
 type Campaign = Tables<'campaigns'>;
 
 export default async function CampaignPage({
@@ -29,11 +29,7 @@ export default async function CampaignPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  // Get Campaign API Data
-  const real_campaign_id = (await params).id;
-  console.log(real_campaign_id);
-
-  const campaign_id = '7470079187999688490'; // Temporary
+  const campaign_id = (await params).id;
 
   const sellerTargetCollaborationData = await requestTikTokShopAPIClient(
     `/affiliate_seller/202412/target_collaborations/${campaign_id}`,
@@ -41,7 +37,6 @@ export default async function CampaignPage({
     'GET',
     ''
   );
-
   const campaignAPIData = sellerTargetCollaborationData.data
     .target_collaboration as SellerCampaignDetail;
 
@@ -51,7 +46,7 @@ export default async function CampaignPage({
 
   // Get Configured Campaign data from database
   const supabase = await createClient();
-  const seller = (await getSeller(supabase)) as Seller;
+  const seller = (await getUser(supabase)) as User;
   const campaignData = (await getCampaign(supabase, campaign_id)) as Campaign;
 
   const campaign = { ...campaignAPIData, ...campaignData };

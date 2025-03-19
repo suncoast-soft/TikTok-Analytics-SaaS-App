@@ -6,10 +6,13 @@ import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 import {
+  ActivityIcon,
   CogIcon,
   HandshakeIcon,
   HeadsetIcon,
-  ShoppingBagIcon
+  LineChartIcon,
+  ShoppingBagIcon,
+  VideoIcon
 } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense } from 'react';
@@ -32,6 +35,23 @@ export default async function DashboardLayout({
       icon: <ShoppingBagIcon width={20} height={20} />,
       name: 'Affiliate Orders',
       link: '/seller/orders'
+    },
+    {
+      icon: <LineChartIcon width={20} height={20} />,
+      name: 'Analytics',
+      link: '/seller/analytics',
+      subnavs: [
+        {
+          icon: <ActivityIcon width={20} height={20} />,
+          name: 'Shop Performance',
+          link: '/seller/analytics/products'
+        },
+        {
+          icon: <VideoIcon width={20} height={20} />,
+          name: 'Video Performance',
+          link: '/seller/analytics/videos'
+        }
+      ]
     },
     {
       icon: <CogIcon width={20} height={20} />,

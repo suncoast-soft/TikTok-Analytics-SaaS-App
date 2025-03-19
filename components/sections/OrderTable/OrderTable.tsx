@@ -7,7 +7,7 @@ import {
   TableRow
 } from '@/components/ui/table';
 import { Order } from '@/types/tiktok';
-import { format } from 'date-fns';
+import { displayDate } from '@/utils/helpers';
 
 interface SectionProps {
   orders: Order[];
@@ -30,11 +30,9 @@ export default function OrderTable({ orders }: SectionProps) {
         {orders.map((order) => (
           <TableRow key={order.id} className="border-navy-300">
             <TableCell>{order.id}</TableCell>
+            <TableCell>{displayDate(order.create_time * 1000)}</TableCell>
             <TableCell>
-              {format(new Date(order.create_time * 1000), 'PPP')}
-            </TableCell>
-            <TableCell>
-              {format(new Date(order.delivery_time * 1000), 'PPP')}
+              {order.delivery_time && displayDate(order.delivery_time * 1000)}
             </TableCell>
             <TableCell>
               {order.skus.map((sku) => sku.product_id).join(', ')}

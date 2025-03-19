@@ -1,10 +1,15 @@
 import { requestTikTokShopAPIClient } from '@/app/actions';
 import Card from '@/components/modules/Card';
+import DatePickerWithRange from '@/components/modules/DateRange';
 import Title from '@/components/modules/Title';
 import VideoTable from '@/components/sections/VideoTable';
 import { format, subDays } from 'date-fns';
 
-export default async function VideoAnalytics({
+interface APIParams {
+  [key: string]: string | number;
+}
+
+export default async function SellerAnalyticsVideos({
   searchParams
 }: {
   searchParams: Promise<{
@@ -19,27 +24,35 @@ export default async function VideoAnalytics({
     await searchParams;
 
   const start_date_ge =
-    start_date ?? format(subDays(new Date(), 8), 'yyyy-MM-dd');
-  const end_date_lt = end_date ?? format(subDays(new Date(), 1), 'yyyy-MM-dd');
+    start_date ?? format(subDays(new Date(), 7), 'yyyy-MM-dd');
+  const end_date_lt = end_date ?? format(new Date(), 'yyyy-MM-dd');
+
+  const query: APIParams = {
+    start_date_ge,
+    end_date_lt,
+    sort_field: sort_field ?? 'gmv',
+    sort_order: sort_order ?? 'DESC',
+    page_size: 20
+  };
+  if (page_token) {
+    query.page_token = page_token;
+  }
 
   const videoPerformanceListData = await requestTikTokShopAPIClient(
     '/analytics/202409/shop_videos/performance',
-    {
-      start_date_ge,
-      end_date_lt,
-      sort_field: sort_field ?? 'gmv',
-      sort_order: sort_order ?? 'DESC',
-      page_token: page_token
-    },
+    query,
     'GET',
     ''
   );
-  const { videos } = videoPerformanceListData.data;
+  const videos = videoPerformanceListData?.data?.videos ?? [];
 
   return (
     <div className="container max-w-7xl py-12">
       <Card vertical={true} className="p-4 lg:p-8">
         <Title title="Video Analytics" tag="h2" />
+        <DatePickerWithRange
+          date={{ from: new Date(start_date_ge), to: new Date(end_date_lt) }}
+        />
         <VideoTable videos={videos} />
       </Card>
     </div>

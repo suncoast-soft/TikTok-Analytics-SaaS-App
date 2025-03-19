@@ -14,6 +14,8 @@ export default async function SellerOrders() {
   );
   const { orders } = sellerAffiliateOrdersData.data;
 
+  console.log(orders);
+
   return (
     <div className="container max-w-7xl py-12">
       <Card vertical={true} className="p-4 lg:p-8">

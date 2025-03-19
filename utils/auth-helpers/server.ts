@@ -74,7 +74,7 @@ export async function signUp(formData: FormData) {
     password,
     options: {
       emailRedirectTo: getURL('/auth/callback/supabase'),
-      data: { type: type, name: name }
+      data: { type: type, display_name: name }
     }
   });
 

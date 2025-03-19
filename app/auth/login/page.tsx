@@ -12,7 +12,7 @@ export default async function Login({
   const isSeller = (await searchParams).type === 'seller';
 
   return (
-    <div className="container max-w-sm py-12">
+    <div className="container max-w-md py-12">
       <Title
         tag="h1"
         title="Login to your account"

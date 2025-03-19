@@ -18,35 +18,48 @@ import {
   PopoverTrigger
 } from '@/components/ui/popover';
 import { cn } from '@/utils/cn';
+import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface DatePickerWithRangeProps {
   date: DateRange | undefined;
-  setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
   className?: string;
 }
 
 export default function DatePickerWithRange({
-  date,
-  setDate,
+  date: initialDate,
   className
 }: DatePickerWithRangeProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [date, setDate] = useState(initialDate);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
   const handleSelectChange = (value: string) => {
     const days = parseInt(value);
     if (!isNaN(days)) {
       setDate({
-        from: subDays(new Date(), days + 1),
-        to: subDays(new Date(), 1)
+        from: subDays(new Date(), days),
+        to: new Date()
       });
     }
   };
 
   const handleCalendarSelect = (range: DateRange | undefined) => {
-    setDate(range);
+    if (range?.from && range?.to) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('start_date', format(range.from, 'yyyy-MM-dd'));
+      params.set('end_date', format(range.to, 'yyyy-MM-dd'));
+
+      router.push(`?${params.toString()}`);
+      setIsPopoverOpen(false);
+    }
   };
 
   return (
     <div className={cn('grid gap-2', className)}>
-      <Popover>
+      <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
         <PopoverTrigger asChild>
           <Button
             id="date"
@@ -56,6 +69,7 @@ export default function DatePickerWithRange({
               'w-[260px] justify-start text-left font-normal mb-4 ml-auto',
               !date && 'text-muted-foreground'
             )}
+            onClick={() => setIsPopoverOpen((prev) => !prev)}
           >
             <CalendarIcon className="mr-2" />
             {date?.from ? (
@@ -90,13 +104,22 @@ export default function DatePickerWithRange({
             </Select>
 
             <Calendar
-              initialFocus
+              autoFocus
               mode="range"
               defaultMonth={date?.from}
               selected={date}
-              onSelect={handleCalendarSelect}
+              onSelect={(range) => setDate(range)}
               numberOfMonths={2}
             />
+
+            <div className="px-4 pb-4 text-right">
+              <Button
+                variant="outline"
+                onClick={() => handleCalendarSelect(date)}
+              >
+                Apply
+              </Button>
+            </div>
           </div>
         </PopoverContent>
       </Popover>

@@ -36,7 +36,7 @@ export const saveTikTokAuth = cache(
     const { data: auth, error } = await supabase
       .from('users')
       .update(auth_data)
-      .eq('user_id', user.id)
+      .eq('id', user.id)
       .select('*')
       .single();
 
@@ -56,7 +56,7 @@ export const deleteTikTokAuth = cache(async (supabase: SupabaseClient) => {
   const { data: auth, error: error } = await supabase
     .from('users')
     .update({ access_token: null, refresh_token: null })
-    .eq('user_id', user.id)
+    .eq('id', user.id)
     .select('*')
     .single();
 

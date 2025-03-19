@@ -1,3 +1,5 @@
+import { format, parseISO } from 'date-fns';
+
 export const getURL = (path: string = '') => {
   // Check if NEXT_PUBLIC_SITE_URL is set and non-empty. Set this to your site URL in production env.
   let url =
@@ -138,4 +140,26 @@ export const getTimeDiff = (start_time: number, end_time: number) => {
         : (Math.max(0, totalDuration - timeLeft) / totalDuration) * 100;
 
   return { text, progress };
+};
+
+export const displayDate = (
+  dateValue: string | Date | number | null,
+  pattern?: string
+): string => {
+  if (!dateValue) return '';
+
+  try {
+    let date: Date;
+    if (typeof dateValue === 'string') {
+      date = parseISO(dateValue);
+    } else if (typeof dateValue === 'number') {
+      date = new Date(dateValue);
+    } else {
+      date = dateValue;
+    }
+
+    return format(date, pattern ?? 'PPP');
+  } catch {
+    return '';
+  }
 };

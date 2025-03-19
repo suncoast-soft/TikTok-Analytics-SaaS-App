@@ -9,6 +9,35 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      campaigns: {
+        Row: {
+          created_at: string
+          id: number
+          rewards: Json | null
+          seller: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          rewards?: Json | null
+          seller?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          rewards?: Json | null
+          seller?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rewards_seller_fkey"
+            columns: ["seller"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           access_token: string | null
@@ -19,7 +48,7 @@ export type Database = {
           seller_id: string | null
           seller_name: string | null
           shop_cipher: string | null
-          type: Database["public"]["Enums"]["user_type"] | null
+          type: string | null
         }
         Insert: {
           access_token?: string | null
@@ -30,7 +59,7 @@ export type Database = {
           seller_id?: string | null
           seller_name?: string | null
           shop_cipher?: string | null
-          type?: Database["public"]["Enums"]["user_type"] | null
+          type?: string | null
         }
         Update: {
           access_token?: string | null
@@ -41,7 +70,7 @@ export type Database = {
           seller_id?: string | null
           seller_name?: string | null
           shop_cipher?: string | null
-          type?: Database["public"]["Enums"]["user_type"] | null
+          type?: string | null
         }
         Relationships: []
       }

@@ -11,7 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { signInWithPassword, signUp } from '@/utils/auth-helpers/server';
 import FormInput from '@/components/modules/FormInput';
 
-interface PasswordSignInProps {
+interface PasswordAuthProps {
   register: boolean;
   type: 'seller' | 'creator';
 }
@@ -22,10 +22,7 @@ const FormSchema = z.object({
   name: z.string().optional()
 });
 
-export default function PasswordSignIn({
-  register,
-  type
-}: PasswordSignInProps) {
+export default function PasswordAuth({ register, type }: PasswordAuthProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 

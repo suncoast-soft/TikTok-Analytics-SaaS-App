@@ -11,7 +11,7 @@ export default async function SellerCampaigns() {
   const sellerTargetCollaborationsData = await requestTikTokShopAPIClient(
     '/affiliate_seller/202409/target_collaborations/search',
     {
-      page_size: 20
+      page_size: 100
     },
     'POST',
     JSON.stringify({
