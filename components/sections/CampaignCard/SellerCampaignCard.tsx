@@ -31,12 +31,15 @@ export function SellerCampaignCard({
           tag="h3"
           title={campaign.name}
           subtitle={seller.seller_name ?? 'Flicker'}
+          description={campaign.message}
         />
+      </div>
 
+      <div className="relative w-full lg:w-1/3 px-3 lg:px-8 py-4">
         <Box
           icon={<TimerIcon width={16} />}
           label="Campaign progress"
-          className="w-full lg:w-96 mt-5"
+          className="w-full lg:w-96 mb-5"
         >
           <ProgressBar
             progress={
@@ -45,10 +48,6 @@ export function SellerCampaignCard({
             label={getTimeDiff(campaign.start_time, campaign.end_time).text}
           />
         </Box>
-      </div>
-
-      <div className="relative w-full lg:w-1/3 px-3 lg:px-8 py-4">
-        <h4 className="text-white text-xl font-bold mb-4">Reward deals</h4>
 
         <Badge
           button={

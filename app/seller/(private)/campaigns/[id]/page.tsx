@@ -50,6 +50,8 @@ export default async function CampaignPage({
     redirect('/seller');
   }
 
+  console.log(campaignAPIData);
+
   // Get Configured Campaign data from database
   const supabase = await createClient();
   const seller = (await getUser(supabase)) as User;
@@ -62,11 +64,11 @@ export default async function CampaignPage({
       <Card vertical={true} className="p-4 lg:p-8">
         <div className="flex flex-col lg:flex-row items-center gap-8 mb-12">
           <Image
-            src={'/flicker-logo-white.png'}
-            width={1000}
-            height={200}
+            src={campaignAPIData.products[0].main_image_url}
+            width={320}
+            height={320}
             alt={seller.seller_name ?? 'Seller Logo'}
-            className="w-80 h-60 object-contain rounded-lg"
+            className="w-80 h-80 object-contain rounded-lg"
           />
 
           <div>

@@ -32,7 +32,7 @@ export default async function SellerOrders({
   const { start_date, end_date } = await searchParams;
 
   const start_date_ge =
-    start_date ?? format(subDays(new Date(), 7), 'yyyy-MM-dd');
+    start_date ?? format(subDays(new Date(), 30), 'yyyy-MM-dd');
   const end_date_lt = end_date ?? format(new Date(), 'yyyy-MM-dd');
 
   const orders = await fetchAffiliateOrders(

@@ -20,6 +20,8 @@ export default async function SellerCampaigns() {
   );
   const campaigns = sellerTargetCollaborationsData.data.target_collaborations;
 
+  console.log(campaigns);
+
   return (
     <div className="container max-w-7xl py-8">
       <div className="mb-12 space-y-8">
