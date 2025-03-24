@@ -13,22 +13,48 @@ export type Database = {
         Row: {
           campaign_id: string | null
           created_at: string
+          end_time: number | null
+          free_sample_rule: boolean | null
           id: number
+          message: string | null
+          name: string | null
           rewards: Json | null
+          start_time: number | null
+          user_id: string | null
         }
         Insert: {
           campaign_id?: string | null
           created_at?: string
+          end_time?: number | null
+          free_sample_rule?: boolean | null
           id?: number
+          message?: string | null
+          name?: string | null
           rewards?: Json | null
+          start_time?: number | null
+          user_id?: string | null
         }
         Update: {
           campaign_id?: string | null
           created_at?: string
+          end_time?: number | null
+          free_sample_rule?: boolean | null
           id?: number
+          message?: string | null
+          name?: string | null
           rewards?: Json | null
+          start_time?: number | null
+          user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "campaigns_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       users: {
         Row: {
