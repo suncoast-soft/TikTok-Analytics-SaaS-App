@@ -11,14 +11,16 @@ import {
 } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import { PublicSmallCampaignCard } from '../CampaignCard';
-import { SellerCampaignDetail } from '@/types/tiktok';
+import { Tables } from '@/types/db';
+
+type Campaign = Tables<'campaigns'>;
 
 export function PublicCampaigns({
   selectedCategory,
   campaigns
 }: {
   selectedCategory?: string;
-  campaigns: SellerCampaignDetail[];
+  campaigns: Campaign[];
 }) {
   const categories = [
     {

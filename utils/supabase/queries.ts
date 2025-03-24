@@ -53,3 +53,35 @@ export const getCampaign = cache(
     return campaign;
   }
 );
+
+export const getSellerCampaignOrders = cache(
+  async (supabase: SupabaseClient, campaignId: string) => {
+    const { data: orders, error } = await supabase
+      .from('orders')
+      .select('*')
+      .eq('campaign_id', campaignId);
+
+    if (error) {
+      console.log('Failed to fetch orders', error);
+      return null;
+    }
+
+    return orders;
+  }
+);
+
+export const getCreatorOrders = cache(
+  async (supabase: SupabaseClient, creatorUsername: string) => {
+    const { data: orders, error } = await supabase
+      .from('orders')
+      .select('*')
+      .eq('creator_username', creatorUsername);
+
+    if (error) {
+      console.log('Failed to fetch orders', error);
+      return null;
+    }
+
+    return orders;
+  }
+);

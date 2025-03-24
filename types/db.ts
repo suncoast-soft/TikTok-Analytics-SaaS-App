@@ -13,6 +13,7 @@ export type Database = {
         Row: {
           campaign_id: string | null
           created_at: string
+          details: Json | null
           end_time: number | null
           free_sample_rule: boolean | null
           id: number
@@ -25,6 +26,7 @@ export type Database = {
         Insert: {
           campaign_id?: string | null
           created_at?: string
+          details?: Json | null
           end_time?: number | null
           free_sample_rule?: boolean | null
           id?: number
@@ -37,6 +39,7 @@ export type Database = {
         Update: {
           campaign_id?: string | null
           created_at?: string
+          details?: Json | null
           end_time?: number | null
           free_sample_rule?: boolean | null
           id?: number
@@ -53,6 +56,56 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          campaign_id: string | null
+          commission_base: number | null
+          create_time: number | null
+          creator_username: string | null
+          id: number
+          order_id: string | null
+          paid_commission: number | null
+          product_id: string | null
+          quantity: number | null
+          status: string | null
+          video_id: string | null
+        }
+        Insert: {
+          campaign_id?: string | null
+          commission_base?: number | null
+          create_time?: number | null
+          creator_username?: string | null
+          id?: number
+          order_id?: string | null
+          paid_commission?: number | null
+          product_id?: string | null
+          quantity?: number | null
+          status?: string | null
+          video_id?: string | null
+        }
+        Update: {
+          campaign_id?: string | null
+          commission_base?: number | null
+          create_time?: number | null
+          creator_username?: string | null
+          id?: number
+          order_id?: string | null
+          paid_commission?: number | null
+          product_id?: string | null
+          quantity?: number | null
+          status?: string | null
+          video_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["campaign_id"]
           },
         ]
       }
