@@ -17,6 +17,16 @@ interface RequestOptions {
   body?: BodyInit | null | undefined;
 }
 
+interface TikTokAPIRequestParams {
+  api_path: string;
+  method?: 'GET' | 'POST';
+  headers?: APIParams;
+  params?: APIParams;
+  body?: BodyInit | null;
+  access_token?: string;
+  shop_cipher?: string;
+}
+
 export const generateSign = (
   apiPath: string,
   params: APIParams,
@@ -45,56 +55,68 @@ export const generateSign = (
   return hmac.digest('hex');
 };
 
-export async function requestTikTokShopAPI(
-  api_path: string,
-  params: APIParams = {},
-  method: string = 'GET',
-  body: BodyInit | null | undefined
-) {
-  const authData = await getAccessToken();
+export async function requestTikTokShopAPI({
+  api_path,
+  method = 'GET',
+  params = {},
+  body,
+  access_token,
+  shop_cipher
+}: TikTokAPIRequestParams) {
+  const timestamp = ((Date.now() / 1000) | 0).toString();
 
-  if (!authData) {
-    return null;
+  let token = access_token;
+  let cipher = shop_cipher;
+
+  if (!token) {
+    const authData = await getAccessToken();
+    if (!authData) return null;
+
+    token = authData.access_token;
+    if (authData.type === 'seller') {
+      cipher = authData.shop_cipher;
+    }
   }
 
+  const defaultParams: Record<string, string> = {
+    app_key: TIKTOK_PARTNER_APP_KEY!,
+    timestamp
+  };
+
+  if (cipher) {
+    defaultParams.shop_cipher = cipher;
+  }
+
+  const allParams = {
+    ...defaultParams,
+    ...params
+  };
+
   const requestOptions: RequestOptions = {
-    method: method,
+    method,
     headers: {
       'content-type': 'application/json',
-      'x-tts-access-token': authData.access_token
+      'x-tts-access-token': token!
     }
   };
-  if (method === 'POST') {
+
+  if (method === 'POST' && body) {
     requestOptions.body = body;
   }
 
-  const defaultParams: {
-    app_key: string;
-    timestamp: string;
-    shop_cipher?: string;
-  } = {
-    app_key: TIKTOK_PARTNER_APP_KEY!,
-    timestamp: ((Date.now() / 1000) | 0).toString(),
-    shop_cipher: authData.shop_cipher
-  };
-
-  const urlSearchParams = new URLSearchParams({
-    ...defaultParams,
-    ...params
-  } as Record<string, string>);
-
   const signature = generateSign(
     api_path,
-    {
-      ...defaultParams,
-      ...params
-    },
+    allParams,
     requestOptions,
     TIKTOK_PARTNER_APP_SECRET!
   );
-  urlSearchParams.append('sign', signature);
 
-  const fetchURL = `${TIKTOK_API_BASE_URL}/${api_path}?${urlSearchParams.toString()}`;
+  const urlParams = new URLSearchParams({
+    ...allParams,
+    sign: signature
+  });
+
+  const fetchURL = `${TIKTOK_API_BASE_URL}/${api_path}?${urlParams.toString()}`;
 
   try {
     const response = await fetch(fetchURL, requestOptions);

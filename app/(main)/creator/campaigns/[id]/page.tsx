@@ -13,10 +13,16 @@ import ProgressBar from '@/components/modules/ProgressBar';
 import { getTimeDiff } from '@/utils/helpers';
 import Title from '@/components/modules/Title';
 import { createClient } from '@/utils/supabase/server';
-import { getCampaign, getSellerCampaignOrders } from '@/utils/supabase/queries';
+import {
+  getCampaign,
+  // getCreatorOrders,
+  getSellerOrders
+  // getUser
+} from '@/utils/supabase/queries';
 import { SellerCampaignDetail } from '@/types/tiktok';
 import { Tables } from '@/types/db';
 
+// type User = Tables<'users'>;
 type Campaign = Tables<'campaigns'>;
 type Order = Tables<'orders'>;
 
@@ -31,14 +37,12 @@ export default async function CampaignDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const campaignId = (await params).id;
-
   const supabase = await createClient();
-  const campaign = (await getCampaign(supabase, campaignId)) as Campaign;
-  const orders = (await getSellerCampaignOrders(
-    supabase,
-    campaignId
-  )) as Order[];
 
+  /**
+   * Campaign Data
+   */
+  const campaign = (await getCampaign(supabase, campaignId)) as Campaign;
   const { campaign_id, name, message, start_time, end_time, details } =
     campaign;
   const rewards = (campaign.rewards ?? []) as unknown as RewardProps[];
@@ -46,7 +50,21 @@ export default async function CampaignDetailPage({
     details as unknown as SellerCampaignDetail;
   const productThumbnail = products?.[0]?.main_image_url;
 
-  // Affiliate Data
+  /**
+   * Order Details
+   * Temp Disable Getting Creator Order. NO orders to see for now.
+   */
+  // const user = (await getUser(supabase)) as User;
+  // const orders = (await getCreatorOrders(
+  //   supabase,
+  //   campaignId,
+  //   user.creator_username
+  // )) as Order[];
+  const orders = (await getSellerOrders(supabase, campaignId)) as Order[];
+
+  /**
+   * Affiliate Data
+   */
   const videos = Array.from(new Set(orders.map((order) => order.video_id)));
   const gmv = orders.reduce(
     (sum, order) => sum + (order.commission_base ?? 0),

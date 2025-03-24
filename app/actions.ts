@@ -15,8 +15,8 @@ export async function setCookie(name: string, value: string) {
 export async function requestTikTokShopAPIClient(
   api_path: string,
   params: APIParams = {},
-  method: string = 'GET',
+  method: 'GET' | 'POST',
   body: BodyInit | null | undefined
 ) {
-  return requestTikTokShopAPI(api_path, params, method, body);
+  return requestTikTokShopAPI({ api_path, params, method, body });
 }

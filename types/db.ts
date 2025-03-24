@@ -113,6 +113,7 @@ export type Database = {
         Row: {
           access_token: string | null
           access_token_expire_at: number | null
+          creator_username: string | null
           id: string
           refresh_token: string | null
           refresh_token_expire_at: number | null
@@ -124,6 +125,7 @@ export type Database = {
         Insert: {
           access_token?: string | null
           access_token_expire_at?: number | null
+          creator_username?: string | null
           id: string
           refresh_token?: string | null
           refresh_token_expire_at?: number | null
@@ -135,6 +137,7 @@ export type Database = {
         Update: {
           access_token?: string | null
           access_token_expire_at?: number | null
+          creator_username?: string | null
           id?: string
           refresh_token?: string | null
           refresh_token_expire_at?: number | null

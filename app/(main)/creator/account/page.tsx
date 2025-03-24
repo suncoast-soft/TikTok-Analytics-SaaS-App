@@ -74,7 +74,7 @@ export default async function Account() {
             <div>
               <div className="w-fit flex items-center gap-2 mb-4">
                 <Image
-                  src={tiktokUser.avatar.url}
+                  src={tiktokUser.avatar?.url}
                   width={32}
                   height={32}
                   alt={tiktokUser.username}
@@ -103,7 +103,7 @@ export default async function Account() {
 
                 <span className="text-sm mr-2">Permissions:</span>
                 <span className="text-white font-semibold capitalize">
-                  {tiktokUser.permissions.join(', ')}
+                  {tiktokUser.permissions?.join(', ')}
                 </span>
               </div>
 

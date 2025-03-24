@@ -163,3 +163,19 @@ export const displayDate = (
     return '';
   }
 };
+
+export const checkReward = (
+  rewards: {
+    target: number;
+    reward: number;
+  }[],
+  gmv: number
+): number => {
+  let reward = 0;
+  for (const milestone of rewards) {
+    if (gmv >= milestone.target) {
+      reward = milestone.reward;
+    }
+  }
+  return reward;
+};

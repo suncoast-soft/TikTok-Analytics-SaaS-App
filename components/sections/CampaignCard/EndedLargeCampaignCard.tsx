@@ -2,30 +2,68 @@ import Badge from '@/components/modules/Badge';
 import Box from '@/components/modules/Box';
 import Card from '@/components/modules/Card';
 import Title from '@/components/modules/Title';
+import { Button } from '@/components/ui/button';
 import { Tables } from '@/types/db';
 import { SellerCampaignDetail } from '@/types/tiktok';
-import { format } from 'date-fns';
+import { checkReward, getTimeDiff } from '@/utils/helpers';
+import { getSellerOrders } from '@/utils/supabase/queries';
+import { createClient } from '@/utils/supabase/server';
 import {
   CircleDollarSignIcon,
   ShoppingBagIcon,
-  TimerIcon,
   TimerResetIcon,
   TrophyIcon,
   VideoIcon
 } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 type Campaign = Tables<'campaigns'>;
+type Order = Tables<'orders'>;
 
-export function EndedLargeCampaignCard({ campaign }: { campaign: Campaign }) {
-  const { name, end_time, details } = campaign;
-  const {
-    products,
-    product_count,
-    creator_invited_count,
-    showcase_creator_count
-  } = details as unknown as SellerCampaignDetail;
+interface RewardProps {
+  target: number;
+  reward: number;
+}
+
+export async function EndedLargeCampaignCard({
+  campaign
+}: {
+  campaign: Campaign;
+}) {
+  const supabase = await createClient();
+
+  const { campaign_id, name, start_time, end_time, details } = campaign;
+  const rewards = (campaign.rewards ?? []) as unknown as RewardProps[];
+  const { products } = details as unknown as SellerCampaignDetail;
   const productThumbnail = products?.[0]?.main_image_url;
+
+  /**
+   * Order Details
+   * Temp Disable Getting Creator Order. NO orders to see for now.
+   */
+  // const user = (await getUser(supabase)) as User;
+  // const orders = (await getCreatorOrders(
+  //   supabase,
+  //   campaignId,
+  //   user.creator_username
+  // )) as Order[];
+  const orders = (await getSellerOrders(supabase, campaign_id!)) as Order[];
+
+  /**
+   * Affiliate Data
+   */
+  const videos = Array.from(new Set(orders.map((order) => order.video_id)));
+  const gmv = orders.reduce(
+    (sum, order) => sum + (order.commission_base ?? 0),
+    0
+  );
+  const commission = orders.reduce(
+    (sum, order) => sum + (order.paid_commission ?? 0),
+    0
+  );
+
+  const reward = checkReward(rewards, gmv);
 
   return (
     <Card>
@@ -41,17 +79,25 @@ export function EndedLargeCampaignCard({ campaign }: { campaign: Campaign }) {
         )}
 
         <div className="absolute left-4 top-4">
-          <Badge icon={<TimerResetIcon width={16} />} value="Ended" />
+          <Badge
+            icon={<TimerResetIcon width={16} />}
+            value={getTimeDiff(start_time!, end_time!).text}
+          />
         </div>
       </div>
 
       <div className="w-full lg:w-5/12 px-3 lg:px-8 py-4">
         <Title tag="h3" title={name!} subtitle={'Locked'} />
 
-        <Box
-          icon={<TimerIcon size={16} />}
-          label={`Campaign ended on ${format(end_time!, 'PPP')}`}
-          className="py-1.5 mb-6"
+        <Badge
+          button={
+            <Button size="sm" asChild>
+              <Link href={`/creator/campaigns/${campaign_id}`}>
+                View Details
+              </Link>
+            </Button>
+          }
+          className="mb-5"
         />
 
         <div className="flex gap-4 items-center">
@@ -60,7 +106,7 @@ export function EndedLargeCampaignCard({ campaign }: { campaign: Campaign }) {
             label="Commission"
             className="bg-navy-500 w-40"
           >
-            <p className="text-white text-2xl font-bold">{`$${'240'}`}</p>
+            <p className="text-white text-2xl font-bold">{`$${commission.toLocaleString()}`}</p>
           </Box>
 
           <div className="text-4xl text-white">+</div>
@@ -70,7 +116,7 @@ export function EndedLargeCampaignCard({ campaign }: { campaign: Campaign }) {
             label="Cash Reward"
             className="bg-amber-500 w-40"
           >
-            <p className="text-white text-2xl font-bold">{`$${'1,000'}`}</p>
+            <p className="text-white text-2xl font-bold">{`$${reward.toLocaleString()}`}</p>
           </Box>
         </div>
       </div>
@@ -78,24 +124,24 @@ export function EndedLargeCampaignCard({ campaign }: { campaign: Campaign }) {
       <div className="w-full lg:w-1/4 px-3 lg:px-8 py-4">
         <Badge
           icon={<ShoppingBagIcon size={16} />}
-          value={`${product_count}`}
-          label="Products"
+          value={`${orders.length}`}
+          label="Orders"
           size="lg"
           className="w-full py-3 mb-3"
         />
 
         <Badge
           icon={<CircleDollarSignIcon size={16} />}
-          value={`${creator_invited_count}`}
-          label="Invited Creators"
+          value={`$${gmv.toLocaleString()}`}
+          label="GMV"
           size="lg"
           className="w-full py-3 mb-3"
         />
 
         <Badge
           icon={<VideoIcon size={16} />}
-          value={`${showcase_creator_count}`}
-          label="Showcase Creators"
+          value={`${videos.length}`}
+          label="Showcase Videos"
           size="lg"
           className="w-full py-3"
         />

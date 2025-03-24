@@ -54,7 +54,7 @@ export const getCampaign = cache(
   }
 );
 
-export const getSellerCampaignOrders = cache(
+export const getSellerOrders = cache(
   async (supabase: SupabaseClient, campaignId: string) => {
     const { data: orders, error } = await supabase
       .from('orders')
@@ -71,10 +71,15 @@ export const getSellerCampaignOrders = cache(
 );
 
 export const getCreatorOrders = cache(
-  async (supabase: SupabaseClient, creatorUsername: string) => {
+  async (
+    supabase: SupabaseClient,
+    campaignId: string,
+    creatorUsername: string | null
+  ) => {
     const { data: orders, error } = await supabase
       .from('orders')
       .select('*')
+      .eq('campaign_id', campaignId)
       .eq('creator_username', creatorUsername);
 
     if (error) {
