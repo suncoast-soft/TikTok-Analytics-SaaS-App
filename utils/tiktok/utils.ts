@@ -74,14 +74,9 @@ export async function requestTikTokShopAPI(
     shop_cipher?: string;
   } = {
     app_key: TIKTOK_PARTNER_APP_KEY!,
-    timestamp: ((Date.now() / 1000) | 0).toString()
+    timestamp: ((Date.now() / 1000) | 0).toString(),
+    shop_cipher: authData.shop_cipher
   };
-  if (
-    api_path !== '/authorization/202309/shops' &&
-    authData.type === 'seller'
-  ) {
-    defaultParams.shop_cipher = authData.shop_cipher;
-  }
 
   const urlSearchParams = new URLSearchParams({
     ...defaultParams,

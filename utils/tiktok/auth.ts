@@ -1,13 +1,60 @@
 import { saveTikTokAuth } from '../supabase/mutations';
 import { createClient } from '../supabase/server';
 import { getUser } from '../supabase/queries';
-import { requestTikTokShopAPI } from './utils';
+import { generateSign } from './utils';
 
 const {
   TIKTOK_PARTNER_APP_KEY,
   TIKTOK_PARTNER_APP_SECRET,
-  TIKTOK_TOKEN_BASE_URL
+  TIKTOK_TOKEN_BASE_URL,
+  TIKTOK_API_BASE_URL
 } = process.env;
+
+async function getTikTokShopCipher(access_token: string) {
+  const api_path = '/authorization/202309/shops';
+
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'content-type': 'application/json',
+      'x-tts-access-token': access_token
+    }
+  };
+
+  const signature = generateSign(
+    api_path,
+    {
+      app_key: TIKTOK_PARTNER_APP_KEY!,
+      timestamp: ((Date.now() / 1000) | 0).toString()
+    },
+    requestOptions,
+    TIKTOK_PARTNER_APP_SECRET!
+  );
+
+  const urlSearchParams = new URLSearchParams({
+    app_key: TIKTOK_PARTNER_APP_KEY!,
+    timestamp: ((Date.now() / 1000) | 0).toString(),
+    sign: signature
+  });
+
+  const fetchURL = `${TIKTOK_API_BASE_URL}/${api_path}?${urlSearchParams.toString()}`;
+
+  try {
+    const response = await fetch(fetchURL, requestOptions);
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.log(`HTTP error! Status: ${response.status}`);
+      console.log(data);
+      return null;
+    }
+
+    return data;
+  } catch (error) {
+    console.log('Request failed:', error);
+    return null;
+  }
+}
 
 export const generateAccessToken = async (auth_code: string) => {
   const supabase = await createClient();
@@ -53,38 +100,30 @@ export const generateAccessToken = async (auth_code: string) => {
   const access_token_expire_at = currentTime + access_token_expire_in - 1000;
   const refresh_token_expire_at = currentTime + refresh_token_expire_in - 1000;
 
+  let shop_cipher = null;
+  let seller_id = null;
+  if (user_type === 0) {
+    const shopCipherData = await getTikTokShopCipher(access_token);
+    const shop = shopCipherData.data.shops.find(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (s: any) => s.name === seller_name
+    );
+    shop_cipher = shop?.cipher;
+    seller_id = shop?.id;
+  }
+
   const auth = await saveTikTokAuth(supabase, {
     type: user_type === 0 ? 'seller' : user_type === 1 ? 'creator' : null,
     access_token,
     access_token_expire_at,
     refresh_token,
     refresh_token_expire_at,
-    seller_name
+    seller_name,
+    shop_cipher,
+    seller_id
   });
 
   if (!auth) return null;
-
-  if (user_type === 0) {
-    const shopCipherData = await requestTikTokShopAPI(
-      '/authorization/202309/shops',
-      {},
-      'GET',
-      ''
-    );
-    const shop = shopCipherData.data.shops.find(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (s: any) => s.name === seller_name
-    );
-    const shop_cipher = shop ? shop.cipher : null;
-    const seller_id = shop ? shop.id : null;
-
-    const auth = await saveTikTokAuth(supabase, {
-      shop_cipher,
-      seller_id
-    });
-
-    return auth;
-  }
 
   return auth;
 };
