@@ -7,7 +7,9 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
-import { Video } from '@/types/tiktok';
+import { Tables } from '@/types/db';
+
+type Video = Tables<'videos'>;
 
 interface SectionProps {
   videos: Video[];
@@ -41,21 +43,21 @@ export default function VideoTable({ videos }: SectionProps) {
 
         <TableBody className="bg-navy-800">
           {videos.map((video) => (
-            <TableRow key={video.id} className="border-navy-300">
+            <TableRow key={video.video_id} className="border-navy-300">
               <TableCell>
-                <VideoThumbnail videoId={video.id} />
+                <VideoThumbnail videoId={video.video_id!} />
               </TableCell>
-              <TableCell>@{video.username}</TableCell>
+              <TableCell>@{video.creator_username}</TableCell>
               <TableCell>{Number(video.views).toLocaleString()}</TableCell>
               <TableCell>
-                ${Number(video.gmv.amount).toLocaleString()}{' '}
-                {video.gmv.currency}
+                ${Number(video.gmv).toLocaleString()}
+                {' USD'}
               </TableCell>
               <TableCell>
                 {(Number(video.click_through_rate) * 100).toLocaleString()}%
               </TableCell>
-              <TableCell>{video.sku_orders.toLocaleString()}</TableCell>
-              <TableCell>{video.units_sold.toLocaleString()}</TableCell>
+              <TableCell>{video.sku_orders?.toLocaleString()}</TableCell>
+              <TableCell>{video.units_sold?.toLocaleString()}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -70,6 +70,23 @@ export const getSellerOrders = cache(
   }
 );
 
+export const getAllCreatorOrders = cache(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async (supabase: SupabaseClient, creatorUsername: string | null) => {
+    const { data: orders, error } = await supabase
+      .from('orders')
+      .select('*, campaigns(*)');
+    // .eq('creator_username', creatorUsername); // Temporary
+
+    if (error) {
+      console.log('Failed to fetch orders', error);
+      return null;
+    }
+
+    return orders;
+  }
+);
+
 export const getCreatorOrders = cache(
   async (
     supabase: SupabaseClient,
@@ -88,5 +105,44 @@ export const getCreatorOrders = cache(
     }
 
     return orders;
+  }
+);
+
+export const getSellerVideos = cache(async (supabase: SupabaseClient) => {
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return null;
+  }
+
+  const { data: videos, error } = await supabase
+    .from('videos')
+    .select('*')
+    .eq('seller_id', user.id);
+
+  if (error) {
+    console.log('Failed to fetch videos', error);
+    return null;
+  }
+
+  return videos;
+});
+
+export const getCreatorVideos = cache(
+  async (supabase: SupabaseClient, creatorUsername: string | null) => {
+    const { data: videos, error } = await supabase
+      .from('videos')
+      .select('*')
+      .limit(100)
+      .eq('creator_username', creatorUsername);
+
+    if (error) {
+      console.log('Failed to fetch videos', error);
+      return null;
+    }
+
+    return videos;
   }
 );

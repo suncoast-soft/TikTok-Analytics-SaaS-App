@@ -20,8 +20,8 @@ export type Database = {
           message: string | null
           name: string | null
           rewards: Json | null
+          seller_id: string | null
           start_time: number | null
-          user_id: string | null
         }
         Insert: {
           campaign_id?: string | null
@@ -33,8 +33,8 @@ export type Database = {
           message?: string | null
           name?: string | null
           rewards?: Json | null
+          seller_id?: string | null
           start_time?: number | null
-          user_id?: string | null
         }
         Update: {
           campaign_id?: string | null
@@ -46,13 +46,13 @@ export type Database = {
           message?: string | null
           name?: string | null
           rewards?: Json | null
+          seller_id?: string | null
           start_time?: number | null
-          user_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "campaigns_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "campaigns_seller_id_fkey"
+            columns: ["seller_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -147,6 +147,59 @@ export type Database = {
           type?: string | null
         }
         Relationships: []
+      }
+      videos: {
+        Row: {
+          click_through_rate: number | null
+          creator_username: string | null
+          gmv: number | null
+          id: number
+          post_time: string | null
+          product_id: string | null
+          seller_id: string | null
+          sku_orders: number | null
+          title: string | null
+          units_sold: number | null
+          video_id: string | null
+          views: number | null
+        }
+        Insert: {
+          click_through_rate?: number | null
+          creator_username?: string | null
+          gmv?: number | null
+          id?: number
+          post_time?: string | null
+          product_id?: string | null
+          seller_id?: string | null
+          sku_orders?: number | null
+          title?: string | null
+          units_sold?: number | null
+          video_id?: string | null
+          views?: number | null
+        }
+        Update: {
+          click_through_rate?: number | null
+          creator_username?: string | null
+          gmv?: number | null
+          id?: number
+          post_time?: string | null
+          product_id?: string | null
+          seller_id?: string | null
+          sku_orders?: number | null
+          title?: string | null
+          units_sold?: number | null
+          video_id?: string | null
+          views?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "videos_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

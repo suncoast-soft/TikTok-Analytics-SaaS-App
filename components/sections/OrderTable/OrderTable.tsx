@@ -1,4 +1,3 @@
-import { requestTikTokShopAPIClient } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -8,38 +7,20 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
-import { Order } from '@/types/tiktok';
+import { Tables } from '@/types/db';
 import { displayDate } from '@/utils/helpers';
 import Link from 'next/link';
+
+type Campaign = Tables<'campaigns'>;
+type Order = Tables<'orders'> & {
+  campaigns: Campaign;
+};
 
 interface SectionProps {
   orders: Order[];
 }
 
-const fetchCampaign = async (campaign_id: string) => {
-  const data = await requestTikTokShopAPIClient(
-    `/affiliate_seller/202412/target_collaborations/${campaign_id}`,
-    {},
-    'GET',
-    ''
-  );
-
-  return data?.data?.target_collaboration ?? {};
-};
-
 export default function OrderTable({ orders }: SectionProps) {
-  const CampaignBody = async ({ campaignId }: { campaignId: string }) => {
-    const campaign = await fetchCampaign(campaignId);
-
-    return (
-      <div>
-        <h5 className="font-bold text-lg mb-1">{campaign.name}</h5>
-        <Button asChild>
-          <Link href={`/seller/campaigns/${campaignId}`}>View Campaign</Link>
-        </Button>
-      </div>
-    );
-  };
   return (
     <Table className="border-none mb-12">
       <TableHeader className="bg-navy-700">
@@ -58,15 +39,22 @@ export default function OrderTable({ orders }: SectionProps) {
         {orders.map((order) => (
           <TableRow key={order.id} className="border-navy-300">
             <TableCell>{order.id}</TableCell>
-            <TableCell>{displayDate(order.create_time * 1000)}</TableCell>
+            <TableCell>{displayDate(order.create_time! * 1000)}</TableCell>
             <TableCell>
-              <CampaignBody
-                campaignId={order.skus[0].target_collaboration_id}
-              />
+              <div className="py-2">
+                <h5 className="font-bold text-lg mb-1">
+                  {order.campaigns.name}
+                </h5>
+                <Button asChild>
+                  <Link href={`/seller/campaigns/${order.campaign_id}`}>
+                    View Campaign
+                  </Link>
+                </Button>
+              </div>
             </TableCell>
-            <TableCell>{`@${order.skus[0].creator_username} (${order.skus[0].content_type})`}</TableCell>
-            <TableCell>{`$${order.skus[0].price.amount}`}</TableCell>
-            <TableCell>{`$${order.skus[0].estimated_paid_commission.amount}`}</TableCell>
+            <TableCell>{`@${order.creator_username}`}</TableCell>
+            <TableCell>{`$${order.commission_base}`}</TableCell>
+            <TableCell>{`$${order.paid_commission}`}</TableCell>
             <TableCell>{order.status}</TableCell>
           </TableRow>
         ))}
