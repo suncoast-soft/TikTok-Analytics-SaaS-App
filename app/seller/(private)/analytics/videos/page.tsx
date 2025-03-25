@@ -1,13 +1,17 @@
-import { requestTikTokShopAPIClient } from '@/app/actions';
 import Card from '@/components/modules/Card';
 import DatePickerWithRange from '@/components/modules/DateRange';
 import Title from '@/components/modules/Title';
 import VideoTable from '@/components/sections/VideoTable';
+import { Tables } from '@/types/db';
+import { getSellerVideos } from '@/utils/supabase/queries';
+import { createClient } from '@/utils/supabase/server';
 import { format, subDays } from 'date-fns';
 
 interface APIParams {
   [key: string]: string | number;
 }
+
+type Video = Tables<'videos'>;
 
 export default async function SellerAnalyticsVideos({
   searchParams
@@ -38,13 +42,8 @@ export default async function SellerAnalyticsVideos({
     query.page_token = page_token;
   }
 
-  const videoPerformanceListData = await requestTikTokShopAPIClient(
-    '/analytics/202409/shop_videos/performance',
-    query,
-    'GET',
-    ''
-  );
-  const videos = videoPerformanceListData?.data?.videos ?? [];
+  const supabase = await createClient();
+  const videos = ((await getSellerVideos(supabase)) ?? []) as Video[];
 
   return (
     <div className="container max-w-7xl py-12">

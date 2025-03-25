@@ -42,14 +42,6 @@ export default async function VideoAnalytics({
     query.page_token = page_token;
   }
 
-  // const videoPerformanceListData = await requestTikTokShopAPIClient(
-  //   '/analytics/202409/shop_videos/performance',
-  //   query,
-  //   'GET',
-  //   ''
-  // );
-  // const videos = videoPerformanceListData?.data?.videos ?? [];
-
   const supabase = await createClient();
   const user = (await getUser(supabase)) as User;
   const videos = ((await getCreatorVideos(supabase, user.creator_username)) ??

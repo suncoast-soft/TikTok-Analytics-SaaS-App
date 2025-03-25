@@ -1,5 +1,4 @@
 import {
-  CircleDollarSignIcon,
   ShoppingBagIcon,
   TimerIcon,
   TrophyIcon,
@@ -12,40 +11,63 @@ import ProductInfoTable from '@/components/sections/ProductInfoTable';
 import ProgressBar from '@/components/modules/ProgressBar';
 import { getTimeDiff } from '@/utils/helpers';
 import Title from '@/components/modules/Title';
-import { getCampaign, getUser } from '@/utils/supabase/queries';
+import { getCampaign, getSellerOrders } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 import { Tables } from '@/types/db';
 import RewardForm from '@/components/sections/Forms/RewardForm';
-import { redirect } from 'next/navigation';
 import { SellerCampaignDetail } from '@/types/tiktok';
 
-type User = Tables<'users'>;
-type Campaign = Tables<'campaigns'>;
+type Campaign = Tables<'campaigns'> & {
+  users: {
+    seller_name: string;
+  };
+};
+type Order = Tables<'orders'>;
+
+interface RewardProps {
+  target: number;
+  reward: number;
+}
 
 export default async function CampaignPage({
   params
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const campaign_id = (await params).id;
-
-  // Get Configured Campaign data from database
+  const campaignId = (await params).id;
   const supabase = await createClient();
-  const seller = (await getUser(supabase)) as User;
-  const campaign = (await getCampaign(supabase, campaign_id)) as Campaign;
 
-  if (!campaign) {
-    redirect('/seller');
-  }
-
-  const { name, start_time, end_time, message, rewards, details } = campaign;
+  /**
+   * Campaign Data
+   */
+  const campaign = (await getCampaign(supabase, campaignId)) as Campaign;
   const {
-    products,
-    showcase_creator_count,
-    creator_invited_count,
-    product_count
-  } = details as unknown as SellerCampaignDetail;
+    campaign_id,
+    name,
+    message,
+    start_time,
+    end_time,
+    details,
+    users: { seller_name }
+  } = campaign;
+  const rewards = (campaign.rewards ?? []) as unknown as RewardProps[];
+  const { products, creator_invited_count } =
+    details as unknown as SellerCampaignDetail;
   const productThumbnail = products?.[0]?.main_image_url;
+
+  /**
+   * Order Details
+   */
+  const orders = (await getSellerOrders(supabase, campaignId)) as Order[];
+
+  /**
+   * Affiliate Data
+   */
+  const videos = Array.from(new Set(orders.map((order) => order.video_id)));
+  const gmv = orders.reduce(
+    (sum, order) => sum + (order.commission_base ?? 0),
+    0
+  );
 
   return (
     <div className="container max-w-7xl py-12">
@@ -56,13 +78,13 @@ export default async function CampaignPage({
               src={productThumbnail}
               width={320}
               height={320}
-              alt={seller.seller_name ?? 'Seller Logo'}
+              alt={name ?? 'Seller Logo'}
               className="w-80 h-80 object-contain rounded-lg"
             />
           )}
 
           <div>
-            <Title title={name!} subtitle={seller.seller_name!} />
+            <Title title={name!} subtitle={seller_name} />
 
             <div className="flex flex-col lg:flex-row gap-4">
               <Box
@@ -81,7 +103,9 @@ export default async function CampaignPage({
                 label="Total Creators"
                 className="w-60"
               >
-                <p className="text-white text-2xl font-bold">322</p>
+                <p className="text-white text-2xl font-bold">
+                  {creator_invited_count}
+                </p>
               </Box>
             </div>
           </div>
@@ -89,21 +113,33 @@ export default async function CampaignPage({
 
         <Title title="About the Campaign" description={message!} tag="h2" />
 
-        <div className="flex lg:flex-row gap-4 mb-12">
-          <Box icon={<ShoppingBagIcon size={16} />} label="Products">
-            <span className="text-2xl font-bold text-white">{`${product_count}`}</span>
-          </Box>
+        <div className="flex flex-col lg:flex-row gap-5 mb-12">
+          <Box
+            icon={<ShoppingBagIcon width={16} />}
+            value={orders?.length}
+            label="Orders"
+            buttonName="View orders"
+            buttonLink={`/creator/campaigns/${campaign_id}`}
+            className="w-60"
+          />
 
           <Box
-            icon={<CircleDollarSignIcon size={16} />}
-            label="Invited Creators"
-          >
-            <span className="text-2xl font-bold text-white">{`${creator_invited_count}`}</span>
-          </Box>
+            icon={<VideoIcon width={16} />}
+            value={videos.length}
+            label="Videos"
+            buttonName="Video Analytics"
+            buttonLink={`/creator/campaigns/${campaign_id}`}
+            className="w-60"
+          />
 
-          <Box icon={<VideoIcon size={16} />} label="Showcase Creators">
-            <span className="text-2xl font-bold text-white">{`${showcase_creator_count}`}</span>
-          </Box>
+          <Box
+            icon={<VideoIcon width={16} />}
+            value={`$${gmv.toLocaleString()}`}
+            label="GMV"
+            buttonName="Daily GMV Report"
+            buttonLink={`/creator/campaigns/${campaign_id}`}
+            className="w-60"
+          />
         </div>
 
         <Title title="Product Details" tag="h2" />
@@ -113,8 +149,8 @@ export default async function CampaignPage({
         <Title title="Configure Rewards" tag="h2" />
 
         <RewardForm
-          campaignId={campaign_id}
-          rewards={rewards as { target: string; reward: string }[]}
+          campaignId={campaign_id!}
+          rewards={rewards as RewardProps[]}
         />
       </Card>
     </div>

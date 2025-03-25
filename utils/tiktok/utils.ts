@@ -73,7 +73,10 @@ export async function requestTikTokShopAPI({
     if (!authData) return null;
 
     token = authData.access_token;
-    if (authData.type === 'seller') {
+    if (
+      authData.type === 'seller' &&
+      api_path != '/authorization/202309/shops'
+    ) {
       cipher = authData.shop_cipher;
     }
   }

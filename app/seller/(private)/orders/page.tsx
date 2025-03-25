@@ -1,24 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { requestTikTokShopAPIClient } from '@/app/actions';
 import Card from '@/components/modules/Card';
 import DatePickerWithRange from '@/components/modules/DateRange';
 import Title from '@/components/modules/Title';
 import OrderTable from '@/components/sections/OrderTable';
+import { Tables } from '@/types/db';
+import { getAllSellerOrders } from '@/utils/supabase/queries';
+import { createClient } from '@/utils/supabase/server';
 import { format, subDays } from 'date-fns';
 
-interface APIParams {
-  [key: string]: string | number;
-}
-
-const fetchAffiliateOrders = async (params: APIParams, body: string) => {
-  const data = await requestTikTokShopAPIClient(
-    '/affiliate_seller/202410/orders/search',
-    params,
-    'POST',
-    body
-  );
-
-  return data?.data?.orders ?? [];
+type Campaign = Tables<'campaigns'>;
+type Order = Tables<'orders'> & {
+  campaigns: Campaign;
 };
 
 export default async function SellerOrders({
@@ -35,15 +26,8 @@ export default async function SellerOrders({
     start_date ?? format(subDays(new Date(), 30), 'yyyy-MM-dd');
   const end_date_lt = end_date ?? format(new Date(), 'yyyy-MM-dd');
 
-  const orders = await fetchAffiliateOrders(
-    {
-      page_size: 100
-    },
-    JSON.stringify({
-      start_date_ge,
-      end_date_lt
-    })
-  );
+  const supabase = await createClient();
+  const orders = ((await getAllSellerOrders(supabase)) ?? []) as Order[];
 
   return (
     <div className="container max-w-7xl py-12">
@@ -56,13 +40,7 @@ export default async function SellerOrders({
           />
         </div>
 
-        <OrderTable
-          orders={[
-            ...orders.filter(
-              (order: any) => order.skus[0].target_collaboration_id
-            )
-          ]}
-        />
+        <OrderTable orders={[...orders.filter((order) => order.campaign_id)]} />
       </Card>
     </div>
   );

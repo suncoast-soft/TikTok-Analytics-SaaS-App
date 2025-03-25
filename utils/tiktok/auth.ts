@@ -71,7 +71,6 @@ export const generateAccessToken = async (auth_code: string) => {
       api_path: '/affiliate_creator/202405/profiles',
       access_token
     });
-    console.log(profileData);
     creator_username = profileData?.data?.username;
   }
 

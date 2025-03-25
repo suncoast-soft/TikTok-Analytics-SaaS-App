@@ -27,7 +27,7 @@ export const getUser = cache(async (supabase: SupabaseClient) => {
 export const getCampaigns = cache(async (supabase: SupabaseClient) => {
   const { data: campaigns, error } = await supabase
     .from('campaigns')
-    .select('*');
+    .select('*, users(seller_name)');
 
   if (error) {
     console.error('Failed to fetch campaigns', error);
@@ -41,7 +41,7 @@ export const getCampaign = cache(
   async (supabase: SupabaseClient, campaignId: string) => {
     const { data: campaign, error } = await supabase
       .from('campaigns')
-      .select('*')
+      .select('*, users(seller_name)')
       .eq('campaign_id', campaignId)
       .single();
 
@@ -54,11 +54,24 @@ export const getCampaign = cache(
   }
 );
 
+export const getAllSellerOrders = cache(async (supabase: SupabaseClient) => {
+  const { data: orders, error } = await supabase
+    .from('orders')
+    .select('*, campaigns(*)');
+
+  if (error) {
+    console.log('Failed to fetch orders', error);
+    return null;
+  }
+
+  return orders;
+});
+
 export const getSellerOrders = cache(
   async (supabase: SupabaseClient, campaignId: string) => {
     const { data: orders, error } = await supabase
       .from('orders')
-      .select('*')
+      .select('*, campaigns(*)')
       .eq('campaign_id', campaignId);
 
     if (error) {
@@ -95,7 +108,7 @@ export const getCreatorOrders = cache(
   ) => {
     const { data: orders, error } = await supabase
       .from('orders')
-      .select('*')
+      .select('*, campaigns(*)')
       .eq('campaign_id', campaignId)
       .eq('creator_username', creatorUsername);
 

@@ -13,17 +13,15 @@ import ProgressBar from '@/components/modules/ProgressBar';
 import { getTimeDiff } from '@/utils/helpers';
 import Title from '@/components/modules/Title';
 import { createClient } from '@/utils/supabase/server';
-import {
-  getCampaign,
-  // getCreatorOrders,
-  getSellerOrders
-  // getUser
-} from '@/utils/supabase/queries';
+import { getCampaign, getSellerOrders } from '@/utils/supabase/queries';
 import { SellerCampaignDetail } from '@/types/tiktok';
 import { Tables } from '@/types/db';
 
-// type User = Tables<'users'>;
-type Campaign = Tables<'campaigns'>;
+type Campaign = Tables<'campaigns'> & {
+  users: {
+    seller_name: string;
+  };
+};
 type Order = Tables<'orders'>;
 
 interface RewardProps {
@@ -43,8 +41,15 @@ export default async function CampaignDetailPage({
    * Campaign Data
    */
   const campaign = (await getCampaign(supabase, campaignId)) as Campaign;
-  const { campaign_id, name, message, start_time, end_time, details } =
-    campaign;
+  const {
+    campaign_id,
+    name,
+    message,
+    start_time,
+    end_time,
+    details,
+    users: { seller_name }
+  } = campaign;
   const rewards = (campaign.rewards ?? []) as unknown as RewardProps[];
   const { products, creator_invited_count } =
     details as unknown as SellerCampaignDetail;
@@ -52,14 +57,8 @@ export default async function CampaignDetailPage({
 
   /**
    * Order Details
-   * Temp Disable Getting Creator Order. NO orders to see for now.
+   * Temp. use getCreatorOrders
    */
-  // const user = (await getUser(supabase)) as User;
-  // const orders = (await getCreatorOrders(
-  //   supabase,
-  //   campaignId,
-  //   user.creator_username
-  // )) as Order[];
   const orders = (await getSellerOrders(supabase, campaignId)) as Order[];
 
   /**
@@ -86,7 +85,7 @@ export default async function CampaignDetailPage({
           )}
 
           <div>
-            <Title title={name!} subtitle={'Locked'} />
+            <Title title={name!} subtitle={seller_name} />
 
             <div className="flex flex-col lg:flex-row gap-4">
               <Box
@@ -159,15 +158,15 @@ export default async function CampaignDetailPage({
                   tier={index + 1}
                   target={reward.target}
                   reward={reward.reward}
-                  progress={12400}
+                  progress={gmv}
                 />
               ))}
             </div>
 
             <div className="w-full relative">
               <ProgressBar
-                progress={(12400 / rewards[rewards.length - 1].target) * 100}
-                label={`$12,400`}
+                progress={(gmv / rewards[rewards.length - 1].target) * 100}
+                label={`$${gmv.toLocaleString()}`}
                 labelPosition="percentage"
               />
             </div>

@@ -14,22 +14,27 @@ import { saveCampaignMutation } from '@/utils/supabase/server';
 import { useRouter } from 'next/navigation';
 
 const FormSchema = z.object({
-  target_1: z.string(),
-  reward_1: z.string(),
-  target_2: z.string(),
-  reward_2: z.string(),
-  target_3: z.string(),
-  reward_3: z.string(),
-  target_4: z.string(),
-  reward_4: z.string()
+  target_1: z.number(),
+  reward_1: z.number(),
+  target_2: z.number(),
+  reward_2: z.number(),
+  target_3: z.number(),
+  reward_3: z.number(),
+  target_4: z.number(),
+  reward_4: z.number()
 });
+
+interface RewardProps {
+  target: number;
+  reward: number;
+}
 
 export default function RewardForm({
   campaignId,
   rewards
 }: {
   campaignId: string;
-  rewards: { target: string; reward: string }[];
+  rewards: RewardProps[];
 }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,14 +42,14 @@ export default function RewardForm({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      target_1: rewards?.[0]?.target,
-      reward_1: rewards?.[0]?.reward,
-      target_2: rewards?.[1]?.target,
-      reward_2: rewards?.[1]?.reward,
-      target_3: rewards?.[2]?.target,
-      reward_3: rewards?.[2]?.reward,
-      target_4: rewards?.[3]?.target,
-      reward_4: rewards?.[3]?.reward
+      target_1: rewards?.[0]?.target ?? '',
+      reward_1: rewards?.[0]?.reward ?? '',
+      target_2: rewards?.[1]?.target ?? '',
+      reward_2: rewards?.[1]?.reward ?? '',
+      target_3: rewards?.[2]?.target ?? '',
+      reward_3: rewards?.[2]?.reward ?? '',
+      target_4: rewards?.[3]?.target ?? '',
+      reward_4: rewards?.[3]?.reward ?? ''
     }
   });
 
@@ -79,6 +84,7 @@ export default function RewardForm({
             className="w-full"
           >
             <FormInput
+              type="number"
               control={form.control}
               name="target_1"
               label="Target"
@@ -89,6 +95,7 @@ export default function RewardForm({
             />
 
             <FormInput
+              type="number"
               control={form.control}
               name="reward_1"
               label="Reward"
@@ -104,6 +111,7 @@ export default function RewardForm({
             className="w-full"
           >
             <FormInput
+              type="number"
               control={form.control}
               name="target_2"
               label="Target"
@@ -114,6 +122,7 @@ export default function RewardForm({
             />
 
             <FormInput
+              type="number"
               control={form.control}
               name="reward_2"
               label="Reward"
@@ -129,6 +138,7 @@ export default function RewardForm({
             className="w-full"
           >
             <FormInput
+              type="number"
               control={form.control}
               name="target_3"
               label="Target"
@@ -139,6 +149,7 @@ export default function RewardForm({
             />
 
             <FormInput
+              type="number"
               control={form.control}
               name="reward_3"
               label="Reward"
@@ -154,6 +165,7 @@ export default function RewardForm({
             className="w-full"
           >
             <FormInput
+              type="number"
               control={form.control}
               name="target_4"
               label="Target"
@@ -164,6 +176,7 @@ export default function RewardForm({
             />
 
             <FormInput
+              type="number"
               control={form.control}
               name="reward_4"
               label="Reward"

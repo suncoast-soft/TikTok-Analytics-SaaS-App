@@ -1,29 +1,16 @@
-import { requestTikTokShopAPIClient } from '@/app/actions';
 import { SellerCampaignCard } from '@/components/sections/CampaignCard/SellerCampaignCard';
-import { SellerCampaignOverview } from '@/types/tiktok';
-import { getUser } from '@/utils/supabase/queries';
+import { getCampaigns, getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 
 export default async function SellerCampaigns() {
   const supabase = await createClient();
   const user = await getUser(supabase);
-
-  const sellerTargetCollaborationsData = await requestTikTokShopAPIClient(
-    '/affiliate_seller/202409/target_collaborations/search',
-    {
-      page_size: 100
-    },
-    'POST',
-    JSON.stringify({
-      collaboration_status: 'VALID'
-    })
-  );
-  const campaigns = sellerTargetCollaborationsData.data.target_collaborations;
+  const campaigns = await getCampaigns(supabase);
 
   return (
     <div className="container max-w-7xl py-8">
       <div className="mb-12 space-y-8">
-        {campaigns.map((campaign: SellerCampaignOverview) => (
+        {campaigns.map((campaign) => (
           <SellerCampaignCard
             key={campaign.id}
             campaign={campaign}
