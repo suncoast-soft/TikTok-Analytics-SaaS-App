@@ -50,7 +50,9 @@ export default async function CampaignDetailPage({
     details,
     users: { seller_name }
   } = campaign;
-  const rewards = (campaign.rewards ?? []) as unknown as RewardProps[];
+  const rewards = ((campaign.rewards ?? []) as unknown as RewardProps[]).filter(
+    (reward) => reward.reward > 0 && reward.target > 0
+  );
   const { products, creator_invited_count } =
     details as unknown as SellerCampaignDetail;
   const productThumbnail = products?.[0]?.main_image_url;
@@ -165,7 +167,10 @@ export default async function CampaignDetailPage({
 
             <div className="w-full relative">
               <ProgressBar
-                progress={(gmv / rewards[rewards.length - 1].target) * 100}
+                progress={
+                  (gmv / rewards[rewards.length - 1].target) *
+                  (rewards.length * 25)
+                }
                 label={`$${gmv.toLocaleString()}`}
                 labelPosition="percentage"
               />

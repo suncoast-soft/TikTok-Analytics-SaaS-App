@@ -14,14 +14,14 @@ import { saveCampaignMutation } from '@/utils/supabase/server';
 import { useRouter } from 'next/navigation';
 
 const FormSchema = z.object({
-  target_1: z.number(),
-  reward_1: z.number(),
-  target_2: z.number(),
-  reward_2: z.number(),
-  target_3: z.number(),
-  reward_3: z.number(),
-  target_4: z.number(),
-  reward_4: z.number()
+  target_1: z.number().optional(),
+  reward_1: z.number().optional(),
+  target_2: z.number().optional(),
+  reward_2: z.number().optional(),
+  target_3: z.number().optional(),
+  reward_3: z.number().optional(),
+  target_4: z.number().optional(),
+  reward_4: z.number().optional()
 });
 
 interface RewardProps {
@@ -42,14 +42,14 @@ export default function RewardForm({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      target_1: rewards?.[0]?.target ?? '',
-      reward_1: rewards?.[0]?.reward ?? '',
-      target_2: rewards?.[1]?.target ?? '',
-      reward_2: rewards?.[1]?.reward ?? '',
-      target_3: rewards?.[2]?.target ?? '',
-      reward_3: rewards?.[2]?.reward ?? '',
-      target_4: rewards?.[3]?.target ?? '',
-      reward_4: rewards?.[3]?.reward ?? ''
+      target_1: rewards?.[0]?.target,
+      reward_1: rewards?.[0]?.reward,
+      target_2: rewards?.[1]?.target,
+      reward_2: rewards?.[1]?.reward,
+      target_3: rewards?.[2]?.target,
+      reward_3: rewards?.[2]?.reward,
+      target_4: rewards?.[3]?.target,
+      reward_4: rewards?.[3]?.reward
     }
   });
 

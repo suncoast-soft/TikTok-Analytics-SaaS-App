@@ -60,6 +60,11 @@ export default function FormInput({
                 type={type}
                 placeholder={placeholder || label}
                 {...field}
+                onChange={(e) =>
+                  field.onChange(
+                    type === 'number' ? e.target.valueAsNumber : e.target.value
+                  )
+                }
                 className={cn(
                   'bg-transparent py-3 border border-navy-300 focus:border-navy-500',
                   theme === 'white'
