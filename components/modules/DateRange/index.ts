@@ -1,1 +1,1 @@
-export { default } from './DateRange'
+export { default } from './DateRange';

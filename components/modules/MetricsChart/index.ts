@@ -1,1 +1,1 @@
-export { default } from './MetricsChart'
+export { default } from './MetricsChart';

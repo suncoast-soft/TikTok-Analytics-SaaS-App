@@ -1,1 +1,1 @@
-export { default } from './PerformanceChart'
+export { default } from './PerformanceChart';
