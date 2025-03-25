@@ -18,7 +18,7 @@ export default async function Home({
 
   return (
     <div className="container max-w-7xl py-8">
-      {!category && (
+      {!category && campaigns.length > 0 && (
         <>
           <h1 className="text-white text-xl lg:text-3xl font-bold text-center my-4">
             Connecting Affiliates with exclusive TikTok Shop Brand deals

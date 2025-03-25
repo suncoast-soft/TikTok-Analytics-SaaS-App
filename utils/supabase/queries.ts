@@ -61,7 +61,7 @@ export const getAllSellerOrders = cache(async (supabase: SupabaseClient) => {
 
   if (error) {
     console.log('Failed to fetch orders', error);
-    return null;
+    return [];
   }
 
   return orders;
@@ -76,7 +76,7 @@ export const getSellerOrders = cache(
 
     if (error) {
       console.log('Failed to fetch orders', error);
-      return null;
+      return [];
     }
 
     return orders;
@@ -93,7 +93,7 @@ export const getAllCreatorOrders = cache(
 
     if (error) {
       console.log('Failed to fetch orders', error);
-      return null;
+      return [];
     }
 
     return orders;
@@ -114,7 +114,7 @@ export const getCreatorOrders = cache(
 
     if (error) {
       console.log('Failed to fetch orders', error);
-      return null;
+      return [];
     }
 
     return orders;
@@ -127,7 +127,7 @@ export const getSellerVideos = cache(async (supabase: SupabaseClient) => {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return null;
+    return [];
   }
 
   const { data: videos, error } = await supabase
@@ -137,7 +137,7 @@ export const getSellerVideos = cache(async (supabase: SupabaseClient) => {
 
   if (error) {
     console.log('Failed to fetch videos', error);
-    return null;
+    return [];
   }
 
   return videos;
@@ -153,7 +153,7 @@ export const getCreatorVideos = cache(
 
     if (error) {
       console.log('Failed to fetch videos', error);
-      return null;
+      return [];
     }
 
     return videos;
