@@ -7,7 +7,7 @@ interface SectionProps {
     target: number;
     reward: number;
   }[];
-  gmv: number;
+  gmv?: number;
 }
 
 interface RewardProps {
@@ -85,7 +85,7 @@ const Reward = ({ tier, target, reward, gmv }: RewardProps) => (
   </div>
 );
 
-export default function Rewards({ rewards, gmv }: SectionProps) {
+export default function Rewards({ rewards, gmv = 0 }: SectionProps) {
   const totalMilestones = rewards.length;
   const progress =
     (gmv / rewards[totalMilestones - 1].target) * (totalMilestones * 25);

@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Card from '@/components/modules/Card';
 import Box from '@/components/modules/Box';
 import ProductInfoTable from '@/components/sections/ProductInfoTable';
-import Reward from '@/components/modules/Reward';
 import ProgressBar from '@/components/modules/ProgressBar';
 import { getTimeDiff } from '@/utils/helpers';
 import Title from '@/components/modules/Title';
@@ -12,6 +11,7 @@ import { getCampaign } from '@/utils/supabase/queries';
 import { SellerCampaignDetail } from '@/types/tiktok';
 import { Tables } from '@/types/db';
 import ImageBox from '@/components/modules/ImageBox';
+import Rewards from '@/components/modules/Reward';
 
 type Campaign = Tables<'campaigns'> & {
   users: {
@@ -36,14 +36,8 @@ export default async function CampaignDetailPage({
    * Campaign Data
    */
   const campaign = (await getCampaign(supabase, campaignId)) as Campaign;
-  const {
-    name,
-    message,
-    start_time,
-    end_time,
-    details,
-    users: { seller_name }
-  } = campaign;
+  const { name, message, start_time, end_time, details, users } = campaign;
+  const seller_name = users?.seller_name ?? '';
   const rewards = (campaign.rewards ?? []) as unknown as RewardProps[];
   const { products, creator_invited_count } =
     details as unknown as SellerCampaignDetail;
@@ -113,16 +107,7 @@ export default async function CampaignDetailPage({
 
         <Title title="Campaign Rewards" tag="h2" />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-          {rewards?.map((reward, index) => (
-            <Reward
-              key={index}
-              tier={index + 1}
-              target={reward.target}
-              reward={reward.reward}
-            />
-          ))}
-        </div>
+        <Rewards rewards={rewards} />
       </Card>
 
       <Title title="Campaign product details" tag="h2" />

@@ -43,14 +43,9 @@ export default async function CampaignDetailPage({
    * Campaign Data
    */
   const campaign = (await getCampaign(supabase, campaignId)) as Campaign;
-  const {
-    name,
-    message,
-    start_time,
-    end_time,
-    details,
-    users: { seller_name }
-  } = campaign;
+  const { name, message, start_time, end_time, details, users } = campaign;
+  const seller_name = users?.seller_name ?? '';
+
   const rewards = ((campaign.rewards ?? []) as unknown as RewardProps[]).filter(
     (reward) => reward.reward > 0 && reward.target > 0
   );
