@@ -14,127 +14,161 @@ interface RewardProps {
   tier: number;
   target: number;
   reward: number;
+  gmv: number;
 }
 
+const iconData = [
+  { offset: '0%', colorClass: 'text-purple' },
+  { offset: '33.33%', colorClass: 'text-blue' },
+  { offset: '66.66%', colorClass: 'text-teal' },
+  { offset: '100%', colorClass: 'text-green' }
+];
+
+const getRewardIcon = (tier: number) => {
+  switch (tier) {
+    case 1:
+      return '/icons/reward-bronze.svg';
+    case 2:
+      return '/icons/reward-silver.svg';
+    case 3:
+      return '/icons/reward-gold.svg';
+    case 4:
+      return '/icons/reward-premium.svg';
+    default:
+      return '';
+  }
+};
+
+const getTierColor = (tier: number) => {
+  switch (tier) {
+    case 1:
+      return 'text-purple';
+    case 2:
+      return 'text-blue';
+    case 3:
+      return 'text-teal';
+    case 4:
+      return 'text-green';
+    default:
+      return '';
+  }
+};
+
+const Reward = ({ tier, target, reward, gmv }: RewardProps) => (
+  <div
+    className={cn(
+      'bg-navy-700 rounded-2xl relative border border-navy-600 opacity-40 w-48',
+      target <= gmv && 'opacity-100'
+    )}
+  >
+    <div className="w-full text-center">
+      <Image
+        src={getRewardIcon(tier)}
+        width={48}
+        height={48}
+        className="w-12 h-12 mx-auto my-2"
+        alt="Reward"
+      />
+    </div>
+
+    <h5 className={cn('text-xl text-center font-semibold', getTierColor(tier))}>
+      ${reward.toLocaleString()}
+    </h5>
+
+    <h6 className="text-xs text-navy-300 text-center mb-2">Cash Rewards</h6>
+
+    <div className="p-2 border-t border-navy-600">
+      <h4 className="text-white text-center text-sm">
+        ${target.toLocaleString()} GMV earned
+      </h4>
+    </div>
+  </div>
+);
+
 export default function Rewards({ rewards, gmv }: SectionProps) {
+  const totalMilestones = rewards.length;
   const progress =
-    (gmv / rewards[rewards.length - 1].target) * (rewards.length * 25);
+    (gmv / rewards[totalMilestones - 1].target) * (totalMilestones * 25);
   const nextMilestone = rewards.find((reward) => reward.target > gmv);
   const remaining = nextMilestone ? nextMilestone.target - gmv : 0;
   const milestonesReached = rewards.filter(
     (reward) => reward.target <= gmv
   ).length;
 
-  const iconData = [
-    { offset: '0%', colorClass: 'text-purple' },
-    { offset: `${(1 / 3) * 100}%`, colorClass: 'text-blue' },
-    { offset: `${(2 / 3) * 100}%`, colorClass: 'text-teal' },
-    { offset: '100%', colorClass: 'text-green' }
-  ];
-
-  const Reward = ({ tier, target, reward }: RewardProps) => {
-    return (
-      <>
-        <div
-          className={cn(
-            'bg-navy-700 rounded-2xl relative border border-navy-600 opacity-40 w-48',
-            gmv > target && 'opacity-100'
-          )}
-        >
-          <div className="w-full text-center">
-            <Image
-              src={
-                tier === 1
-                  ? '/icons/reward-bronze.svg'
-                  : tier === 2
-                    ? '/icons/reward-silver.svg'
-                    : tier === 3
-                      ? '/icons/reward-gold.svg'
-                      : tier === 4
-                        ? '/icons/reward-premium.svg'
-                        : ''
-              }
-              width={48}
-              height={48}
-              className="w-12 h-12 mx-auto my-2"
-              alt="Reward"
-            />
-          </div>
-
-          <h5
-            className={cn(
-              'text-xl text-center font-semibold',
-              tier === 1
-                ? 'text-purple'
-                : tier === 2
-                  ? 'text-blue'
-                  : tier === 3
-                    ? 'text-teal'
-                    : tier === 4
-                      ? 'text-green'
-                      : ''
-            )}
-          >
-            ${reward.toLocaleString()}
-          </h5>
-
-          <h6 className="text-xs text-navy-300 text-center mb-2">
-            Cash Rewards
-          </h6>
-
-          <div className="p-2 border-t border-navy-600">
-            <h4 className="text-white text-center">
-              ${target.toLocaleString()} GMV earned
-            </h4>
-          </div>
-        </div>
-      </>
-    );
-  };
-
   return (
-    <>
-      <div className="flex flex-row justify-between gap-4 mb-5">
+    <div className="flex flex-row lg:flex-col justify-around gap-5 h-[700px] lg:h-fit">
+      {/* Reward Cards */}
+      <div className="flex flex-col lg:flex-row justify-between items-center lg:items-stretch gap-4">
         {rewards.map((reward, index) => (
           <Reward
             key={index}
             tier={index + 1}
             target={reward.target}
             reward={reward.reward}
+            gmv={gmv}
           />
         ))}
       </div>
 
-      <div
-        className="relative mx-auto mb-16"
-        style={{ width: 'calc(100% - 192px)' }}
-      >
-        <div className="w-full bg-navy-600 rounded-lg h-3 overflow-hidden mb-2">
+      {/* Progress Bar */}
+      <div className="relative lg:mb-16 flex flex-col lg:block items-center mx-0 my-auto lg:mx-auto lg:my-0 w-12 lg:w-[calc(100%-192px)] h-[calc(100%-155px)] lg:h-fit">
+        {/* Mobile: Vertical progress bar */}
+        <div className="lg:hidden w-3 h-full bg-navy-600 rounded-lg overflow-hidden lg:mb-6 relative">
           <div
-            className="bg-gradient-to-r from-purple via-blue to-green h-full"
+            className="absolute top-0 left-0 w-full bg-gradient-to-b from-purple via-blue to-green"
+            style={{ height: `${progress}%` }}
+          />
+        </div>
+
+        {/* Desktop: Horizontal progress bar */}
+        <div className="hidden lg:block w-full h-3 bg-navy-600 rounded-lg overflow-hidden mb-2 relative">
+          <div
+            className="h-full bg-gradient-to-r from-purple via-blue to-green"
             style={{ width: `${progress}%` }}
           />
         </div>
 
-        {iconData.map(({ offset, colorClass }, index) => {
-          const Icon =
-            index < milestonesReached ? CheckCircle2Icon : CircleIcon;
-          const iconColorClass =
-            index < milestonesReached ? colorClass : 'text-navy-600';
+        {/* Desktop Icons (horizontal) */}
+        <div className="hidden lg:block">
+          {iconData.map(({ offset, colorClass }, index) => {
+            const Icon =
+              index < milestonesReached ? CheckCircle2Icon : CircleIcon;
+            const iconColor =
+              index < milestonesReached ? colorClass : 'text-navy-600';
 
-          return (
-            <Icon
-              key={index}
-              size={40}
-              className={`absolute -top-3.5 fill-navy-800 ${iconColorClass}`}
-              style={{ left: `calc(${offset} - 20px)` }}
-            />
-          );
-        })}
+            return (
+              <Icon
+                key={index}
+                size={40}
+                className={`absolute -top-3.5 fill-navy-800 ${iconColor}`}
+                style={{ left: `calc(${offset} - 20px)` }}
+              />
+            );
+          })}
+        </div>
 
+        {/* Mobile Icons (vertical) */}
+        <div className="lg:hidden absolute left-1/2 -translate-x-1/2 -top-5 -bottom-5 w-10 flex flex-col justify-between">
+          {iconData.map(({ colorClass }, index) => {
+            const Icon =
+              index < milestonesReached ? CheckCircle2Icon : CircleIcon;
+            const iconColor =
+              index < milestonesReached ? colorClass : 'text-navy-600';
+
+            return (
+              <Icon
+                key={index}
+                size={40}
+                className={`fill-navy-800 ${iconColor}`}
+              />
+            );
+          })}
+        </div>
+
+        {/* Tooltip Box */}
         <div
-          className="absolute top-7 w-60 h-[60px]"
-          style={{ left: `calc(${progress}% - 120px)` }}
+          className="hidden lg:block absolute w-60 h-[60px] lg:top-7 lg:left-[calc(var(--progress,50%)_-_120px)] bottom-[calc(var(--progress,50%)_-_30px)] lg:bottom-auto"
+          style={{ '--progress': `${progress}%` } as React.CSSProperties}
         >
           <Image
             src="/icons/text-box.svg"
@@ -143,18 +177,13 @@ export default function Rewards({ rewards, gmv }: SectionProps) {
             className="w-full h-full object-contain"
             alt="Box"
           />
-
           <div className="absolute top-0 left-0 w-full px-2 pt-3.5 pb-1.5 text-center text-xs text-navy-200">
             <p>
               You have earned{' '}
               <span className="text-sm text-blue font-medium">
-                $
-                {gmv.toLocaleString('en-US', {
-                  maximumFractionDigits: 0
-                })}
+                ${gmv.toLocaleString('en-US', { maximumFractionDigits: 0 })}
               </span>
             </p>
-
             <p>
               <span className="text-sm text-blue font-medium">
                 $
@@ -167,6 +196,6 @@ export default function Rewards({ rewards, gmv }: SectionProps) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
