@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function Support() {
   return (
-    <div className="container max-w-7xl py-8">
+    <div className="container max-w-6xl py-8">
       <div className="bg-navy-800 p-8 rounded-xl">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="w-full">

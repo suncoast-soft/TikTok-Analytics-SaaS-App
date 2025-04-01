@@ -15,7 +15,7 @@ export default function GradientBorder({
         className
       )}
     >
-      <div className="rounded-xl">{children}</div>
+      <div className="rounded-xl bg-navy-800">{children}</div>
     </div>
   );
 }

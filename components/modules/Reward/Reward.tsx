@@ -57,7 +57,7 @@ const getTierColor = (tier: number) => {
 const Reward = ({ tier, target, reward, gmv }: RewardProps) => (
   <div
     className={cn(
-      'bg-navy-700 rounded-2xl relative border border-navy-600 opacity-40 w-48',
+      'rounded-2xl relative border border-navy-600 opacity-40 w-40',
       target <= gmv && 'opacity-100'
     )}
   >
@@ -77,7 +77,7 @@ const Reward = ({ tier, target, reward, gmv }: RewardProps) => (
 
     <h6 className="text-xs text-navy-300 text-center mb-2">Cash Rewards</h6>
 
-    <div className="p-2 border-t border-navy-600">
+    <div className="py-2 border-t border-navy-600">
       <h4 className="text-white text-center text-sm">
         ${target.toLocaleString()} GMV earned
       </h4>
@@ -98,7 +98,7 @@ export default function Rewards({ rewards, gmv }: SectionProps) {
   return (
     <div className="flex flex-row lg:flex-col justify-around gap-5 h-[700px] lg:h-fit">
       {/* Reward Cards */}
-      <div className="flex flex-col lg:flex-row justify-between items-center lg:items-stretch gap-4">
+      <div className="flex flex-col lg:flex-row justify-between items-center lg:items-stretch gap-5">
         {rewards.map((reward, index) => (
           <Reward
             key={index}
@@ -111,7 +111,7 @@ export default function Rewards({ rewards, gmv }: SectionProps) {
       </div>
 
       {/* Progress Bar */}
-      <div className="relative lg:mb-16 flex flex-col lg:block items-center mx-0 my-auto lg:mx-auto lg:my-0 w-12 lg:w-[calc(100%-192px)] h-[calc(100%-155px)] lg:h-fit">
+      <div className="relative lg:mb-16 flex flex-col lg:block items-center mx-0 my-auto lg:mx-auto lg:my-0 w-12 lg:w-[calc(100%-160px)] h-[calc(100%-155px)] lg:h-fit">
         {/* Mobile: Vertical progress bar */}
         <div className="lg:hidden w-3 h-full bg-navy-600 rounded-lg overflow-hidden lg:mb-6 relative">
           <div

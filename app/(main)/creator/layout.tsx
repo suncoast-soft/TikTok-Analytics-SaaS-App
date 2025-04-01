@@ -20,7 +20,7 @@ export default async function PrivateLayout({
     } else {
       return (
         <>
-          <div className="container max-w-7xl py-20">
+          <div className="container max-w-6xl py-20">
             <Box
               icon={<LinkIcon size={16} />}
               label="Tiktok Creator"
@@ -39,7 +39,7 @@ export default async function PrivateLayout({
     }
   } else {
     return (
-      <div className="container max-w-7xl py-8">
+      <div className="container max-w-6xl py-8">
         <Box className="mx-auto my-12 text-center">
           <Title
             tag="h2"

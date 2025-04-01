@@ -30,7 +30,7 @@ export default async function SellerOrders({
   const orders = ((await getAllSellerOrders(supabase)) ?? []) as Order[];
 
   return (
-    <div className="container max-w-7xl py-12">
+    <div className="container max-w-6xl py-12">
       <Card className="p-4 lg:p-8">
         <div className="flex flex-col lg:flex-row lg:justify-between items-center">
           <Title title="Affiliate Orders" tag="h2" />

@@ -21,7 +21,7 @@ export default function Header({ user }: { user: UserType }) {
   const { email, name, avatar_url } = user?.user_metadata ?? {};
 
   return (
-    <header className="container max-w-7xl">
+    <header className="container max-w-6xl">
       <div className="flex justify-between items-center py-5">
         <Link href={user?.type === 'seller' ? '/seller' : '/'}>
           <Logo type={user?.type === 'seller' ? 'blue' : 'white'} />

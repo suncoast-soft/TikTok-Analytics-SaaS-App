@@ -50,7 +50,7 @@ export default async function CampaignDetailPage({
   const productThumbnail = products?.[0]?.main_image_url;
 
   return (
-    <div className="container max-w-7xl py-12">
+    <div className="container max-w-6xl py-12">
       <Card className="p-4 lg:p-8 mb-12">
         <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
           {productThumbnail && (

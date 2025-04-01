@@ -73,7 +73,7 @@ export default async function CampaignDetailPage({
   );
 
   return (
-    <div className="container max-w-7xl py-12">
+    <div className="container max-w-6xl py-0">
       <Card className="mb-8">
         <div className="flex flex-col lg:flex-row items-center gap-8">
           <div>
@@ -93,9 +93,17 @@ export default async function CampaignDetailPage({
           </div>
 
           <div>
-            <h2 className="text-3xl lg:text-5xl font-bold bg-gradient-to-r from-purple to-blue bg-clip-text text-transparent mb-4">
-              {seller_name}
-            </h2>
+            <div className="flex items-center gap-4 mb-4">
+              <Image
+                src="/icons/company.svg"
+                width={41}
+                height={49}
+                alt="Company"
+              />
+              <h2 className="text-3xl lg:text-4xl font-semibold bg-gradient-to-r from-purple to-blue bg-clip-text text-transparent">
+                {seller_name}
+              </h2>
+            </div>
 
             <div className="flex flex-col lg:flex-row gap-4 mb-4">
               <Box
@@ -126,9 +134,9 @@ export default async function CampaignDetailPage({
               </Box>
 
               <GradientBorder className="h-fit my-auto">
-                <Card className="rounded-xl bg-navy-800/70 py-3">
-                  <div className="flex gap-4 justify-center w-60 text-white text-lg font-medium text-center">
-                    <CheckCircle2Icon />
+                <Card className="rounded-xl bg-navy-700/80 py-3">
+                  <div className="flex gap-3 items-center justify-center w-60 text-white text-lg font-medium text-center">
+                    <CheckCircle2Icon className="fill-white stroke-navy-700" />
                     <span>Joined</span>
                   </div>
                 </Card>
@@ -148,8 +156,7 @@ export default async function CampaignDetailPage({
       </Card>
 
       {rewards.length > 0 && (
-        <Card className="p-4 lg:p-8 mb-8 bg-navy-800">
-          <Title title="Your Reward Status" tag="h2" />
+        <Card className="p-4 lg:p-8 mb-8 bg-navy-800/60">
           <Rewards rewards={rewards} gmv={gmv} />
         </Card>
       )}

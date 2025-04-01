@@ -17,7 +17,7 @@ export default async function Home({
   const campaigns = await getCampaigns(supabase);
 
   return (
-    <div className="container max-w-7xl py-8">
+    <div className="container max-w-6xl py-8">
       {!category && campaigns.length > 0 && (
         <>
           <h1 className="text-white text-xl lg:text-3xl font-bold text-center my-4">

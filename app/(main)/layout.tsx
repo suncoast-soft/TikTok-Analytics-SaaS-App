@@ -1,4 +1,5 @@
 import Logo from '@/components/icons/Logo';
+import PulseEffect from '@/components/modules/PulseEffect';
 import Footer from '@/components/sections/Footer';
 import Header from '@/components/sections/Header';
 import Sidenav from '@/components/sections/Sidenav';
@@ -116,21 +117,23 @@ export default async function DashboardLayout({
           <Sidenav navs={navs} isSeller={false} />
         </Suspense>
 
-        <main className="w-full h-screen scrollbar-hidden overflow-y-scroll bg-navy-800">
-          <div className="flex md:hidden w-full justify-between p-4 shadow">
+        <main className="relative w-full h-screen scrollbar-hidden overflow-y-scroll bg-navy-800">
+          <div className="flex md:hidden w-full justify-between p-4 shadow z-10 relative">
             <Link href="/">
               <Logo type="white" />
             </Link>
             <SidebarTrigger />
           </div>
 
-          <div className="hidden md:block">
+          <div className="hidden md:block z-10 relative">
             <Header user={user} />
           </div>
 
-          {children}
+          <div className="z-10 relative">{children}</div>
 
           <Footer />
+
+          <PulseEffect />
         </main>
       </SidebarProvider>
     </div>

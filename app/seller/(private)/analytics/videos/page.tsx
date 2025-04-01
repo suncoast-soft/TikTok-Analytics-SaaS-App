@@ -46,7 +46,7 @@ export default async function SellerAnalyticsVideos({
   const videos = ((await getSellerVideos(supabase)) ?? []) as Video[];
 
   return (
-    <div className="container max-w-7xl py-12">
+    <div className="container max-w-6xl py-12">
       <Card className="p-4 lg:p-8">
         <div className="flex flex-col lg:flex-row lg:justify-between items-center">
           <Title title="Video Analytics" tag="h2" />

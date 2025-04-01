@@ -48,7 +48,7 @@ export default async function VideoAnalytics({
     []) as Video[];
 
   return (
-    <div className="container max-w-7xl py-12">
+    <div className="container max-w-6xl py-12">
       <Card className="p-4 lg:p-8">
         <Title title="Video Analytics" tag="h2" />
         <VideoTable videos={videos} />

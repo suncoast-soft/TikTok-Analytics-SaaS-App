@@ -28,7 +28,7 @@ export default async function Account() {
   const tiktokUser = await getCreatorProfile();
 
   return (
-    <div className="container max-w-7xl py-8">
+    <div className="container max-w-6xl py-8">
       <div className="grid lg:grid-cols-2 gap-8 mb-20">
         <Card className="p-8" vertical={true}>
           <Box
