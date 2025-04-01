@@ -17,8 +17,8 @@ export default {
       colors: {
         navy: {
           950: 'rgb(9 12 29)',
-          900: 'rgb(17, 19, 44)',
-          800: 'rgb(25 25 57)',
+          900: 'rgb(17, 17, 42)',
+          800: 'rgb(26 25 56)',
           700: 'rgb(44 40 82)',
           600: 'rgb(70 62 122)',
           500: 'rgb(120, 65, 238)',
@@ -28,14 +28,17 @@ export default {
           100: 'rgb(226 218 251)',
           50: 'rgb(242 240 251)'
         },
+        blue: '#5086FF',
+        purple: '#853DFE',
+        green: '#5CF07C',
         sidebar: {
-          DEFAULT: 'rgb(25, 25, 57)',
+          DEFAULT: 'rgb(17, 17, 42)',
           foreground: 'rgb(242, 240, 251)',
           primary: 'rgb(226, 218, 251)',
-          'primary-foreground': 'var(--rgb(25, 25, 57)',
-          accent: 'rgb(44, 40, 82)',
+          'primary-foreground': 'var(--rgb(17, 17, 42)',
+          accent: 'rgb(17, 17, 42)',
           'accent-foreground': 'var(--rgb(242, 240, 251)',
-          border: 'rgb(44, 40, 82)',
+          border: 'rgb(17, 17, 42)',
           ring: 'rgb(180, 166, 226)'
         }
       },

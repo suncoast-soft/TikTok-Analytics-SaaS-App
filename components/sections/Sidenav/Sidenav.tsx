@@ -10,7 +10,6 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -46,13 +45,16 @@ export default function Sidenav({ navs, isSeller }: NavProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const currentPath = `${pathname}?${searchParams.toString()}`;
+  const currentPath =
+    searchParams.toString() === ''
+      ? pathname
+      : `${pathname}?${searchParams.toString()}`;
+
+  const parentPath = pathname.substring(0, pathname.lastIndexOf('/'));
 
   return (
     <Sidebar variant="inset">
-      <SidebarHeader className="h-14"></SidebarHeader>
-
-      <SidebarContent>
+      <SidebarContent className="px-4">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className="gap-3">
@@ -68,14 +70,18 @@ export default function Sidenav({ navs, isSeller }: NavProps) {
                         <SidebarMenuButton
                           size="lg"
                           className={cn(
-                            'text-sm py-1 h-10 ring-0 outline-none bg-navy-600 hover:!bg-navy-500 mx-[1px] my-0.5 rounded-lg data-[state=open]:rounded-b-none',
-                            currentPath === nav.link && 'bg-navy-400'
+                            'text-sm py-1 h-10 ring-0 outline-none mx-[1px] my-0.5 rounded-lg border border-navy-600',
+                            (pathname === nav.link ||
+                              parentPath === nav.link) &&
+                              'border-purple'
                           )}
                         >
                           <span
                             className={cn(
                               'w-5 h-5',
-                              currentPath === nav.link && 'text-amber-400'
+                              (pathname === nav.link ||
+                                parentPath === nav.link) &&
+                                'text-blue'
                             )}
                           >
                             {nav.icon}
@@ -86,14 +92,15 @@ export default function Sidenav({ navs, isSeller }: NavProps) {
                       </CollapsibleTrigger>
 
                       <CollapsibleContent>
-                        <SidebarMenuSub className="mx-0 p-0 border-none bg-navy-700 rounded-b-lg overflow-hidden">
+                        <SidebarMenuSub className="mx-0 p-0 ml-5 border-l border-navy-600 mt-3">
                           {nav.subnavs.map((subnav) => (
                             <SidebarMenuSubItem key={subnav.name}>
                               <SidebarMenuButton
                                 size="lg"
                                 className={cn(
-                                  'text-xs py-1 h-10 ring-0 outline-none rounded-none hover:bg-navy-600',
-                                  currentPath === subnav.link && 'bg-navy-400'
+                                  'text-xs py-1 h-8 ring-0 outline-none rounded-none pl-3 border-l border-navy-600 ml-[-1px] hover:border-blue',
+                                  currentPath === subnav.link &&
+                                    'border-l border-blue'
                                 )}
                                 asChild
                               >
@@ -101,15 +108,6 @@ export default function Sidenav({ navs, isSeller }: NavProps) {
                                   href={subnav.link ?? ''}
                                   className="px-2 py-1"
                                 >
-                                  <span
-                                    className={cn(
-                                      'w-5 h-5',
-                                      currentPath === subnav.link &&
-                                        'text-amber-400'
-                                    )}
-                                  >
-                                    {subnav.icon}
-                                  </span>
                                   <span>{subnav.name}</span>
                                 </Link>
                               </SidebarMenuButton>
@@ -124,8 +122,8 @@ export default function Sidenav({ navs, isSeller }: NavProps) {
                     <SidebarMenuButton
                       size="lg"
                       className={cn(
-                        'text-sm py-1 h-10 ring-0 outline-none bg-navy-600 hover:!bg-navy-500 mx-[1px] my-0.5 rounded-lg data-[state=open]:rounded-b-none',
-                        currentPath === nav.link && 'bg-navy-400'
+                        'text-sm py-1 h-10 ring-0 outline-none mx-[1px] my-0.5 rounded-lg border border-navy-600',
+                        currentPath === nav.link && 'border-purple'
                       )}
                       asChild
                     >
@@ -133,7 +131,7 @@ export default function Sidenav({ navs, isSeller }: NavProps) {
                         <span
                           className={cn(
                             'w-5 h-5',
-                            currentPath === nav.link && 'text-amber-400'
+                            currentPath === nav.link && 'text-blue'
                           )}
                         >
                           {nav.icon}
