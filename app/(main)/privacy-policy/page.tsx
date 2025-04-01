@@ -4,7 +4,7 @@ import Title from '@/components/modules/Title';
 export default function PrivacyPolicy() {
   return (
     <div className="container max-w-7xl py-8">
-      <Card vertical={true} className="p-8">
+      <Card className="p-8">
         <Title title="Privacy Policy" className="text-center" />
 
         <div className="max-w-4xl mx-auto py-10 px-6 text-white">

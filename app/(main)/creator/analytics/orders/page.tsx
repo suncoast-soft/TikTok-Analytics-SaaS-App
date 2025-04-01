@@ -21,7 +21,7 @@ export default async function OrderAnalytics() {
 
   return (
     <div className="container max-w-7xl py-12">
-      <Card vertical={true} className="p-4 lg:p-8">
+      <Card className="p-4 lg:p-8">
         <Title title="Affiliate Orders" tag="h2" />
         <OrderTable orders={orders} />
       </Card>

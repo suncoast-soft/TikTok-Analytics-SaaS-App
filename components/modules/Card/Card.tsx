@@ -7,21 +7,15 @@ interface ModuleProps {
   className?: string;
 }
 
-export default function Card({
-  children,
-  vertical = false,
-  className
-}: ModuleProps) {
+export default function Card({ children, className }: ModuleProps) {
   return (
-    <div className={cn('bg-navy-800 rounded-xl overflow-hidden', className)}>
-      <div
-        className={cn(
-          'relative flex flex-col gap-2 h-full',
-          !vertical && 'lg:flex-row lg:items-center'
-        )}
-      >
-        {children}
-      </div>
+    <div
+      className={cn(
+        'bg-navy-700/70 rounded-2xl border border-navy-600 overflow-hidden p-5',
+        className
+      )}
+    >
+      {children}
     </div>
   );
 }

@@ -30,6 +30,7 @@ export default {
         },
         blue: '#5086FF',
         purple: '#853DFE',
+        teal: '#5DBCB2',
         green: '#5CF07C',
         sidebar: {
           DEFAULT: 'rgb(17, 17, 42)',

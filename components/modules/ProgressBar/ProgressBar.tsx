@@ -9,9 +9,9 @@ export default function ProgressBar({
 }) {
   return (
     <div className="relative w-full">
-      <div className="w-full bg-navy-600 rounded-lg h-2 overflow-hidden mb-2">
+      <div className="w-full bg-navy-600 rounded-lg h-3 overflow-hidden mb-2">
         <div
-          className="bg-amber-400 h-full"
+          className="bg-gradient-to-r from-purple to-blue h-full"
           style={{ width: `${progress}%` }}
         />
       </div>

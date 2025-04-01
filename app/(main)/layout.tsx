@@ -110,7 +110,7 @@ export default async function DashboardLayout({
   ];
 
   return (
-    <main className="flex min-h-screen w-full flex-row">
+    <div className="flex min-h-screen w-full flex-row">
       <SidebarProvider>
         <Suspense>
           <Sidenav navs={navs} isSeller={false} />
@@ -133,6 +133,6 @@ export default async function DashboardLayout({
           <Footer />
         </main>
       </SidebarProvider>
-    </main>
+    </div>
   );
 }

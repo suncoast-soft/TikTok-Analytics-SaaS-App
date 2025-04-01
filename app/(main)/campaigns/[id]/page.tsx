@@ -51,7 +51,7 @@ export default async function CampaignDetailPage({
 
   return (
     <div className="container max-w-7xl py-12">
-      <Card vertical={true} className="p-4 lg:p-8 mb-12">
+      <Card className="p-4 lg:p-8 mb-12">
         <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
           {productThumbnail && (
             <Image
@@ -90,7 +90,9 @@ export default async function CampaignDetailPage({
             </div>
           </div>
         </div>
+      </Card>
 
+      <Card className="p-4 lg:p-8 mb-12">
         <Title title="About the Campaign" description={message!} tag="h2" />
 
         <Title title="How to Start" tag="h2" />

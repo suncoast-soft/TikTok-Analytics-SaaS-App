@@ -66,13 +66,13 @@ export default async function DashboardLayout({
   ];
 
   return (
-    <main className="flex min-h-screen w-full flex-row">
+    <div className="flex min-h-screen w-full flex-row">
       <SidebarProvider>
         <Suspense>
           <Sidenav navs={navs} isSeller={true} />
         </Suspense>
 
-        <main className="w-full overflow-auto">
+        <main className="w-full h-screen scrollbar-hidden overflow-y-scroll bg-navy-800">
           <div className="flex md:hidden w-full justify-between p-4 shadow">
             <Link href="/seller">
               <Logo type="blue" />
@@ -84,12 +84,11 @@ export default async function DashboardLayout({
             <Header user={user} />
           </div>
 
-          <div className="bg-navy-950 h-[calc(100vh-72px)] scrollbar-hidden overflow-y-scroll rounded-ss-xl">
-            <div className="min-h-[calc(100vh-470px)]">{children}</div>
-            <Footer />
-          </div>
+          {children}
+
+          <Footer />
         </main>
       </SidebarProvider>
-    </main>
+    </div>
   );
 }

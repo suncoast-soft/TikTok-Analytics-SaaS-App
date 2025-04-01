@@ -31,7 +31,7 @@ export default async function SellerOrders({
 
   return (
     <div className="container max-w-7xl py-12">
-      <Card vertical={true} className="p-4 lg:p-8">
+      <Card className="p-4 lg:p-8">
         <div className="flex flex-col lg:flex-row lg:justify-between items-center">
           <Title title="Affiliate Orders" tag="h2" />
 

@@ -1,6 +1,6 @@
 interface ModuleProps {
   tag?: 'h1' | 'h2' | 'h3';
-  title: string;
+  title?: string;
   subtitle?: string;
   description?: string;
   className?: string;
@@ -23,9 +23,11 @@ export default function Title({
             </h2>
           )}
 
-          <h1 className="text-white text-2xl lg:text-4xl font-bold mb-8">
-            {title}
-          </h1>
+          {title && (
+            <h1 className="text-white text-2xl lg:text-4xl font-bold mb-8">
+              {title}
+            </h1>
+          )}
 
           {description && (
             <p className="text-navy-200 lg:text-lg tracking-wide mb-8">

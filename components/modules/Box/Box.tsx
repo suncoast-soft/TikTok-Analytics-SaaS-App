@@ -21,21 +21,21 @@ export default function Box({
   children?: ReactNode;
 }) {
   return (
-    <div className={cn('bg-navy-700 p-3 rounded-lg w-fit', className)}>
+    <div
+      className={cn(
+        'bg-navy-800/20 border border-navy-600 p-3 rounded-lg w-fit',
+        className
+      )}
+    >
       <div className="flex flex-row items-center gap-1.5">
-        {icon && <span className="text-amber-500">{icon}</span>}
+        {icon && <span className="text-blue">{icon}</span>}
 
         {value && (
-          <span className="text-white text-2xl font-bold">{value}</span>
+          <span className="text-white text-3xl font-medium">{value}</span>
         )}
 
         {label && (
-          <span
-            className={cn(
-              'text-navy-100 text-xs font-semibold',
-              value && 'mt-1'
-            )}
-          >
+          <span className={cn('text-navy-100 text-sm', value && 'mt-2')}>
             {label}
           </span>
         )}
