@@ -50,7 +50,12 @@ export default function Header({ user }: { user: UserType }) {
                       </p>
 
                       <div>
-                        <Button type="submit" className="shadow-none" asChild>
+                        <Button
+                          variant="ghost"
+                          type="submit"
+                          className="shadow-none mb-2"
+                          asChild
+                        >
                           <Link
                             href={
                               user?.type === 'seller'
@@ -80,7 +85,7 @@ export default function Header({ user }: { user: UserType }) {
                     <Link href="/auth/login">Login</Link>
                   </Button>
                 }
-                className="rounded-2xl"
+                className="rounded-xl"
               />
 
               <Badge
@@ -89,7 +94,7 @@ export default function Header({ user }: { user: UserType }) {
                     <Link href="/auth/register">Register</Link>
                   </Button>
                 }
-                className="rounded-2xl"
+                className="rounded-xl"
               />
             </div>
           )}

@@ -17,7 +17,7 @@ import { getCampaign, getSellerOrders } from '@/utils/supabase/queries';
 import { SellerCampaignDetail } from '@/types/tiktok';
 import { Tables } from '@/types/db';
 import GradientBorder from '@/components/modules/GradientBorder';
-import Rewards from '@/components/modules/Reward';
+import Rewards from '@/components/sections/Reward';
 import Description from '@/components/modules/Description';
 import Brand from '@/components/modules/Brand';
 

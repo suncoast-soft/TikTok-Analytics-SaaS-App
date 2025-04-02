@@ -12,21 +12,22 @@ import ProgressBar from '@/components/modules/ProgressBar';
 import { displayNumber, getTimeDiff } from '@/utils/helpers';
 import Title from '@/components/modules/Title';
 import { createClient } from '@/utils/supabase/server';
-import { getCampaign, getSellerOrders } from '@/utils/supabase/queries';
+import { getCampaign, getUser } from '@/utils/supabase/queries';
 import { SellerCampaignDetail } from '@/types/tiktok';
 import { Tables } from '@/types/db';
-import Rewards from '@/components/modules/Reward';
+import Rewards from '@/components/sections/Reward';
 import Description from '@/components/modules/Description';
 import Brand from '@/components/modules/Brand';
 import ImageBox from '@/components/modules/ImageBox';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import JoinCampaign from '@/components/modules/JoinCampaign';
 
 type Campaign = Tables<'campaigns'> & {
   users: {
     seller_name: string;
   };
 };
-type Order = Tables<'orders'>;
 
 interface RewardProps {
   target: number;
@@ -40,6 +41,7 @@ export default async function CampaignDetailPage({
 }) {
   const campaignId = (await params).id;
   const supabase = await createClient();
+  const user = await getUser(supabase);
 
   /**
    * Campaign Data
@@ -60,20 +62,6 @@ export default async function CampaignDetailPage({
   const productThumbnail = products?.[0]?.main_image_url;
   const commission = products[0].commission.rate;
 
-  /**
-   * Order Details
-   * Temp. use getCreatorOrders
-   */
-  const orders = (await getSellerOrders(supabase, campaignId)) as Order[];
-
-  /**
-   * Affiliate Data
-   */
-  const gmv = orders.reduce(
-    (sum, order) => sum + (order.commission_base ?? 0),
-    0
-  );
-
   return (
     <div className="container max-w-6xl py-0">
       <Card className="mb-8">
@@ -85,7 +73,7 @@ export default async function CampaignDetailPage({
                 width={192}
                 height={192}
                 alt={name || 'Product Thumbnail'}
-                className="w-48 h-48 object-cover rounded-xl mb-2"
+                className="w-48 h-48 object-cover rounded-xl mb-4"
               />
             )}
 
@@ -130,7 +118,13 @@ export default async function CampaignDetailPage({
               </Box>
 
               <div className="h-fit my-auto">
-                <Button className="w-60 py-3 h-12">Join Now</Button>
+                {user ? (
+                  <JoinCampaign style="button" />
+                ) : (
+                  <Button className="w-60 py-3 h-12" asChild>
+                    <Link href="/auth/register">Join Now</Link>
+                  </Button>
+                )}
               </div>
             </div>
           </div>
@@ -144,7 +138,7 @@ export default async function CampaignDetailPage({
 
       {rewards.length > 0 && (
         <Card className="bg-navy-800/60 mb-8">
-          <Rewards rewards={rewards} gmv={gmv} showProgress={false} />
+          <Rewards rewards={rewards} showProgress={false} />
         </Card>
       )}
 

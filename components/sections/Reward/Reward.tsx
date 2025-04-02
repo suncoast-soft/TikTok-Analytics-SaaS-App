@@ -1,7 +1,12 @@
+import JoinCampaign from '@/components/modules/JoinCampaign';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/utils/cn';
 import { displayMoney } from '@/utils/helpers';
+import { getUser } from '@/utils/supabase/queries';
+import { createClient } from '@/utils/supabase/server';
 import { CheckCircle2Icon, CircleIcon } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface SectionProps {
   rewards: {
@@ -59,8 +64,8 @@ const getTierColor = (tier: number) => {
 const Reward = ({ tier, target, reward, gmv }: RewardProps) => (
   <div
     className={cn(
-      'rounded-2xl relative border border-navy-600 opacity-40 w-40',
-      target <= gmv && 'opacity-100'
+      'rounded-2xl relative border border-navy-600 opacity-100 w-40',
+      target <= gmv && 'border-blue bg-blue/10'
     )}
   >
     <div className="w-full text-center">
@@ -87,11 +92,14 @@ const Reward = ({ tier, target, reward, gmv }: RewardProps) => (
   </div>
 );
 
-export default function Rewards({
+export default async function Rewards({
   rewards,
   gmv = 0,
   showProgress = true
 }: SectionProps) {
+  const supabase = await createClient();
+  const user = await getUser(supabase);
+
   const totalMilestones = rewards.length;
   const progress =
     (gmv / rewards[totalMilestones - 1].target) * (totalMilestones * 25);
@@ -117,62 +125,62 @@ export default function Rewards({
       </div>
 
       {/* Progress Bar */}
-      {showProgress && (
-        <div className="relative lg:mb-6 flex flex-col lg:block items-center mx-0 my-auto lg:mx-auto lg:my-0 w-12 lg:w-[calc(100%-160px)] h-[calc(100%-155px)] lg:h-fit">
-          {/* Mobile: Vertical progress bar */}
-          <div className="lg:hidden w-3 h-full bg-navy-600 rounded-lg overflow-hidden lg:mb-6 relative">
-            <div
-              className="absolute top-0 left-0 w-full bg-gradient-to-b from-purple via-blue to-green"
-              style={{ height: `${progress}%` }}
-            />
-          </div>
+      <div className="relative lg:mb-6 flex flex-col lg:block items-center mx-0 my-auto lg:mx-auto lg:my-0 w-12 lg:w-[calc(100%-160px)] h-[calc(100%-155px)] lg:h-fit">
+        {/* Mobile: Vertical progress bar */}
+        <div className="lg:hidden w-3 h-full bg-navy-600 rounded-lg overflow-hidden lg:mb-6 relative">
+          <div
+            className="absolute top-0 left-0 w-full bg-gradient-to-b from-purple via-blue to-green"
+            style={{ height: `${progress}%` }}
+          />
+        </div>
 
-          {/* Desktop: Horizontal progress bar */}
-          <div className="hidden lg:block w-full h-3 bg-navy-600 rounded-lg overflow-hidden mb-2 relative">
-            <div
-              className="h-full bg-gradient-to-r from-purple via-blue to-green"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+        {/* Desktop: Horizontal progress bar */}
+        <div className="hidden lg:block w-full h-3 bg-navy-600 rounded-lg overflow-hidden mb-2 relative">
+          <div
+            className="h-full bg-gradient-to-r from-purple via-blue to-green"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
 
-          {/* Desktop Icons (horizontal) */}
-          <div className="hidden lg:block h-10">
-            {iconData.map(({ offset, colorClass }, index) => {
-              const Icon =
-                index < milestonesReached ? CheckCircle2Icon : CircleIcon;
-              const iconColor =
-                index < milestonesReached ? colorClass : 'text-navy-600';
+        {/* Desktop Icons (horizontal) */}
+        <div className="hidden lg:block h-10">
+          {iconData.map(({ offset, colorClass }, index) => {
+            const Icon =
+              index < milestonesReached ? CheckCircle2Icon : CircleIcon;
+            const iconColor =
+              index < milestonesReached ? colorClass : 'text-navy-600';
 
-              return (
-                <Icon
-                  key={index}
-                  size={40}
-                  className={`absolute -top-3.5 fill-navy-800 rounded-full ${iconColor}`}
-                  style={{ left: `calc(${offset} - 20px)` }}
-                />
-              );
-            })}
-          </div>
+            return (
+              <Icon
+                key={index}
+                size={40}
+                className={`absolute -top-3.5 fill-navy-800 rounded-full ${iconColor}`}
+                style={{ left: `calc(${offset} - 20px)` }}
+              />
+            );
+          })}
+        </div>
 
-          {/* Mobile Icons (vertical) */}
-          <div className="lg:hidden absolute left-1/2 -translate-x-1/2 -top-5 -bottom-5 w-10 flex flex-col justify-between">
-            {iconData.map(({ colorClass }, index) => {
-              const Icon =
-                index < milestonesReached ? CheckCircle2Icon : CircleIcon;
-              const iconColor =
-                index < milestonesReached ? colorClass : 'text-navy-600';
+        {/* Mobile Icons (vertical) */}
+        <div className="lg:hidden absolute left-1/2 -translate-x-1/2 -top-5 -bottom-5 w-10 flex flex-col justify-between">
+          {iconData.map(({ colorClass }, index) => {
+            const Icon =
+              index < milestonesReached ? CheckCircle2Icon : CircleIcon;
+            const iconColor =
+              index < milestonesReached ? colorClass : 'text-navy-600';
 
-              return (
-                <Icon
-                  key={index}
-                  size={40}
-                  className={`fill-navy-800 ${iconColor}`}
-                />
-              );
-            })}
-          </div>
+            return (
+              <Icon
+                key={index}
+                size={40}
+                className={`fill-navy-800 ${iconColor}`}
+              />
+            );
+          })}
+        </div>
 
-          {/* Tooltip Box */}
+        {/* Tooltip Box */}
+        {showProgress ? (
           <div
             className="hidden lg:block absolute w-60 h-[60px] lg:top-7 lg:left-[calc(var(--progress,50%)_-_120px)] bottom-[calc(var(--progress,50%)_-_30px)] lg:bottom-auto"
             style={{ '--progress': `${progress}%` } as React.CSSProperties}
@@ -199,8 +207,36 @@ export default function Rewards({
               </p>
             </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <div
+            className="hidden lg:block absolute w-44 h-[44px] lg:top-7 lg:left-[calc(var(--progress,50%)_-_88px)] bottom-[calc(var(--progress,50%)_-_30px)] lg:bottom-auto"
+            style={{ '--progress': `${progress}%` } as React.CSSProperties}
+          >
+            <Image
+              src="/icons/text-box.svg"
+              width={212}
+              height={48}
+              className="w-full h-full object-contain"
+              alt="Box"
+            />
+            <div className="absolute top-0 left-0 w-full px-2 pt-3.5 pb-1.5 text-center text-xs text-navy-200">
+              {user ? (
+                <JoinCampaign style="link" />
+              ) : (
+                <Button
+                  variant="link"
+                  size="sm"
+                  className="px-0 py-0 text-blue underline mr-1"
+                  asChild
+                >
+                  <Link href="/auth/register">Join Now</Link>
+                </Button>
+              )}
+              <span>to start earning</span>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

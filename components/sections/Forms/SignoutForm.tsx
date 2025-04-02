@@ -41,7 +41,12 @@ export default function SignoutForm() {
           defaultValue={usePathname()}
           {...form.register('pathName')}
         />
-        <Button type="submit" disabled={isSubmitting} className="shadow-none">
+        <Button
+          variant="ghost"
+          type="submit"
+          disabled={isSubmitting}
+          className="shadow-none"
+        >
           <LogOutIcon size={20} />
           <span className="">Sign out</span>
         </Button>
