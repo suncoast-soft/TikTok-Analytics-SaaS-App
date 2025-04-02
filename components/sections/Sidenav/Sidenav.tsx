@@ -10,6 +10,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -54,6 +55,8 @@ export default function Sidenav({ navs, isSeller }: NavProps) {
 
   return (
     <Sidebar variant="inset">
+      <SidebarHeader></SidebarHeader>
+
       <SidebarContent className="px-4">
         <SidebarGroup>
           <SidebarGroupContent>

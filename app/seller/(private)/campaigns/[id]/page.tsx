@@ -101,11 +101,15 @@ export default async function CampaignDetailPage({
 
               <Box
                 icon={<ShoppingBagIcon />}
-                value={orders?.length}
+                value={orders?.length ?? '0'}
                 label="Orders"
               />
 
-              <Box icon={<FilmIcon />} value={videos.length} label="Videos" />
+              <Box
+                icon={<FilmIcon />}
+                value={videos.length ?? '0'}
+                label="Videos"
+              />
             </div>
 
             <div className="flex flex-col lg:flex-row gap-4">

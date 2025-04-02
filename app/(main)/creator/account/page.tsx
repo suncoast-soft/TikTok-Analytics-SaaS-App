@@ -119,7 +119,7 @@ export default async function Account() {
         Connecting Affiliates with exclusive TikTok Shop Brand deals
       </h1>
 
-      <h2 className="text-amber-400 lg:text-xl font-semibold text-center mb-12">
+      <h2 className="text-blue lg:text-xl font-semibold text-center mb-12">
         Earn higher commissions and cash rewards
       </h2>
 

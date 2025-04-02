@@ -12,12 +12,12 @@ const buttonVariants = cva(
         default:
           'bg-gradient-to-r from-purple to-blue text-white hover:shadow-lg',
         secondary:
-          'bg-custom-yellow shadow-custom-box hover:shadow-custom-box-sink text-white hover:text-navy-200',
+          'bg-custom-yellow shadow-custom-box hover:shadow-custom-box-sink text-navy-800 hover:text-navy-950',
         destructive:
           'bg-red-600 text-white shadow-md hover:bg-red-700 hover:shadow-lg',
         outline:
-          'border border-input bg-background shadow-sm hover:bg-amber-400 hover:text-white',
-        ghost: 'hover:bg-amber-400 hover:text-white',
+          'border border-input bg-background shadow-sm hover:bg-purple hover:text-white',
+        ghost: 'hover:bg-blue hover:text-white',
         white: 'text-navy-800 bg-white hover:bg-navy-50',
         link: 'text-white underline-offset-4 hover:underline !h-5'
       },

@@ -127,7 +127,6 @@ export async function requestTikTokShopAPI({
 
     if (!response.ok) {
       console.log(`HTTP error! Status: ${response.status}`);
-      console.log(data);
       return null;
     }
 

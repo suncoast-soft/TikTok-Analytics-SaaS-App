@@ -61,6 +61,7 @@ export function PublicCampaigns({
     <>
       <div className="flex flex-wrap gap-2 mb-4 max-w-5xl">
         <Button
+          variant="outline"
           className={cn('text-xs', !selectedCategory && 'bg-navy-500')}
           asChild
         >
@@ -70,6 +71,7 @@ export function PublicCampaigns({
         {categories.map((category) => (
           <Button
             key={category.name}
+            variant="outline"
             className={cn(
               'text-xs',
               category.name === selectedCategory && 'bg-navy-500'

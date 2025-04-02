@@ -1,3 +1,4 @@
+import { requestTikTokShopAPIClient } from '@/app/actions';
 import Box from '@/components/modules/Box';
 import Title from '@/components/modules/Title';
 import TikTokSellerSignin from '@/components/sections/Forms/TikTokSellerSignin';
@@ -15,8 +16,18 @@ export default async function PrivateLayout({
   const supabase = await createClient();
   const user = await getUser(supabase);
 
+  const tiktokSellerData = await requestTikTokShopAPIClient(
+    '/authorization/202309/shops',
+    {},
+    'GET',
+    ''
+  );
+  const shop = tiktokSellerData?.data?.shops?.find(
+    (s: { name: string }) => s.name === user.seller_name
+  );
+
   if (user?.type === 'seller') {
-    if (user.access_token) {
+    if (shop) {
       return children;
     } else {
       return (

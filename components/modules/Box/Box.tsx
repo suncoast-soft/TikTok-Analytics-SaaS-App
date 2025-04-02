@@ -30,7 +30,7 @@ export default function Box({
       <div className="flex flex-row items-center gap-1.5">
         {icon && <span className="text-blue">{icon}</span>}
 
-        {value && (
+        {value !== undefined && (
           <span className="text-white text-3xl font-medium">{value}</span>
         )}
 
