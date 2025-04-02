@@ -70,7 +70,7 @@ export default function Sidenav({ navs, isSeller }: NavProps) {
                         <SidebarMenuButton
                           size="lg"
                           className={cn(
-                            'text-sm py-1 h-10 ring-0 outline-none mx-[1px] my-0.5 rounded-lg border border-navy-600',
+                            'text-sm py-1 h-10 ring-0 outline-none mx-[1px] my-0.5 rounded-lg border border-navy-600 hover:border-purple',
                             (pathname === nav.link ||
                               parentPath === nav.link) &&
                               'border-purple'
@@ -122,8 +122,9 @@ export default function Sidenav({ navs, isSeller }: NavProps) {
                     <SidebarMenuButton
                       size="lg"
                       className={cn(
-                        'text-sm py-1 h-10 ring-0 outline-none mx-[1px] my-0.5 rounded-lg border border-navy-600',
-                        currentPath === nav.link && 'border-purple'
+                        'text-sm py-1 h-10 ring-0 outline-none mx-[1px] my-0.5 rounded-lg border border-navy-600 hover:border-purple',
+                        (pathname === nav.link || parentPath === nav.link) &&
+                          'border-purple'
                       )}
                       asChild
                     >
@@ -131,7 +132,9 @@ export default function Sidenav({ navs, isSeller }: NavProps) {
                         <span
                           className={cn(
                             'w-5 h-5',
-                            currentPath === nav.link && 'text-blue'
+                            (pathname === nav.link ||
+                              parentPath === nav.link) &&
+                              'text-blue'
                           )}
                         >
                           {nav.icon}
@@ -169,10 +172,10 @@ export default function Sidenav({ navs, isSeller }: NavProps) {
 
       <SidebarFooter>
         <SidebarMenu className="gap-3">
-          <Button variant="link" size="sm" asChild>
+          <Button variant="link" asChild>
             <Link
               href={isSeller ? '/' : '/seller'}
-              className="no-underline !text-red-600"
+              className="no-underline !text-blue"
             >
               {isSeller ? 'TikTok Creator Home' : 'TikTok Seller Dashboard'}
             </Link>

@@ -28,10 +28,10 @@ export default {
           100: 'rgb(226 218 251)',
           50: 'rgb(242 240 251)'
         },
-        blue: '#5086FF',
-        purple: '#853DFE',
-        teal: '#5DBCB2',
-        green: '#5CF07C',
+        blue: 'rgb(80, 134, 255)',
+        purple: 'rgb(133, 61, 254)',
+        teal: 'rgb(93, 188, 178)',
+        green: 'rgb(92, 240, 124)',
         sidebar: {
           DEFAULT: 'rgb(17, 17, 42)',
           foreground: 'rgb(242, 240, 251)',
@@ -42,6 +42,12 @@ export default {
           border: 'rgb(17, 17, 42)',
           ring: 'rgb(180, 166, 226)'
         }
+      },
+      dropShadow: {
+        blue: '0 12px 10px rgba(80, 134, 255, 0.3)',
+        purple: '0 12px 10px rgba(133, 61, 254, 0.3)',
+        teal: '0 12px 10px rgba(93, 188, 178, 0.3)',
+        green: '0 12px 10px rgba(92, 240, 124, 0.3)'
       },
       backgroundImage: {
         'custom-yellow':

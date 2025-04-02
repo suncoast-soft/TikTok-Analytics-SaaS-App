@@ -23,7 +23,7 @@ export default function Box({
   return (
     <div
       className={cn(
-        'bg-navy-800/20 border border-navy-600 p-3 rounded-lg w-fit',
+        'bg-navy-800/20 border border-navy-600 px-3 py-2 rounded-lg w-fit',
         className
       )}
     >

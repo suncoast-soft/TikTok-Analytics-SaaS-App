@@ -8,6 +8,7 @@ import {
   TableRow
 } from '@/components/ui/table';
 import { Tables } from '@/types/db';
+import { displayMoney, displayNumber } from '@/utils/helpers';
 
 type Video = Tables<'videos'>;
 
@@ -48,16 +49,13 @@ export default function VideoTable({ videos }: SectionProps) {
                 <VideoThumbnail videoId={video.video_id!} />
               </TableCell>
               <TableCell>@{video.creator_username}</TableCell>
-              <TableCell>{Number(video.views).toLocaleString()}</TableCell>
+              <TableCell>{displayNumber(video.views)}</TableCell>
+              <TableCell>{displayMoney(video.gmv)}</TableCell>
               <TableCell>
-                ${Number(video.gmv).toLocaleString()}
-                {' USD'}
+                {displayNumber(Number(video.click_through_rate) * 100)}%
               </TableCell>
-              <TableCell>
-                {(Number(video.click_through_rate) * 100).toLocaleString()}%
-              </TableCell>
-              <TableCell>{video.sku_orders?.toLocaleString()}</TableCell>
-              <TableCell>{video.units_sold?.toLocaleString()}</TableCell>
+              <TableCell>{displayNumber(video.sku_orders)}</TableCell>
+              <TableCell>{displayNumber(video.units_sold)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

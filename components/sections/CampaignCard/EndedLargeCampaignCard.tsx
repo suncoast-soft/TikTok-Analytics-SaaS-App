@@ -1,11 +1,12 @@
 import Badge from '@/components/modules/Badge';
 import Box from '@/components/modules/Box';
+import Brand from '@/components/modules/Brand';
 import Card from '@/components/modules/Card';
 import Title from '@/components/modules/Title';
 import { Button } from '@/components/ui/button';
 import { Tables } from '@/types/db';
 import { SellerCampaignDetail } from '@/types/tiktok';
-import { checkReward, getTimeDiff } from '@/utils/helpers';
+import { checkReward, displayMoney, getTimeDiff } from '@/utils/helpers';
 import { getSellerOrders } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 import {
@@ -87,7 +88,8 @@ export async function EndedLargeCampaignCard({
       </div>
 
       <div className="w-full lg:w-5/12 px-3 lg:px-8 py-4">
-        <Title tag="h3" title={name!} subtitle={'Locked'} />
+        <Brand tag="h4" brand="LockedShop" className="mb-4" />
+        <Title tag="h3" title={name!} className="mb-4" />
 
         <Badge
           button={
@@ -106,7 +108,9 @@ export async function EndedLargeCampaignCard({
             label="Commission"
             className="bg-navy-500 w-40"
           >
-            <p className="text-white text-2xl font-bold">{`$${commission.toLocaleString()}`}</p>
+            <p className="text-white text-2xl font-bold">
+              {displayMoney(commission)}
+            </p>
           </Box>
 
           <div className="text-4xl text-white">+</div>
@@ -116,7 +120,9 @@ export async function EndedLargeCampaignCard({
             label="Cash Reward"
             className="bg-amber-500 w-40"
           >
-            <p className="text-white text-2xl font-bold">{`$${reward.toLocaleString()}`}</p>
+            <p className="text-white text-2xl font-bold">
+              {displayMoney(reward)}
+            </p>
           </Box>
         </div>
       </div>
@@ -132,7 +138,7 @@ export async function EndedLargeCampaignCard({
 
         <Badge
           icon={<CircleDollarSignIcon size={16} />}
-          value={`$${gmv.toLocaleString()}`}
+          value={displayMoney(gmv)}
           label="GMV"
           size="lg"
           className="w-full py-3 mb-3"

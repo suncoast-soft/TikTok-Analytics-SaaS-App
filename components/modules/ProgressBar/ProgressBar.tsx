@@ -19,13 +19,13 @@ export default function ProgressBar({
       {label &&
         (labelPosition === 'percentage' ? (
           <div
-            className="absolute px-2 py-1 text-xs font-bold bg-white text-navy-900 rounded-xl"
+            className="absolute px-2 py-1 text-xs font-medium bg-white text-navy-900 rounded-xl"
             style={{ left: `${progress}%` }}
           >
             {label}
           </div>
         ) : (
-          <div className="text-white text-xs font-bold">{label}</div>
+          <div className="text-white text-xs font-medium">{label}</div>
         ))}
     </div>
   );

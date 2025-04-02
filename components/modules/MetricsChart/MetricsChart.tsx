@@ -11,6 +11,7 @@ import {
   ChartTooltip,
   ChartTooltipContent
 } from '@/components/ui/chart';
+import { displayDate, displayNumber } from '@/utils/helpers';
 
 export default function MetricsChart({
   config,
@@ -62,7 +63,7 @@ export default function MetricsChart({
                   {config[chart].label}
                 </span>
                 <span className="text-lg font-bold leading-none sm:text-2xl">
-                  {total[key as keyof typeof total].toLocaleString()}
+                  {displayNumber(total[key as keyof typeof total])}
                 </span>
               </button>
             );
@@ -89,12 +90,8 @@ export default function MetricsChart({
               axisLine={false}
               tickMargin={8}
               minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-                return date.toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric'
-                });
+              tickFormatter={(date) => {
+                return displayDate(date);
               }}
             />
             <ChartTooltip
@@ -103,12 +100,8 @@ export default function MetricsChart({
                 <ChartTooltipContent
                   className="w-[200px] bg-navy-900"
                   nameKey="label"
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric'
-                    });
+                  labelFormatter={(date) => {
+                    return displayDate(date);
                   }}
                 />
               }

@@ -40,7 +40,7 @@ export default function ProductInfoTable({ products }: SectionProps) {
     }
   };
   return (
-    <div className="mb-12">
+    <div className="mb-12 max-w-full overflow-x-auto">
       <div className="w-full flex flex-row">
         {[
           { label: 'Image', minWidth: 'min-w-24' },
@@ -53,7 +53,7 @@ export default function ProductInfoTable({ products }: SectionProps) {
           <div key={index} className={`flex-grow ${minWidth}`}>
             <div
               className={cn(
-                'px-2 py-3 bg-navy-700 text-sm text-navy-50 border border-navy-600 mx-[1px] line-clamp-1',
+                'px-2 py-3 bg-navy-700 text-sm text-navy-50 border border-navy-600/60 mx-[1px] line-clamp-1',
                 index === 0 && 'rounded-tl-lg',
                 index === 5 && 'rounded-tr-lg'
               )}
@@ -65,7 +65,7 @@ export default function ProductInfoTable({ products }: SectionProps) {
               <div
                 key={product.id}
                 className={cn(
-                  'h-24 flex items-center overflow-hidden px-2 py-2 bg-navy-700 text-sm text-navy-50 border-t border-b border-navy-600 my-[2px]',
+                  'h-24 flex items-center overflow-hidden px-2 py-2 bg-navy-700 text-sm text-navy-50 border-t border-b border-navy-600/60 my-[2px]',
                   index === 0 && 'rounded-bl-lg border-l ml-[1px]',
                   index === 0 && productIndex > 0 && 'rounded-tl-lg',
                   index === 5 && 'rounded-br-lg border-r mr-[1px]',

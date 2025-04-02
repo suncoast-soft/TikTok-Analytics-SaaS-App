@@ -1,4 +1,5 @@
 import { cn } from '@/utils/cn';
+import { displayMoney } from '@/utils/helpers';
 import { CheckCircle2Icon, CircleIcon } from 'lucide-react';
 import Image from 'next/image';
 
@@ -18,10 +19,10 @@ interface RewardProps {
 }
 
 const iconData = [
-  { offset: '0%', colorClass: 'text-purple' },
-  { offset: '33.33%', colorClass: 'text-blue' },
-  { offset: '66.66%', colorClass: 'text-teal' },
-  { offset: '100%', colorClass: 'text-green' }
+  { offset: '0%', colorClass: 'text-purple drop-shadow-purple' },
+  { offset: '33.33%', colorClass: 'text-blue drop-shadow-blue' },
+  { offset: '66.66%', colorClass: 'text-teal drop-shadow-teal' },
+  { offset: '100%', colorClass: 'text-green drop-shadow-green' }
 ];
 
 const getRewardIcon = (tier: number) => {
@@ -66,20 +67,20 @@ const Reward = ({ tier, target, reward, gmv }: RewardProps) => (
         src={getRewardIcon(tier)}
         width={48}
         height={48}
-        className="w-12 h-12 mx-auto my-2"
+        className="w-12 h-12 mx-auto mt-2"
         alt="Reward"
       />
     </div>
 
     <h5 className={cn('text-xl text-center font-semibold', getTierColor(tier))}>
-      ${reward.toLocaleString()}
+      {displayMoney(reward)}
     </h5>
 
     <h6 className="text-xs text-navy-300 text-center mb-2">Cash Rewards</h6>
 
     <div className="py-2 border-t border-navy-600">
       <h4 className="text-white text-center text-sm">
-        ${target.toLocaleString()} GMV earned
+        {displayMoney(target)} GMV earned
       </h4>
     </div>
   </div>
@@ -111,7 +112,7 @@ export default function Rewards({ rewards, gmv = 0 }: SectionProps) {
       </div>
 
       {/* Progress Bar */}
-      <div className="relative lg:mb-16 flex flex-col lg:block items-center mx-0 my-auto lg:mx-auto lg:my-0 w-12 lg:w-[calc(100%-160px)] h-[calc(100%-155px)] lg:h-fit">
+      <div className="relative lg:mb-6 flex flex-col lg:block items-center mx-0 my-auto lg:mx-auto lg:my-0 w-12 lg:w-[calc(100%-160px)] h-[calc(100%-155px)] lg:h-fit">
         {/* Mobile: Vertical progress bar */}
         <div className="lg:hidden w-3 h-full bg-navy-600 rounded-lg overflow-hidden lg:mb-6 relative">
           <div
@@ -129,7 +130,7 @@ export default function Rewards({ rewards, gmv = 0 }: SectionProps) {
         </div>
 
         {/* Desktop Icons (horizontal) */}
-        <div className="hidden lg:block">
+        <div className="hidden lg:block h-10">
           {iconData.map(({ offset, colorClass }, index) => {
             const Icon =
               index < milestonesReached ? CheckCircle2Icon : CircleIcon;
@@ -140,7 +141,7 @@ export default function Rewards({ rewards, gmv = 0 }: SectionProps) {
               <Icon
                 key={index}
                 size={40}
-                className={`absolute -top-3.5 fill-navy-800 ${iconColor}`}
+                className={`absolute -top-3.5 fill-navy-800 rounded-full ${iconColor}`}
                 style={{ left: `calc(${offset} - 20px)` }}
               />
             );
@@ -181,15 +182,12 @@ export default function Rewards({ rewards, gmv = 0 }: SectionProps) {
             <p>
               You have earned{' '}
               <span className="text-sm text-blue font-medium">
-                ${gmv.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                {displayMoney(gmv)}
               </span>
             </p>
             <p>
               <span className="text-sm text-blue font-medium">
-                $
-                {remaining.toLocaleString('en-US', {
-                  maximumFractionDigits: 0
-                })}
+                {displayMoney(remaining)}
               </span>{' '}
               away from the next reward
             </p>

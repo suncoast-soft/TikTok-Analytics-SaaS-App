@@ -7,6 +7,7 @@ import {
   TableRow
 } from '@/components/ui/table';
 import { Creator } from '@/types/tiktok';
+import { displayMoney, displayNumber } from '@/utils/helpers';
 import Image from 'next/image';
 
 interface SectionProps {
@@ -39,13 +40,8 @@ export default function CreatorTable({ creators }: SectionProps) {
               />
             </TableCell>
             <TableCell>{`${creator.nickname} @(${creator.username})`}</TableCell>
-            <TableCell>
-              {Number(creator.gmv.amount).toLocaleString()}{' '}
-              {creator.gmv.currency}
-            </TableCell>
-            <TableCell>
-              {Number(creator.follower_count).toLocaleString()}
-            </TableCell>
+            <TableCell>{displayMoney(creator.gmv.amount)}</TableCell>
+            <TableCell>{displayNumber(creator.follower_count)}</TableCell>
             <TableCell>{creator.category_ids.join(', ')}</TableCell>
           </TableRow>
         ))}

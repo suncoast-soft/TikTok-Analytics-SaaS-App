@@ -179,3 +179,15 @@ export const checkReward = (
   }
   return reward;
 };
+
+export const displayMoney = (money: number | string | null): string => {
+  if (!money) return `$0`;
+
+  return `$${money.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+};
+
+export const displayNumber = (number: number | string | null): string => {
+  if (!number) return `0`;
+
+  return `${number.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+};

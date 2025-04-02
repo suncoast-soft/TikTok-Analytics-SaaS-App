@@ -10,7 +10,7 @@ import Card from '@/components/modules/Card';
 import Box from '@/components/modules/Box';
 import ProductInfoTable from '@/components/sections/ProductInfoTable';
 import ProgressBar from '@/components/modules/ProgressBar';
-import { getTimeDiff } from '@/utils/helpers';
+import { displayMoney, getTimeDiff } from '@/utils/helpers';
 import Title from '@/components/modules/Title';
 import { createClient } from '@/utils/supabase/server';
 import { getCampaign, getSellerOrders } from '@/utils/supabase/queries';
@@ -18,6 +18,8 @@ import { SellerCampaignDetail } from '@/types/tiktok';
 import { Tables } from '@/types/db';
 import GradientBorder from '@/components/modules/GradientBorder';
 import Rewards from '@/components/modules/Reward';
+import Description from '@/components/modules/Description';
+import Brand from '@/components/modules/Brand';
 
 type Campaign = Tables<'campaigns'> & {
   users: {
@@ -88,22 +90,12 @@ export default async function CampaignDetailPage({
           </div>
 
           <div>
-            <div className="flex items-center gap-4 mb-4">
-              <Image
-                src="/icons/company.svg"
-                width={41}
-                height={49}
-                alt="Company"
-              />
-              <h2 className="text-3xl lg:text-4xl font-semibold bg-gradient-to-r from-purple to-blue bg-clip-text text-transparent">
-                {seller_name}
-              </h2>
-            </div>
+            <Brand brand={seller_name} className="mb-4" />
 
             <div className="flex flex-col lg:flex-row gap-4 mb-4">
               <Box
                 icon={<FileChartColumnIncreasingIcon />}
-                value={`$${gmv.toLocaleString()}`}
+                value={displayMoney(gmv)}
                 label="GMV"
               />
 
@@ -129,8 +121,8 @@ export default async function CampaignDetailPage({
               </Box>
 
               <GradientBorder className="h-fit my-auto">
-                <Card className="rounded-xl bg-navy-700/80 py-3">
-                  <div className="flex gap-3 items-center justify-center w-60 text-white text-lg font-medium text-center">
+                <Card className="rounded-xl py-2.5">
+                  <div className="flex gap-3 items-center justify-center w-60 text-white font-medium text-center">
                     <CheckCircle2Icon className="fill-white stroke-navy-700" />
                     <span>Joined</span>
                   </div>
@@ -141,22 +133,18 @@ export default async function CampaignDetailPage({
         </div>
       </Card>
 
-      <Card className="p-4 lg:p-8 mb-8">
-        <Title
-          title={name!}
-          description={message!}
-          tag="h2"
-          className="-mb-8"
-        />
+      <Card className="mb-8">
+        <Title tag="h2" title={name!} className="mb-2" />
+        <Description text={message!} />
       </Card>
 
       {rewards.length > 0 && (
-        <Card className="p-4 lg:p-8 mb-8 bg-navy-800/60">
+        <Card className="mb-8 bg-navy-800/60">
           <Rewards rewards={rewards} gmv={gmv} />
         </Card>
       )}
 
-      <Title title="Product Details" tag="h2" />
+      <Title title="Product Details" tag="h2" className="mb-5" />
       <ProductInfoTable products={products} />
     </div>
   );
