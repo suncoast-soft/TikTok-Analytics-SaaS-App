@@ -23,7 +23,7 @@ export default function Header({ user }: { user: UserType }) {
   return (
     <header className="container max-w-6xl">
       <div className="flex justify-between items-center py-5">
-        <Link href={user?.type === 'seller' ? '/seller' : '/'}>
+        <Link href={user?.type === 'seller' ? '/seller/campaigns' : '/'}>
           <Logo type={user?.type === 'seller' ? 'blue' : 'white'} />
         </Link>
 
@@ -45,7 +45,7 @@ export default function Header({ user }: { user: UserType }) {
 
                   <PopoverContent className="border-none w-64 px-8 py-0 shadow-none">
                     <div className="bg-navy-700 p-4 rounded-xl text-white shadow-lg">
-                      <p className="text-sm mb-3 font-bold px-2">
+                      <p className="text-sm mb-3 font-semibold px-2">
                         {name || email}
                       </p>
 

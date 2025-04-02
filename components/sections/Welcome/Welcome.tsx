@@ -19,7 +19,7 @@ export default function Welcome() {
         </div>
 
         <div className="w-full md:w-1/2 lg:w-1/3 h-80 px-8 py-6 flex flex-col justify-center items-center gap-3">
-          <h1 className="text-white text-2xl font-bold text-center">
+          <h1 className="text-white text-2xl font-semibold text-center">
             Welcome to Flicker
           </h1>
 

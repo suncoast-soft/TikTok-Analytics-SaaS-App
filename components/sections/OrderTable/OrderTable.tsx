@@ -42,7 +42,7 @@ export default function OrderTable({ orders }: SectionProps) {
             <TableCell>{displayDate(order.create_time! * 1000)}</TableCell>
             <TableCell>
               <div className="py-2">
-                <h5 className="font-bold text-lg mb-1">
+                <h5 className="font-semibold text-lg mb-1">
                   {order.campaigns.name}
                 </h5>
                 <Button asChild>

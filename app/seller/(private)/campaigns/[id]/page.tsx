@@ -1,8 +1,8 @@
 import {
+  FileChartColumnIncreasingIcon,
+  FilmIcon,
   ShoppingBagIcon,
-  TimerIcon,
-  TrophyIcon,
-  VideoIcon
+  TimerIcon
 } from 'lucide-react';
 import Image from 'next/image';
 import Card from '@/components/modules/Card';
@@ -11,13 +11,13 @@ import ProductInfoTable from '@/components/sections/ProductInfoTable';
 import ProgressBar from '@/components/modules/ProgressBar';
 import { displayMoney, getTimeDiff } from '@/utils/helpers';
 import Title from '@/components/modules/Title';
-import { getCampaign, getSellerOrders } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
-import { Tables } from '@/types/db';
-import RewardForm from '@/components/sections/Forms/RewardForm';
+import { getCampaign, getSellerOrders } from '@/utils/supabase/queries';
 import { SellerCampaignDetail } from '@/types/tiktok';
+import { Tables } from '@/types/db';
 import Description from '@/components/modules/Description';
 import Brand from '@/components/modules/Brand';
+import RewardForm from '@/components/sections/Forms/RewardForm';
 
 type Campaign = Tables<'campaigns'> & {
   users: {
@@ -31,7 +31,7 @@ interface RewardProps {
   reward: number;
 }
 
-export default async function CampaignPage({
+export default async function CampaignDetailPage({
   params
 }: {
   params: Promise<{ id: string }>;
@@ -43,22 +43,20 @@ export default async function CampaignPage({
    * Campaign Data
    */
   const campaign = (await getCampaign(supabase, campaignId)) as Campaign;
-  const {
-    campaign_id,
-    name,
-    message,
-    start_time,
-    end_time,
-    details,
-    users: { seller_name }
-  } = campaign;
-  const rewards = (campaign.rewards ?? []) as unknown as RewardProps[];
-  const { products, creator_invited_count } =
-    details as unknown as SellerCampaignDetail;
+  const { campaign_id, name, message, start_time, end_time, details, users } =
+    campaign;
+  const seller_name = users?.seller_name ?? '';
+
+  const rewards = ((campaign.rewards ?? []) as unknown as RewardProps[]).filter(
+    (reward) => reward.reward > 0 && reward.target > 0
+  );
+  const { products } = details as unknown as SellerCampaignDetail;
   const productThumbnail = products?.[0]?.main_image_url;
+  const commission = products[0].commission.rate;
 
   /**
    * Order Details
+   * Temp. use getCreatorOrders
    */
   const orders = (await getSellerOrders(supabase, campaignId)) as Order[];
 
@@ -72,90 +70,73 @@ export default async function CampaignPage({
   );
 
   return (
-    <div className="container max-w-6xl py-12">
-      <Card className="p-4 lg:p-8">
-        <div className="flex flex-col lg:flex-row items-center gap-8 mb-12">
-          {productThumbnail && (
-            <Image
-              src={productThumbnail}
-              width={320}
-              height={320}
-              alt={name ?? 'Seller Logo'}
-              className="w-80 h-80 object-contain rounded-lg"
-            />
-          )}
+    <div className="container max-w-6xl py-0">
+      <Card className="mb-8">
+        <div className="flex flex-col lg:flex-row items-center gap-8">
+          <div>
+            {productThumbnail && (
+              <Image
+                src={productThumbnail}
+                width={192}
+                height={192}
+                alt={name || 'Product Thumbnail'}
+                className="w-48 h-48 object-cover rounded-xl mb-2"
+              />
+            )}
+
+            <div className="rounded-lg bg-navy-800 text-green text-sm text-center py-2 px-2">
+              {`${commission / 100}% Commissions`}
+            </div>
+          </div>
 
           <div>
             <Brand brand={seller_name} className="mb-4" />
 
+            <div className="flex flex-col lg:flex-row gap-4 mb-4">
+              <Box
+                icon={<FileChartColumnIncreasingIcon />}
+                value={displayMoney(gmv)}
+                label="GMV"
+              />
+
+              <Box
+                icon={<ShoppingBagIcon />}
+                value={orders?.length}
+                label="Orders"
+              />
+
+              <Box icon={<FilmIcon />} value={videos.length} label="Videos" />
+            </div>
+
             <div className="flex flex-col lg:flex-row gap-4">
               <Box
-                icon={<TimerIcon width={16} />}
+                icon={<TimerIcon width={20} />}
                 label="Campaign progress"
-                className="w-60"
+                className="w-80"
               >
                 <ProgressBar
                   progress={getTimeDiff(start_time!, end_time!).progress}
                   label={getTimeDiff(start_time!, end_time!).text}
                 />
               </Box>
-
-              <Box
-                icon={<TrophyIcon width={16} />}
-                label="Total Creators"
-                className="w-60"
-              >
-                <p className="text-white text-2xl font-bold">
-                  {creator_invited_count}
-                </p>
-              </Box>
             </div>
           </div>
         </div>
-
-        <Title title="About the Campaign" className="mb-2" />
-        <Description text={message!} />
-
-        <div className="flex flex-col lg:flex-row gap-5 mb-12">
-          <Box
-            icon={<ShoppingBagIcon width={16} />}
-            value={orders?.length}
-            label="Orders"
-            buttonName="View orders"
-            buttonLink={`/creator/campaigns/${campaign_id}`}
-            className="w-60"
-          />
-
-          <Box
-            icon={<VideoIcon width={16} />}
-            value={videos.length}
-            label="Videos"
-            buttonName="Video Analytics"
-            buttonLink={`/creator/campaigns/${campaign_id}`}
-            className="w-60"
-          />
-
-          <Box
-            icon={<VideoIcon width={16} />}
-            value={displayMoney(gmv)}
-            label="GMV"
-            buttonName="Daily GMV Report"
-            buttonLink={`/creator/campaigns/${campaign_id}`}
-            className="w-60"
-          />
-        </div>
-
-        <Title title="Product Details" tag="h2" />
-
-        <ProductInfoTable products={products} />
-
-        <Title title="Configure Rewards" tag="h2" />
-
-        <RewardForm
-          campaignId={campaign_id!}
-          rewards={rewards as RewardProps[]}
-        />
       </Card>
+
+      <Card className="mb-8">
+        <Title tag="h2" title={name!} className="mb-2" />
+        <Description text={message!} />
+      </Card>
+
+      <Title title="Product Details" tag="h2" className="mb-5" />
+      <ProductInfoTable products={products} />
+
+      <Title title="Configure Rewards" tag="h2" className="mb-5" />
+      <RewardForm
+        campaignId={campaign_id!}
+        rewards={rewards as RewardProps[]}
+      />
     </div>
   );
 }

@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code');
   const type = searchParams.get('type');
   const next =
-    (searchParams.get('next') ?? type === 'seller') ? '/seller' : '/';
+    (searchParams.get('next') ?? type === 'seller') ? '/seller/campaigns' : '/';
 
   if (code) {
     const supabase = await createClient();

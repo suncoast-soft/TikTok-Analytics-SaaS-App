@@ -13,17 +13,14 @@ export default async function Register({
 
   return (
     <div className="container max-w-md py-12">
-      <Title
-        tag="h1"
-        title="Create your account"
-        subtitle={isSeller ? 'Seller Registration' : ''}
-      />
+      <Title tag="h3" title={isSeller ? 'Seller Registration' : ''} />
+      <Title tag="h1" title="Create your account" />
 
       <p className="text-white text-sm font-medium mb-8">
         Already have an account?
         <Link
           href={isSeller ? '/auth/login?type=seller' : '/auth/login'}
-          className="text-navy-300 font-bold ml-2"
+          className="text-navy-300 font-semibold ml-2"
         >
           Login
         </Link>

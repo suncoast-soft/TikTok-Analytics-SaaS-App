@@ -51,7 +51,7 @@ export async function signInWithPassword(formData: FormData) {
 
   return data.user
     ? getStatusRedirect(
-        type === 'seller' ? '/seller' : '/',
+        type === 'seller' ? '/seller/campaigns' : '/',
         'Success!',
         'You are now signed in.'
       )
@@ -88,7 +88,7 @@ export async function signUp(formData: FormData) {
 
   if (data.session) {
     return getStatusRedirect(
-      type === 'seller' ? '/seller' : '/',
+      type === 'seller' ? '/seller/campaigns' : '/',
       'Success!',
       'You are now signed in.'
     );
@@ -96,7 +96,7 @@ export async function signUp(formData: FormData) {
 
   return data.user
     ? getStatusRedirect(
-        type === 'seller' ? '/seller' : '/',
+        type === 'seller' ? '/seller/campaigns' : '/',
         'Success!',
         'Please check your email for a confirmation link. You may now close this tab.'
       )
@@ -138,7 +138,7 @@ export async function signInWithOtp(formData: FormData) {
         'Please check your email for a confirmation link. You may now close this tab.'
       )
     : getStatusRedirect(
-        type === 'seller' ? '/seller' : '/',
+        type === 'seller' ? '/seller/campaigns' : '/',
         'Success!',
         'You are now signed in.'
       );

@@ -1,7 +1,7 @@
 import { cn } from '@/utils/cn';
 
 interface ModuleProps {
-  tag?: 'h1' | 'h2' | 'h3';
+  tag?: 'h1' | 'h2' | 'h3' | 'h4';
   title: string;
   className?: string;
 }
@@ -23,13 +23,22 @@ export default function Title({ tag = 'h1', title, className }: ModuleProps) {
     case 'h3':
       return (
         <h3
+          className={cn('text-white text-lg lg:text-xl font-medium', className)}
+        >
+          {title}
+        </h3>
+      );
+
+    case 'h4':
+      return (
+        <h4
           className={cn(
-            'text-white text-lg lg:text-2xl font-medium',
+            'text-white text-sm lg:text-base font-medium',
             className
           )}
         >
           {title}
-        </h3>
+        </h4>
       );
 
     default:

@@ -13,7 +13,11 @@ import { cn } from '@/utils/cn';
 import { PublicSmallCampaignCard } from '../CampaignCard';
 import { Tables } from '@/types/db';
 
-type Campaign = Tables<'campaigns'>;
+type Campaign = Tables<'campaigns'> & {
+  users: {
+    seller_name: string;
+  };
+};
 
 export function PublicCampaigns({
   selectedCategory,
@@ -72,7 +76,7 @@ export function PublicCampaigns({
             )}
             asChild
           >
-            <Link href={`/?category=${category.name}`}>
+            <Link href={`/campaigns?category=${category.name}`}>
               {category.icon}
               {category.name}
             </Link>

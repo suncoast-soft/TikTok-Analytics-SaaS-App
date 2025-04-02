@@ -62,7 +62,7 @@ export default function MetricsChart({
                 <span className="text-xs text-muted-foreground">
                   {config[chart].label}
                 </span>
-                <span className="text-lg font-bold leading-none sm:text-2xl">
+                <span className="text-lg font-semibold leading-none sm:text-2xl">
                   {displayNumber(total[key as keyof typeof total])}
                 </span>
               </button>

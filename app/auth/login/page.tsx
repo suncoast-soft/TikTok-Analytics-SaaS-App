@@ -13,17 +13,14 @@ export default async function Login({
 
   return (
     <div className="container max-w-md py-12">
-      <Title
-        tag="h1"
-        title="Login to your account"
-        subtitle={isSeller ? 'Seller Login' : ''}
-      />
+      <Title tag="h3" title={isSeller ? 'Seller Login' : ''} />
+      <Title title="Login to your account" />
 
       <p className="text-white text-sm font-medium mb-8">
         Don&apos;t have an account?
         <Link
           href={isSeller ? '/auth/register?type=seller' : '/auth/register'}
-          className="text-navy-300 font-bold ml-2"
+          className="text-navy-300 font-semibold ml-2"
         >
           Register
         </Link>

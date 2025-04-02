@@ -7,7 +7,7 @@ export default function Support() {
       <div className="bg-navy-800 p-8 rounded-xl">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="w-full">
-            <h1 className="text-2xl text-white font-bold mb-8">Contact</h1>
+            <h1 className="text-2xl text-white font-semibold mb-8">Contact</h1>
 
             <ContactForm />
           </div>

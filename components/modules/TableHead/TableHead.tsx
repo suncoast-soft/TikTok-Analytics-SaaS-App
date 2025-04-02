@@ -42,7 +42,7 @@ export default function TableHeadSort({
         <div
           className={cn(
             'flex items-center gap-1 text-navy-50',
-            sortField === currentSortField && 'text-navy-400 font-bold'
+            sortField === currentSortField && 'text-navy-400 font-semibold'
           )}
         >
           {children}

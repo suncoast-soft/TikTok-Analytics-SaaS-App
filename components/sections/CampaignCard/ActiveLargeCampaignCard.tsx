@@ -1,5 +1,6 @@
 import Badge from '@/components/modules/Badge';
 import Box from '@/components/modules/Box';
+import Brand from '@/components/modules/Brand';
 import Card from '@/components/modules/Card';
 import ProgressBar from '@/components/modules/ProgressBar';
 import Title from '@/components/modules/Title';
@@ -11,13 +12,16 @@ import {
   CircleDollarSignIcon,
   ShoppingBagIcon,
   TimerIcon,
-  TimerResetIcon,
   VideoIcon
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-type Campaign = Tables<'campaigns'>;
+type Campaign = Tables<'campaigns'> & {
+  users: {
+    seller_name: string;
+  };
+};
 
 export function ActiveLargeCampaignCard({
   campaign,
@@ -26,7 +30,8 @@ export function ActiveLargeCampaignCard({
   campaign: Campaign;
   isSeller?: boolean;
 }) {
-  const { campaign_id, name, start_time, end_time, details } = campaign;
+  const { campaign_id, name, start_time, end_time, details, users } = campaign;
+  const seller_name = users?.seller_name ?? '';
   const {
     products,
     product_count,
@@ -37,76 +42,72 @@ export function ActiveLargeCampaignCard({
 
   return (
     <Card>
-      <div className="relative w-full lg:w-1/3 h-72 flex-shrink-0">
-        {productThumbnail && (
-          <Image
-            src={productThumbnail}
-            width={1000}
-            height={1000}
-            alt={name || 'Product Thumbnail'}
-            className="w-full h-full object-cover"
-          />
-        )}
+      <div className="flex flex-col lg:flex-row gap-4">
+        <div className="relative w-full lg:w-1/4 max-w-60 h-60 flex-shrink-0">
+          {productThumbnail && (
+            <Image
+              src={productThumbnail}
+              width={1000}
+              height={1000}
+              alt={name || 'Product Thumbnail'}
+              className="w-full h-full object-cover rounded-xl"
+            />
+          )}
+        </div>
 
-        <div className="absolute left-4 top-4">
+        <div className="w-full lg:w-1/2 px-3 lg:px-8">
+          <Brand tag="h4" brand={seller_name} />
+          <Title tag="h3" title={name!} className="mb-4" />
+
+          <Box
+            icon={<TimerIcon width={16} />}
+            label="Campaign progress"
+            className="w-full lg:w-96 mb-4"
+          >
+            <ProgressBar
+              progress={getTimeDiff(start_time!, end_time!).progress}
+              label={getTimeDiff(start_time!, end_time!).text}
+            />
+          </Box>
+
           <Badge
-            icon={<TimerResetIcon width={16} />}
-            value={getTimeDiff(start_time!, end_time!).text}
+            button={
+              <Button size="sm" asChild>
+                <Link
+                  href={`/${isSeller ? 'seller' : 'creator'}/campaigns/${campaign_id}`}
+                >
+                  View Details
+                </Link>
+              </Button>
+            }
           />
         </div>
-      </div>
 
-      <div className="w-full lg:w-5/12 px-3 lg:px-8 py-4">
-        <Title tag="h3" title={name!} subtitle={'Locked'} />
-
-        <Box
-          icon={<TimerIcon width={16} />}
-          label="Campaign progress"
-          className="w-full lg:w-96 mb-4"
-        >
-          <ProgressBar
-            progress={getTimeDiff(start_time!, end_time!).progress}
-            label={getTimeDiff(start_time!, end_time!).text}
+        <div className="w-full lg:w-1/4 px-3">
+          <Badge
+            icon={<ShoppingBagIcon />}
+            value={`${product_count}`}
+            label="Products"
+            size="lg"
+            className="w-full py-4 mb-3"
           />
-        </Box>
 
-        <Badge
-          button={
-            <Button size="sm" asChild>
-              <Link
-                href={`/${isSeller ? 'seller' : 'creator'}/campaigns/${campaign_id}`}
-              >
-                View Details
-              </Link>
-            </Button>
-          }
-        />
-      </div>
+          <Badge
+            icon={<CircleDollarSignIcon />}
+            value={`${creator_invited_count}`}
+            label="Creator Invites"
+            size="lg"
+            className="w-full py-4 mb-3"
+          />
 
-      <div className="w-full lg:w-1/4 px-3 lg:px-8 py-4">
-        <Badge
-          icon={<ShoppingBagIcon size={16} />}
-          value={`${product_count}`}
-          label="Products"
-          size="lg"
-          className="w-full py-3 mb-3"
-        />
-
-        <Badge
-          icon={<CircleDollarSignIcon size={16} />}
-          value={`${creator_invited_count}`}
-          label="Invited Creators"
-          size="lg"
-          className="w-full py-3 mb-3"
-        />
-
-        <Badge
-          icon={<VideoIcon size={16} />}
-          value={`${showcase_creator_count}`}
-          label="Showcase Creators"
-          size="lg"
-          className="w-full py-3"
-        />
+          <Badge
+            icon={<VideoIcon />}
+            value={`${showcase_creator_count}`}
+            label="Creators"
+            size="lg"
+            className="w-full py-4"
+          />
+        </div>
       </div>
     </Card>
   );

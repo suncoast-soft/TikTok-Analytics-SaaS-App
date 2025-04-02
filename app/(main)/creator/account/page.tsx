@@ -115,7 +115,7 @@ export default async function Account() {
         </Card>
       </div>
 
-      <h1 className="text-white text-xl lg:text-3xl font-bold text-center my-4">
+      <h1 className="text-white text-xl lg:text-3xl font-semibold text-center my-4">
         Connecting Affiliates with exclusive TikTok Shop Brand deals
       </h1>
 

@@ -11,7 +11,7 @@ export default function ImageBox({ title, description, image }: ModuleProps) {
     <div className="bg-navy-700 rounded-2xl p-6">
       <div className="flex flex-col-reverse md:flex-row gap-4 md:items-center">
         <div>
-          <h4 className="text-white text-lg font-bold mb-3">{title}</h4>
+          <h4 className="text-white text-lg font-semibold mb-3">{title}</h4>
           <p className="text-sm">{description}</p>
         </div>
 

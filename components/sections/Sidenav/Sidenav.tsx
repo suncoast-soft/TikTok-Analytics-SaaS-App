@@ -174,7 +174,7 @@ export default function Sidenav({ navs, isSeller }: NavProps) {
         <SidebarMenu className="gap-3">
           <Button variant="link" asChild>
             <Link
-              href={isSeller ? '/' : '/seller'}
+              href={isSeller ? '/' : '/seller/campaigns'}
               className="no-underline !text-blue"
             >
               {isSeller ? 'TikTok Creator Home' : 'TikTok Seller Dashboard'}

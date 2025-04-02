@@ -42,11 +42,8 @@ export default async function PrivateLayout({
     return (
       <div className="container max-w-6xl py-8">
         <Box className="mx-auto my-12 text-center">
-          <Title
-            tag="h2"
-            title="Private Seller Page"
-            subtitle="Please log in to access"
-          />
+          <Title tag="h3" title="Please log in to access" />
+          <Title title="Private Seller Page" />
         </Box>
 
         <div className="text-center">

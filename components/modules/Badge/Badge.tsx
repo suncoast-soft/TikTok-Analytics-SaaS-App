@@ -21,7 +21,7 @@ export default function Badge({
   return (
     <div
       className={cn(
-        'bg-navy-950 px-1 py-1 rounded-lg w-fit flex flex-row items-center',
+        'bg-navy-800/70 border border-navy-600 px-1 py-1 rounded-lg w-fit flex flex-row items-center',
         direction === 'vertical' && 'flex-col-reverse',
         className
       )}
@@ -29,20 +29,20 @@ export default function Badge({
       {button && button}
 
       {value && (
-        <div className="px-5 flex flex-row items-center gap-1.5">
-          {icon && <span className="text-amber-500">{icon}</span>}
+        <div className="px-4 flex flex-row items-center gap-1.5">
+          {icon && <span className="text-blue">{icon}</span>}
 
           {value && (
             <p
               className={cn(
-                'text-white text-xs font-semibold',
-                size === 'lg' && 'text-2xl font-bold'
+                'text-white text-xs',
+                size === 'lg' && 'text-2xl font-medium flex-grow'
               )}
             >
               {value}
 
               {label && (
-                <span className="text-navy-100 text-xs font-semibold ml-1.5">
+                <span className="text-navy-100 text-xs font-normal ml-1.5">
                   {label}
                 </span>
               )}

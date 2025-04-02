@@ -37,42 +37,42 @@ export default async function DashboardLayout({
     {
       icon: <HandshakeIcon width={20} height={20} />,
       name: 'Marketplace',
-      link: '/',
+      link: '/campaigns',
       subnavs: [
         {
           icon: <ShirtIcon width={20} height={20} />,
           name: 'Fashion and Beauty',
-          link: '/?category=Fashion+and+Beauty'
+          link: '/campaigns?category=Fashion+and+Beauty'
         },
         {
           icon: <DumbbellIcon width={20} height={20} />,
           name: 'Fitness and Wellness',
-          link: '/?category=Fitness+and+Wellness'
+          link: '/campaigns?category=Fitness+and+Wellness'
         },
         {
           icon: <LaptopIcon width={20} height={20} />,
           name: 'Technology and Gadgets',
-          link: '/?category=Technology+and+Gadgets'
+          link: '/campaigns?category=Technology+and+Gadgets'
         },
         {
           icon: <HomeIcon width={20} height={20} />,
           name: 'Lifestyle and Home',
-          link: '/?category=Lifestyle+and+Home'
+          link: '/campaigns?category=Lifestyle+and+Home'
         },
         {
           icon: <UtensilsIcon width={20} height={20} />,
           name: 'Food and Beverage',
-          link: '/?category=Food+and+Beverage'
+          link: '/campaigns?category=Food+and+Beverage'
         },
         {
           icon: <PlaneIcon width={20} height={20} />,
           name: 'Travel and Experiences',
-          link: '/?category=Travel+and+Experiences'
+          link: '/campaigns?category=Travel+and+Experiences'
         },
         {
           icon: <BoxesIcon width={20} height={20} />,
           name: 'Others',
-          link: '/?category=Others'
+          link: '/campaigns?category=Others'
         }
       ]
     },

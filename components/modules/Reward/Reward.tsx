@@ -9,6 +9,7 @@ interface SectionProps {
     reward: number;
   }[];
   gmv?: number;
+  showProgress?: boolean;
 }
 
 interface RewardProps {
@@ -86,7 +87,11 @@ const Reward = ({ tier, target, reward, gmv }: RewardProps) => (
   </div>
 );
 
-export default function Rewards({ rewards, gmv = 0 }: SectionProps) {
+export default function Rewards({
+  rewards,
+  gmv = 0,
+  showProgress = true
+}: SectionProps) {
   const totalMilestones = rewards.length;
   const progress =
     (gmv / rewards[totalMilestones - 1].target) * (totalMilestones * 25);
@@ -112,88 +117,90 @@ export default function Rewards({ rewards, gmv = 0 }: SectionProps) {
       </div>
 
       {/* Progress Bar */}
-      <div className="relative lg:mb-6 flex flex-col lg:block items-center mx-0 my-auto lg:mx-auto lg:my-0 w-12 lg:w-[calc(100%-160px)] h-[calc(100%-155px)] lg:h-fit">
-        {/* Mobile: Vertical progress bar */}
-        <div className="lg:hidden w-3 h-full bg-navy-600 rounded-lg overflow-hidden lg:mb-6 relative">
+      {showProgress && (
+        <div className="relative lg:mb-6 flex flex-col lg:block items-center mx-0 my-auto lg:mx-auto lg:my-0 w-12 lg:w-[calc(100%-160px)] h-[calc(100%-155px)] lg:h-fit">
+          {/* Mobile: Vertical progress bar */}
+          <div className="lg:hidden w-3 h-full bg-navy-600 rounded-lg overflow-hidden lg:mb-6 relative">
+            <div
+              className="absolute top-0 left-0 w-full bg-gradient-to-b from-purple via-blue to-green"
+              style={{ height: `${progress}%` }}
+            />
+          </div>
+
+          {/* Desktop: Horizontal progress bar */}
+          <div className="hidden lg:block w-full h-3 bg-navy-600 rounded-lg overflow-hidden mb-2 relative">
+            <div
+              className="h-full bg-gradient-to-r from-purple via-blue to-green"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+
+          {/* Desktop Icons (horizontal) */}
+          <div className="hidden lg:block h-10">
+            {iconData.map(({ offset, colorClass }, index) => {
+              const Icon =
+                index < milestonesReached ? CheckCircle2Icon : CircleIcon;
+              const iconColor =
+                index < milestonesReached ? colorClass : 'text-navy-600';
+
+              return (
+                <Icon
+                  key={index}
+                  size={40}
+                  className={`absolute -top-3.5 fill-navy-800 rounded-full ${iconColor}`}
+                  style={{ left: `calc(${offset} - 20px)` }}
+                />
+              );
+            })}
+          </div>
+
+          {/* Mobile Icons (vertical) */}
+          <div className="lg:hidden absolute left-1/2 -translate-x-1/2 -top-5 -bottom-5 w-10 flex flex-col justify-between">
+            {iconData.map(({ colorClass }, index) => {
+              const Icon =
+                index < milestonesReached ? CheckCircle2Icon : CircleIcon;
+              const iconColor =
+                index < milestonesReached ? colorClass : 'text-navy-600';
+
+              return (
+                <Icon
+                  key={index}
+                  size={40}
+                  className={`fill-navy-800 ${iconColor}`}
+                />
+              );
+            })}
+          </div>
+
+          {/* Tooltip Box */}
           <div
-            className="absolute top-0 left-0 w-full bg-gradient-to-b from-purple via-blue to-green"
-            style={{ height: `${progress}%` }}
-          />
-        </div>
-
-        {/* Desktop: Horizontal progress bar */}
-        <div className="hidden lg:block w-full h-3 bg-navy-600 rounded-lg overflow-hidden mb-2 relative">
-          <div
-            className="h-full bg-gradient-to-r from-purple via-blue to-green"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-
-        {/* Desktop Icons (horizontal) */}
-        <div className="hidden lg:block h-10">
-          {iconData.map(({ offset, colorClass }, index) => {
-            const Icon =
-              index < milestonesReached ? CheckCircle2Icon : CircleIcon;
-            const iconColor =
-              index < milestonesReached ? colorClass : 'text-navy-600';
-
-            return (
-              <Icon
-                key={index}
-                size={40}
-                className={`absolute -top-3.5 fill-navy-800 rounded-full ${iconColor}`}
-                style={{ left: `calc(${offset} - 20px)` }}
-              />
-            );
-          })}
-        </div>
-
-        {/* Mobile Icons (vertical) */}
-        <div className="lg:hidden absolute left-1/2 -translate-x-1/2 -top-5 -bottom-5 w-10 flex flex-col justify-between">
-          {iconData.map(({ colorClass }, index) => {
-            const Icon =
-              index < milestonesReached ? CheckCircle2Icon : CircleIcon;
-            const iconColor =
-              index < milestonesReached ? colorClass : 'text-navy-600';
-
-            return (
-              <Icon
-                key={index}
-                size={40}
-                className={`fill-navy-800 ${iconColor}`}
-              />
-            );
-          })}
-        </div>
-
-        {/* Tooltip Box */}
-        <div
-          className="hidden lg:block absolute w-60 h-[60px] lg:top-7 lg:left-[calc(var(--progress,50%)_-_120px)] bottom-[calc(var(--progress,50%)_-_30px)] lg:bottom-auto"
-          style={{ '--progress': `${progress}%` } as React.CSSProperties}
-        >
-          <Image
-            src="/icons/text-box.svg"
-            width={212}
-            height={48}
-            className="w-full h-full object-contain"
-            alt="Box"
-          />
-          <div className="absolute top-0 left-0 w-full px-2 pt-3.5 pb-1.5 text-center text-xs text-navy-200">
-            <p>
-              You have earned{' '}
-              <span className="text-sm text-blue font-medium">
-                {displayMoney(gmv)}
-              </span>
-            </p>
-            <p>
-              <span className="text-sm text-blue font-medium">
-                {displayMoney(remaining)}
-              </span>{' '}
-              away from the next reward
-            </p>
+            className="hidden lg:block absolute w-60 h-[60px] lg:top-7 lg:left-[calc(var(--progress,50%)_-_120px)] bottom-[calc(var(--progress,50%)_-_30px)] lg:bottom-auto"
+            style={{ '--progress': `${progress}%` } as React.CSSProperties}
+          >
+            <Image
+              src="/icons/text-box.svg"
+              width={212}
+              height={48}
+              className="w-full h-full object-contain"
+              alt="Box"
+            />
+            <div className="absolute top-0 left-0 w-full px-2 pt-3.5 pb-1.5 text-center text-xs text-navy-200">
+              <p>
+                You have earned{' '}
+                <span className="text-sm text-blue font-medium">
+                  {displayMoney(gmv)}
+                </span>
+              </p>
+              <p>
+                <span className="text-sm text-blue font-medium">
+                  {displayMoney(remaining)}
+                </span>{' '}
+                away from the next reward
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

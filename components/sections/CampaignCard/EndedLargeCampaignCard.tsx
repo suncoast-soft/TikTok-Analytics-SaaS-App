@@ -19,7 +19,11 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 
-type Campaign = Tables<'campaigns'>;
+type Campaign = Tables<'campaigns'> & {
+  users: {
+    seller_name: string;
+  };
+};
 type Order = Tables<'orders'>;
 
 interface RewardProps {
@@ -34,7 +38,8 @@ export async function EndedLargeCampaignCard({
 }) {
   const supabase = await createClient();
 
-  const { campaign_id, name, start_time, end_time, details } = campaign;
+  const { campaign_id, name, start_time, end_time, details, users } = campaign;
+  const seller_name = users?.seller_name ?? '';
   const rewards = (campaign.rewards ?? []) as unknown as RewardProps[];
   const { products } = details as unknown as SellerCampaignDetail;
   const productThumbnail = products?.[0]?.main_image_url;
@@ -68,89 +73,91 @@ export async function EndedLargeCampaignCard({
 
   return (
     <Card>
-      <div className="relative w-full lg:w-1/3 h-72 flex-shrink-0">
-        {productThumbnail && (
-          <Image
-            src={productThumbnail}
-            width={1000}
-            height={1000}
-            alt={name || 'Product Thumbnail'}
-            className="w-full h-full object-cover"
-          />
-        )}
+      <div className="flex flex-col lg:flex-row gap-4">
+        <div className="relative w-full lg:w-1/4 max-w-60 h-60 flex-shrink-0">
+          {productThumbnail && (
+            <Image
+              src={productThumbnail}
+              width={1000}
+              height={1000}
+              alt={name || 'Product Thumbnail'}
+              className="w-full h-full object-cover rounded-xl"
+            />
+          )}
 
-        <div className="absolute left-4 top-4">
+          <div className="absolute left-4 top-4">
+            <Badge
+              icon={<TimerResetIcon width={16} />}
+              value={getTimeDiff(start_time!, end_time!).text}
+            />
+          </div>
+        </div>
+
+        <div className="w-full lg:w-1/2 px-3 lg:px-8">
+          <Brand tag="h4" brand={seller_name} />
+          <Title tag="h3" title={name!} className="mb-4" />
+
           <Badge
-            icon={<TimerResetIcon width={16} />}
-            value={getTimeDiff(start_time!, end_time!).text}
+            button={
+              <Button size="sm" asChild>
+                <Link href={`/creator/campaigns/${campaign_id}`}>
+                  View Details
+                </Link>
+              </Button>
+            }
+            className="mb-8"
+          />
+
+          <div className="flex gap-4 items-center">
+            <Box
+              icon={<CircleDollarSignIcon size={16} className="text-white" />}
+              label="Commission"
+              className="bg-purple w-40"
+            >
+              <p className="text-white text-xl font-medium">
+                {displayMoney(commission)}
+              </p>
+            </Box>
+
+            <div className="text-4xl text-white">+</div>
+
+            <Box
+              icon={<TrophyIcon size={16} className="text-white" />}
+              label="Cash Reward"
+              className="bg-blue w-40"
+            >
+              <p className="text-white text-xl font-medium">
+                {displayMoney(reward)}
+              </p>
+            </Box>
+          </div>
+        </div>
+
+        <div className="w-full lg:w-1/4 px-3 lg:px-8">
+          <Badge
+            icon={<ShoppingBagIcon size={16} />}
+            value={`${orders.length}`}
+            label="Orders"
+            size="lg"
+            className="w-full py-3 mb-3"
+          />
+
+          <Badge
+            icon={<CircleDollarSignIcon size={16} />}
+            value={displayMoney(gmv)}
+            label="GMV"
+            size="lg"
+            className="w-full py-3 mb-3"
+          />
+
+          <Badge
+            icon={<VideoIcon size={16} />}
+            value={`${videos.length}`}
+            label="Showcase Videos"
+            size="lg"
+            className="w-full py-3"
           />
         </div>
-      </div>
-
-      <div className="w-full lg:w-5/12 px-3 lg:px-8 py-4">
-        <Brand tag="h4" brand="LockedShop" className="mb-4" />
-        <Title tag="h3" title={name!} className="mb-4" />
-
-        <Badge
-          button={
-            <Button size="sm" asChild>
-              <Link href={`/creator/campaigns/${campaign_id}`}>
-                View Details
-              </Link>
-            </Button>
-          }
-          className="mb-5"
-        />
-
-        <div className="flex gap-4 items-center">
-          <Box
-            icon={<CircleDollarSignIcon size={16} />}
-            label="Commission"
-            className="bg-navy-500 w-40"
-          >
-            <p className="text-white text-2xl font-bold">
-              {displayMoney(commission)}
-            </p>
-          </Box>
-
-          <div className="text-4xl text-white">+</div>
-
-          <Box
-            icon={<TrophyIcon size={16} className="text-white" />}
-            label="Cash Reward"
-            className="bg-amber-500 w-40"
-          >
-            <p className="text-white text-2xl font-bold">
-              {displayMoney(reward)}
-            </p>
-          </Box>
-        </div>
-      </div>
-
-      <div className="w-full lg:w-1/4 px-3 lg:px-8 py-4">
-        <Badge
-          icon={<ShoppingBagIcon size={16} />}
-          value={`${orders.length}`}
-          label="Orders"
-          size="lg"
-          className="w-full py-3 mb-3"
-        />
-
-        <Badge
-          icon={<CircleDollarSignIcon size={16} />}
-          value={displayMoney(gmv)}
-          label="GMV"
-          size="lg"
-          className="w-full py-3 mb-3"
-        />
-
-        <Badge
-          icon={<VideoIcon size={16} />}
-          value={`${videos.length}`}
-          label="Showcase Videos"
-          size="lg"
-          className="w-full py-3"
-        />
       </div>
     </Card>
   );

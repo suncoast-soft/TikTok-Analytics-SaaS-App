@@ -53,6 +53,7 @@ export default async function CampaignDetailPage({
   );
   const { products } = details as unknown as SellerCampaignDetail;
   const productThumbnail = products?.[0]?.main_image_url;
+  const commission = products[0].commission.rate;
 
   /**
    * Order Details
@@ -85,7 +86,7 @@ export default async function CampaignDetailPage({
             )}
 
             <div className="rounded-lg bg-navy-800 text-green text-sm text-center py-2 px-2">
-              {`${'20'}% Commissions`}
+              {`${commission / 100}% Commissions`}
             </div>
           </div>
 
@@ -139,7 +140,7 @@ export default async function CampaignDetailPage({
       </Card>
 
       {rewards.length > 0 && (
-        <Card className="mb-8 bg-navy-800/60">
+        <Card className="bg-navy-800/60 mb-8">
           <Rewards rewards={rewards} gmv={gmv} />
         </Card>
       )}

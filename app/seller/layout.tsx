@@ -1,4 +1,5 @@
 import Logo from '@/components/icons/Logo';
+import PulseEffect from '@/components/modules/PulseEffect';
 import Footer from '@/components/sections/Footer';
 import Header from '@/components/sections/Header';
 import Sidenav from '@/components/sections/Sidenav';
@@ -29,7 +30,7 @@ export default async function DashboardLayout({
     {
       icon: <HandshakeIcon width={20} height={20} />,
       name: 'My Campaigns',
-      link: '/seller'
+      link: '/seller/campaigns'
     },
     {
       icon: <ShoppingBagIcon width={20} height={20} />,
@@ -72,21 +73,23 @@ export default async function DashboardLayout({
           <Sidenav navs={navs} isSeller={true} />
         </Suspense>
 
-        <main className="w-full h-screen scrollbar-hidden overflow-y-scroll bg-navy-800">
-          <div className="flex md:hidden w-full justify-between p-4 shadow">
-            <Link href="/seller">
+        <main className="relative w-full h-screen scrollbar-hidden overflow-y-scroll bg-navy-800">
+          <div className="flex md:hidden w-full justify-between p-4 shadow z-10 relative">
+            <Link href="/seller/campaigns">
               <Logo type="blue" />
             </Link>
             <SidebarTrigger />
           </div>
 
-          <div className="hidden md:block">
+          <div className="hidden md:block z-10 relative">
             <Header user={user} />
           </div>
 
-          {children}
+          <div className="z-10 relative">{children}</div>
 
           <Footer />
+
+          <PulseEffect />
         </main>
       </SidebarProvider>
     </div>

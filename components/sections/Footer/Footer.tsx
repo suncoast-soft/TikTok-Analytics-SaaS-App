@@ -29,19 +29,19 @@ const footerLinks = [
     links: [
       {
         label: 'Fashion and Beauty',
-        href: '/?category=Fashion+and+Beauty'
+        href: '/campaigns?category=Fashion+and+Beauty'
       },
       {
         label: 'Fitness and Wellness',
-        href: '/?category=Fitness+and+Wellness'
+        href: '/campaigns?category=Fitness+and+Wellness'
       },
       {
         label: 'Technology and Gadgets',
-        href: '/?category=Technology+and+Gadgets'
+        href: '/campaigns?category=Technology+and+Gadgets'
       },
       {
         label: 'Lifestyle and Home',
-        href: '/?category=Lifestyle+and+Home'
+        href: '/campaigns?category=Lifestyle+and+Home'
       }
     ]
   },
@@ -50,15 +50,15 @@ const footerLinks = [
     links: [
       {
         label: 'Food and Beverage',
-        href: '/?category=Food+and+Beverage'
+        href: '/campaigns?category=Food+and+Beverage'
       },
       {
         label: 'Travel and Experiences',
-        href: '/?category=Travel+and+Experiences'
+        href: '/campaigns?category=Travel+and+Experiences'
       },
       {
         label: 'Others',
-        href: '/?category=Others'
+        href: '/campaigns?category=Others'
       }
     ]
   },

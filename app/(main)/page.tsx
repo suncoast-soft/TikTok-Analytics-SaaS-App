@@ -5,26 +5,20 @@ import { getCampaigns, getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 import { Suspense } from 'react';
 
-export default async function Home({
-  searchParams
-}: {
-  searchParams: Promise<{ category: string }>;
-}) {
-  const category = (await searchParams).category;
-
+export default async function Home() {
   const supabase = await createClient();
   const user = await getUser(supabase);
   const campaigns = await getCampaigns(supabase);
 
   return (
     <div className="container max-w-6xl py-8">
-      {!category && campaigns.length > 0 && (
+      {campaigns.length > 0 && (
         <>
-          <h1 className="text-white text-xl lg:text-3xl font-bold text-center my-4">
+          <h1 className="text-white text-xl lg:text-3xl font-semibold text-center my-4">
             Connecting Affiliates with exclusive TikTok Shop Brand deals
           </h1>
 
-          <h2 className="text-amber-400 lg:text-xl font-semibold text-center mb-12">
+          <h2 className="text-blue lg:text-xl font-semibold text-center mb-12">
             Earn higher commissions and cash rewards
           </h2>
 
@@ -35,7 +29,7 @@ export default async function Home({
       )}
 
       <Suspense>
-        <PublicCampaigns selectedCategory={category} campaigns={campaigns} />
+        <PublicCampaigns campaigns={campaigns} />
       </Suspense>
     </div>
   );

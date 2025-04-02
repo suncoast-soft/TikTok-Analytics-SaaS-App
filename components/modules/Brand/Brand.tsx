@@ -2,7 +2,7 @@ import { cn } from '@/utils/cn';
 import Image from 'next/image';
 
 interface ModuleProps {
-  tag?: 'h2' | 'h3' | 'h4';
+  tag?: 'h2' | 'h3' | 'h4' | 'h5';
   brand?: string;
   className?: string;
 }
@@ -34,12 +34,29 @@ export default function Brand({ tag = 'h2', brand, className }: ModuleProps) {
             width={41}
             height={49}
             alt="Company"
-            className="w-6 h-8"
+            className="w-4 h-6"
           />
 
-          <h4 className="text-xl lg:text-2xl font-normal bg-gradient-to-r from-purple to-blue bg-clip-text text-transparent">
+          <h4 className="text-lg lg:text-xl font-normal bg-gradient-to-r from-purple to-blue bg-clip-text text-transparent">
             {brand}
           </h4>
+        </div>
+      );
+
+    case 'h5':
+      return (
+        <div className={cn('flex items-center gap-2', className)}>
+          <Image
+            src="/icons/company.svg"
+            width={41}
+            height={49}
+            alt="Company"
+            className="w-3 h-4"
+          />
+
+          <h5 className="text-sm lg:text-base font-normal bg-gradient-to-r from-purple to-blue bg-clip-text text-transparent">
+            {brand}
+          </h5>
         </div>
       );
 
