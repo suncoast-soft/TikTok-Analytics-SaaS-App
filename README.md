@@ -1,4 +1,4 @@
-# TikTok-Analytics-SaaS-App
+# TikTok-Analytics-SaaS-App Project Overview
 
 **Overview:**
 TikTok-Analytics-SaaS-App is a modern, full-stack web application built with Next.js and TypeScript. It includes a beautiful UI powered by TailwindCSS and shadcn/ui, and provides dynamic form handling and validation using React Hook Form and Zod.
